@@ -32,7 +32,7 @@
 			<div class="col-md-12" style="margin-top: 2%">
 				<div class="row">
 					<div class="form-group col-md-6">
-						<label class="control-label" for="id_numero">Número</label> <input
+						<label class="control-label" for="id_numero">Nï¿½mero</label> <input
 							class="form-control" type="text" id="id_numero" name="numero"
 							placeholder="Ingrese el numero de la sala">
 					</div>
@@ -98,7 +98,7 @@
 	});
 
 	
-	<!-- Agregar aquí -->
+	<!-- Agregar aquï¿½ -->
 		$("#id_registrar").click(function() {
 
 			//Lanza la validacion
@@ -146,11 +146,11 @@
 		                selector: "#id_numero",
 		                validators: {
 		                    notEmpty: {
-		                        message: 'El número de la sala es obligatorio'
+		                        message: 'El nï¿½mero de la sala es obligatorio'
 		                    },
 		                    regexp:{
 		      				  regexp: /^[A-Z][0-9]{3}$/,
-		      				  message:'el Número de la sala  debe contener un caracter en mayuscula y 3 dígitos'
+		      				  message:'el Nï¿½mero de la sala  debe contener un caracter en mayuscula y 3 dï¿½gitos'
 		      			  }
 	            }
 	        },
@@ -162,7 +162,7 @@
 	                },
 	                regexp:{
 	  				  regexp: /^[0-9]{1,2}$/,
-	  				  message:'el  campo Piso debe contener de 1 a 2 dígitos'
+	  				  message:'el  campo Piso debe contener de 1 a 2 dï¿½gitos'
 	  			  },
 	            }
 	        },
@@ -170,11 +170,11 @@
 	    		selector : '#id_numAlumnos',
 	            validators: {
 	            	notEmpty: {
-	                    message: 'El campo Número de Alumnos es un campo obligatorio'
+	                    message: 'El campo Nï¿½mero de Alumnos es un campo obligatorio'
 	                },
 	                regexp:{
 	    				  regexp: /^[0-9]{1,2}$/,
-	    				  message:'El campo Número de Alumnos  debe contener de 1 a 2 dígitos'
+	    				  message:'El campo Nï¿½mero de Alumnos  debe contener de 1 a 2 dï¿½gitos'
 	    			  },
 	            }
 	        },

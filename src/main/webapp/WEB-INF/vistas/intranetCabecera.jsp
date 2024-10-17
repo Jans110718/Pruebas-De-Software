@@ -33,11 +33,11 @@
                         </li>
                     </c:if>
 
-                    <!-- Opciones para alumnos (tipo 2) -->
-                    <c:if test="${!empty sessionScope.objMenusTipo2}">
+                      <!-- Opciones de Registros para el tipo 1 (profesores) -->
+                      <c:if test="${!empty sessionScope.objMenusTipo1}">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Alumnos<b class="caret"></b>
+                                Alumnos <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
                                 <c:forEach var="x" items="${sessionScope.objMenusTipo1}">
