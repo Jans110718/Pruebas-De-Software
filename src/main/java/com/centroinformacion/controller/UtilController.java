@@ -13,110 +13,135 @@ import com.centroinformacion.entity.DataCatalogo;
 import com.centroinformacion.entity.Libro;
 import com.centroinformacion.entity.Pais;
 import com.centroinformacion.entity.Sala;
+import com.centroinformacion.entity.Vehiculo; // Asegúrate de que esta entidad exista
+import com.centroinformacion.entity.Espacio; // Asegúrate de que esta entidad exista
 import com.centroinformacion.service.AlumnoService;
 import com.centroinformacion.service.AutorService;
 import com.centroinformacion.service.DataCatalogoService;
 import com.centroinformacion.service.LibroService;
 import com.centroinformacion.service.PaisService;
 import com.centroinformacion.service.SalaService;
+import com.centroinformacion.service.VehiculoService; // Asegúrate de que este servicio exista
+import com.centroinformacion.service.EspacioService; // Asegúrate de que este servicio exista
 import com.centroinformacion.util.AppSettings;
+
 @Controller
 public class UtilController {
 
-	@Autowired
-	private PaisService paisService;
+    @Autowired
+    private PaisService paisService;
 
-	@Autowired
-	private DataCatalogoService dataCatalogoService;
-	
-	@Autowired
-	private AlumnoService alumnoService;
-	
-	@Autowired
-	private SalaService salaService;
-	
-	//SIFUENTES
-	@Autowired
-	private LibroService libroService;
-	
-	
-	@Autowired
-	private AutorService autorService;
+    @Autowired
+    private DataCatalogoService dataCatalogoService;
+    
+    @Autowired
+    private AlumnoService alumnoService;
+    
+    @Autowired
+    private SalaService salaService;
+    
+    // SIFUENTES
+    @Autowired
+    private LibroService libroService;
+    
+    @Autowired
+    private AutorService autorService;
 
-	@GetMapping("/listaPais")
-	@ResponseBody
-	public List<Pais> listaPais() {
-		return paisService.listaTodos();
-	}
-	
-	@GetMapping("/listaAlumno")
-	@ResponseBody
-	public List<Alumno> listaAlumno() {
-		return alumnoService.listaTodos();
-	}
-	
-	@GetMapping("/listaSala")
-	@ResponseBody
-	public List<Sala> listaSala() {
-		return salaService.listaSalaDisponibles();
-	}
+    @Autowired
+    private VehiculoService vehiculoService; // Asegúrate de que el servicio está inyectado
 
-	@GetMapping("/listaCategoriaDeLibro")
-	@ResponseBody
-	public List<DataCatalogo> listaCategoriaDeLibro() {
-		return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_01_CATEGORIA_DE_LIBRO);
-	}
-	
-	@GetMapping("/listaTipoProveedor")
-	@ResponseBody
-	public List<DataCatalogo> listaTipoProveedor() {
-		return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_02_TIPO_DE_PROVEEDOR);
-	}
-	
-	@GetMapping("/listaModalidadAlumno")
-	@ResponseBody
-	public List<DataCatalogo> listaModalidadAlumno() {
-		return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_03_MODALIDAD_DE_ALUMNO);
-	}
-	
-	@GetMapping("/listaGradoAutor")
-	@ResponseBody
-	public List<DataCatalogo> listaGradoAutor() {
-		return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_04_GRADO_DE_AUTOR);
-	}	
-	
-	@GetMapping("/listaTipoLibroRevista")
-	@ResponseBody
-	public List<DataCatalogo> listaTipoLibroRevista() {
-		return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_05_TIPO_DE_LIBRO_Y_REVISTA);
-	}	
-	
-	@GetMapping("/listaTipoSala")
-	@ResponseBody
-	public List<DataCatalogo> listaTipoSala() {
-		return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_06_TIPO_DE_SALA);
-	}	
-	
-	@GetMapping("/listaSede")
-	@ResponseBody
-	public List<DataCatalogo> listaSede() {
-		return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_07_SEDE);
-	}	
-	
-	@GetMapping("/listaEstadoLibro")
-	@ResponseBody
-	public List<DataCatalogo> listaEstadoLibro() {
-		return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_08_ESTADO_DE_LIBRO);
-	}
-	@GetMapping("/listaLibro")
-	@ResponseBody
-	public List<Libro> listaLibro() {
-		return libroService.listaLibro();
-	}
-	
-	@GetMapping("/listaAutor")
-	@ResponseBody
-	public List<Autor> listaAutor(){
-	    return autorService.listaAutor(); 
-	}
+    @Autowired
+    private EspacioService espacioService; // Asegúrate de que el servicio está inyectado
+
+    @GetMapping("/listaPais")
+    @ResponseBody
+    public List<Pais> listaPais() {
+        return paisService.listaTodos();
+    }
+    
+    @GetMapping("/listaAlumno")
+    @ResponseBody
+    public List<Alumno> listaAlumno() {
+        return alumnoService.listaTodos();
+    }
+    
+    @GetMapping("/listaSala")
+    @ResponseBody
+    public List<Sala> listaSala() {
+        return salaService.listaSalaDisponibles();
+    }
+
+    @GetMapping("/listaCategoriaDeLibro")
+    @ResponseBody
+    public List<DataCatalogo> listaCategoriaDeLibro() {
+        return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_01_CATEGORIA_DE_LIBRO);
+    }
+    
+    @GetMapping("/listaTipoProveedor")
+    @ResponseBody
+    public List<DataCatalogo> listaTipoProveedor() {
+        return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_02_TIPO_DE_PROVEEDOR);
+    }
+    
+    @GetMapping("/listaModalidadAlumno")
+    @ResponseBody
+    public List<DataCatalogo> listaModalidadAlumno() {
+        return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_03_MODALIDAD_DE_ALUMNO);
+    }
+    
+    @GetMapping("/listaGradoAutor")
+    @ResponseBody
+    public List<DataCatalogo> listaGradoAutor() {
+        return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_04_GRADO_DE_AUTOR);
+    }   
+    
+    @GetMapping("/listaTipoLibroRevista")
+    @ResponseBody
+    public List<DataCatalogo> listaTipoLibroRevista() {
+        return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_05_TIPO_DE_LIBRO_Y_REVISTA);
+    }   
+    
+    @GetMapping("/listaTipoSala")
+    @ResponseBody
+    public List<DataCatalogo> listaTipoSala() {
+        return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_06_TIPO_DE_SALA);
+    }   
+    
+    @GetMapping("/listaSede")
+    @ResponseBody
+    public List<DataCatalogo> listaSede() {
+        return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_07_SEDE);
+    }   
+    
+    @GetMapping("/listaEstadoLibro")
+    @ResponseBody
+    public List<DataCatalogo> listaEstadoLibro() {
+        return dataCatalogoService.listaDataCatalogo(AppSettings.CATALOGO_08_ESTADO_DE_LIBRO);
+    }
+
+    @GetMapping("/listaLibro")
+    @ResponseBody
+    public List<Libro> listaLibro() {
+        return libroService.listaLibro();
+    }
+    
+    @GetMapping("/listaAutor")
+    @ResponseBody
+    public List<Autor> listaAutor(){
+        return autorService.listaAutor(); 
+    }
+    
+    // Método para listar vehículos
+    @GetMapping("/listaVehiculo")
+    @ResponseBody
+    public List<Vehiculo> listaVehiculo() {
+        return vehiculoService.listaTodos();// Asegúrate de que este método exista en tu servicio
+    }
+
+    // Método para listar espacios
+    @GetMapping("/listaEspacio")
+    @ResponseBody
+    public List<Espacio> listaEspacio() {
+        return espacioService.listaEspacioDisponibles(); // Asegúrate de que este método exista en tu servicio
+    }
 }

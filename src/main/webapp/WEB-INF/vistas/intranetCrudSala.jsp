@@ -29,7 +29,7 @@
 <div class="container" style="margin-top: 1%">
     <div class="row" style="height: 70px">
         <div class="col-md-3" >
-                <input class="form-control" id="id_txt_filtro"  name="filtro" placeholder="Ingrese el  número del aula" type="text" maxlength="30"/>
+                <input class="form-control" id="id_txt_filtro"  name="filtro" placeholder="Ingrese el  nï¿½mero del aula" type="text" maxlength="30"/>
         </div>
         <div class="col-md-2" >
             <button type="button" class="btn btn-primary" id="id_btn_filtrar" style="width: 150px">FILTRA</button>
@@ -86,19 +86,19 @@
                                      <div class="form-group">
                                         <label class="col-lg-3 control-label" for="id_reg_numero">N&uacutemero</label>
                                         <div class="col-lg-6">
-											<input class="form-control" id="id_reg_numero" name="numero" placeholder="Ingrese el Número de la Sala" type="text" />
+											<input class="form-control" id="id_reg_numero" name="numero" placeholder="Ingrese el Nï¿½mero de la Sala" type="text" />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label" for="id_reg_piso">Piso</label>
                                         <div class="col-lg-6">
-											<input class="form-control" id="id_reg_piso" name="piso" placeholder="Ingrese el Número del Piso de la Sala" type="number"/>
+											<input class="form-control" id="id_reg_piso" name="piso" placeholder="Ingrese el Nï¿½mero del Piso de la Sala" type="number"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label" for="id_reg_numAlumnos">N&uacutemero de Alumnos</label>
                                         <div class="col-lg-6">
-											<input class="form-control" id="id_reg_numAlumnos" name="numAlumnos" placeholder="Ingrese el Número de alumnos" type="number" />
+											<input class="form-control" id="id_reg_numAlumnos" name="numAlumnos" placeholder="Ingrese el Nï¿½mero de alumnos" type="number" />
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -168,19 +168,19 @@
                                   <div class="form-group">
                                      <label class="col-lg-3 control-label" for="id_act_numero">N&uacutemero</label>
                                      <div class="col-lg-6">
-                                         <input class="form-control" id="id_act_numero" name="numero" placeholder="Ingrese el Número de la Sala" type="text" />
+                                         <input class="form-control" id="id_act_numero" name="numero" placeholder="Ingrese el Nï¿½mero de la Sala" type="text" />
                                      </div>
                                  </div>
                                  <div class="form-group">
                                      <label class="col-lg-3 control-label" for="id_act_piso">Piso</label>
                                      <div class="col-lg-6">
-                                         <input class="form-control" id="id_act_piso" name="piso" placeholder="Ingrese el Número del Piso de la Sala" type="number" />
+                                         <input class="form-control" id="id_act_piso" name="piso" placeholder="Ingrese el Nï¿½mero del Piso de la Sala" type="number" />
                                      </div>
                                  </div>
                                  <div class="form-group">
                                      <label class="col-lg-3 control-label" for="id_act_numAlumnos">N&uacutemero de Alumnos</label>
                                      <div class="col-lg-6">
-                                         <input class="form-control" id="id_act_numAlumnos" name="numAlumnos" placeholder="Ingrese el Número de Alumnos" type="number" />
+                                         <input class="form-control" id="id_act_numAlumnos" name="numAlumnos" placeholder="Ingrese el Nï¿½mero de Alumnos" type="number" />
                                      </div>
                                  </div>
                                  <div class="form-group">
@@ -351,29 +351,12 @@ $('#id_form_registra').bootstrapValidator({
     		selector : '#id_reg_numero',
             validators: {
                 notEmpty: {
-                    message: 'El Número de la sala es un campo obligatorio'
+                    message: 'El Nï¿½mero de la sala es un campo obligatorio'
                 },
                 regexp:{
     				  regexp: /^[A-Z][0-9]{3}$/,
-    				  message:'el Número de la sala  debe contener un caracter en mayuscula y 3 dígitos'
-    			  },
-    			  remote :{
-
-                  	delay   : 100,
-
-                  	url     : 'buscaModalidadPorNumeroRegistra',
-
-                  	message : 'El Número de Sala ya a sido registrada',
-
-                  	data: {
-
-  		                numeros: function() {
-
-  		                    return $('#id_reg_numero').val();
-
-  		                },
-
-  		        	},
+    				  message:'el Nï¿½mero de la sala  debe contener un caracter en mayuscula y 3 dï¿½gitos'
+    			  }
 
                   }
             }
@@ -386,7 +369,7 @@ $('#id_form_registra').bootstrapValidator({
                 },
                 regexp:{
   				  regexp: /^[0-9]{1,2}$/,
-  				  message:'el  campo Piso debe contener de 1 a 2 dígitos'
+  				  message:'el  campo Piso debe contener de 1 a 2 dï¿½gitos'
   			  },
             }
         },
@@ -394,11 +377,11 @@ $('#id_form_registra').bootstrapValidator({
     		selector : '#id_reg_numAlumnos',
             validators: {
             	notEmpty: {
-                    message: 'El campo Número de Alumnos es un campo obligatorio'
+                    message: 'El campo Nï¿½mero de Alumnos es un campo obligatorio'
                 },
                 regexp:{
     				  regexp: /^[0-9]{1,2}$/,
-    				  message:'El campo Número de Alumnos  debe contener de 1 a 2 dígitos'
+    				  message:'El campo Nï¿½mero de Alumnos  debe contener de 1 a 2 dï¿½gitos'
     			  },
             }
         },
@@ -476,11 +459,11 @@ $('#id_form_actualiza').bootstrapValidator({
     		selector : '#id_act_numero',
             validators: {
                 notEmpty: {
-                    message: 'El campo Número es un campo obligatorio'
+                    message: 'El campo Nï¿½mero es un campo obligatorio'
                 },
                 regexp:{
   				  regexp: /^[A-Z][0-9]{3}$/,
-  				  message:'El campo Número  debe contener un caracter en mayuscula y 3 dígitos'
+  				  message:'El campo Nï¿½mero  debe contener un caracter en mayuscula y 3 dï¿½gitos'
   			  },
   			remote :{
 
@@ -488,7 +471,7 @@ $('#id_form_actualiza').bootstrapValidator({
 
             	url     : 'buscaModalidadPorNumeroActualiza',
 
-            	message : 'El Número de Sala ya existe o ya a sido registrado',
+            	message : 'El Nï¿½mero de Sala ya existe o ya a sido registrado',
 
             	data: {
 
@@ -514,7 +497,7 @@ $('#id_form_actualiza').bootstrapValidator({
                 },
                 regexp:{
     				  regexp: /^[0-9]{1,2}$/,
-    				  message:'El campo Piso  debe contener de 1 a 2 dígitos'
+    				  message:'El campo Piso  debe contener de 1 a 2 dï¿½gitos'
     			  },
             }
         },
@@ -522,11 +505,11 @@ $('#id_form_actualiza').bootstrapValidator({
     		selector : '#id_act_numAlumnos',
             validators: {
             	notEmpty: {
-                    message: 'El campo Número de Alumnos es un campo obligatorio'
+                    message: 'El campo Nï¿½mero de Alumnos es un campo obligatorio'
                 },
                 regexp:{
     				  regexp: /^[0-9]{1,2}$/,
-    				  message:'El campo Número de Alumnos  debe contener de 1 a 2 dígitos'
+    				  message:'El campo Nï¿½mero de Alumnos  debe contener de 1 a 2 dï¿½gitos'
     			  },
             }
         },

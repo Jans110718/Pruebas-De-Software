@@ -40,7 +40,7 @@ public class VehiculoRegistroController {
         if (objSalida == null) {
             map.put("MENSAJE", "Error en el registro");
         } else {
-            map.put("MENSAJE", "Registro exitoso");
+            map.put("MENSAJE", "Vehiculo registrado exitosamente");
         }
         return map;
     }
