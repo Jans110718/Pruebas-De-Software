@@ -21,7 +21,6 @@ public class AlumnoServiceImp implements AlumnoService {
 	public List<Alumno> listaTodos() {
 		return repository.findByOrderByApellidosAsc();
 	}
-
 	@Override
 	public Alumno insertaActualizaAlumno(Alumno obj) {
 		return repository.save(obj);

@@ -39,6 +39,7 @@ public class Vehiculo {
     private String placa;
     private String marca;
     private String color;
+    private String imagen;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")

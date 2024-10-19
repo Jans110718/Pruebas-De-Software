@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrapValidator.css"/>
 
-    <title>Registro Veh&iacute;culo</title>
+    <title>Registro Vehículo</title>
 
     <style>
         /* Estilos para centrar el formulario */
@@ -44,8 +44,8 @@
 
     <div class="container">
         <div class="form-container">
-            <h4>Registro de Veh&iacute;culo</h4>
-            <form id="id_form" method="post">
+            <h4>Registro de Vehículo</h4>
+            <form id="id_form" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="control-label" for="id_marca">Marca</label>
                     <input class="form-control" type="text" id="id_marca" name="marca" placeholder="Ingrese la marca">
@@ -65,6 +65,11 @@
                     <label class="control-label" for="id_color">Color</label>
                     <input class="form-control" type="text" id="id_color" name="color" placeholder="Ingrese el color" maxlength="50">
                 </div>
+                
+                <div class="form-group">
+                    <label class="control-label" for="id_imagen">Imagen</label>
+                    <input class="form-control-file" type="file" id="id_imagen" name="file" accept="image/*">
+                </div>
 
                 <div class="form-group text-center">
                     <button id="id_registrar" type="button" class="btn btn-primary">Registrar</button>
@@ -74,23 +79,33 @@
     </div>
 
     <script type="text/javascript">
-        // Validación y env&iacute;o del formulario
+        // Validación y envío del formulario
         $("#id_registrar").click(function() {
             var validator = $('#id_form').data('bootstrapValidator');
             validator.validate();
 
             if (validator.isValid()) {
+                $("#id_registrar").prop('disabled', true); // Deshabilitar botón
                 $.ajax({
                     type: "POST",
                     url: "registraVehiculo",
-                    data: $('#id_form').serialize(),
+                    data: new FormData($('#id_form')[0]), // Enviar FormData
+                    processData: false,
+                    contentType: false,
                     success: function(data) {
-                        mostrarMensaje(data.MENSAJE);
+                        if(data && data.MENSAJE) {
+                            mostrarMensaje(data.MENSAJE);
+                        } else {
+                            mostrarMensaje("Ocurrió un error inesperado.");
+                        }
                         validator.resetForm();
                         limpiarFormulario();
                     },
                     error: function() {
-                        mostrarMensaje(MSG_ERROR);
+                        mostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                    },
+                    complete: function() {
+                        $("#id_registrar").prop('disabled', false); // Habilitar nuevamente
                     }
                 });
             }
@@ -101,6 +116,7 @@
             $('#id_modelo').val('');
             $('#id_placa').val('');
             $('#id_color').val('');
+            $('#id_imagen').val(''); // Limpiar campo de imagen
         }
 
         // Validación del formulario con Bootstrap Validator
