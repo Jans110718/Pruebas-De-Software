@@ -37,6 +37,13 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        body {
+        padding-top: 90px; /* Altura de la navbar */
+    }
+
+    .navbar-fixed-top {
+        height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
+    }
     </style>
 </head>
 <body>
