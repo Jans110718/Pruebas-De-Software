@@ -18,7 +18,7 @@ public class EspacioServiceImp implements EspacioService {
 
     @Override
     public List<Espacio> listaTodos() {
-        return repository.findByOrderByNumeroAsc();
+        return repository.findByOrderByNumeroAscCustom();
     }
 
     @Override

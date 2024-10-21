@@ -15,7 +15,8 @@ public interface EspacioRepository extends JpaRepository<Espacio, Integer> {
     
     // Obtener todos los espacios ordenados por número ascendente
     List<Espacio> findByOrderByNumeroAsc();
-
+    @Query("SELECT e FROM Espacio e ORDER BY CAST(e.numero AS int)")
+    List<Espacio> findByOrderByNumeroAscCustom();
     // Buscar espacios por número
     List<Espacio> findByNumero(String numero);
 

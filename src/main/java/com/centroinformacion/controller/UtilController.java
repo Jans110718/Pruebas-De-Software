@@ -28,7 +28,6 @@ public class UtilController {
     @Autowired
     private EspacioService espacioService; // Asegúrate de que el servicio está inyectado
 
-    
     // Método para listar veh&iacuteculos
     @GetMapping("/listaVehiculo")
     @ResponseBody

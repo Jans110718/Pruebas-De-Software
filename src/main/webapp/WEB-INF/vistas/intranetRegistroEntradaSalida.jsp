@@ -20,7 +20,25 @@
     <link rel="stylesheet" href="css/bootstrap.css"/>
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrapValidator.css"/>
+    <style>
+        /* Estilos para centrar el formulario */
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+      
+        body {
+        padding-top: 90px; /* Altura de la navbar */
+    }
 
+    .navbar-fixed-top {
+        height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
+    }
+    </style>
     <title>Intranet - Solicitud de Ingreso</title>
 </head>
 <body>
@@ -60,9 +78,10 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ID</th>
-                                <th style="width: 15%">Espacio</th>
-                                <th style="width: 15%">Fecha Desde</th>
-                                <th style="width: 15%">Fecha Hasta</th>
+                                <th style="width: 15%">Marca y Modelo</th> <!-- Modificado -->
+                                <th style="width: 15%">Numero</th>
+                                <th style="width: 15%">Hora</th>
+                                <th style="width: 15%">Fecha reserva</th>
                                 <th style="width: 10%">Estado</th>
                             </tr>
                         </thead>
@@ -76,12 +95,11 @@
 
     <script type="text/javascript">
         // Cargar lista de espacios
-   
-		$.getJSON("listaEspacios", {}, function(data) {
-		    $.each(data, function(i, item) {
-		        $("#id_espacio").append("<option value=" + item.idEspacio + ">" + item.numero + "</option>");
-		    });
-		});
+        $.getJSON("listaEspacios", {}, function(data) {
+            $.each(data, function(i, item) {
+                $("#id_espacio").append("<option value=" + item.idEspacio + ">" + item.numero + "</option>");
+            });
+        });
 
         // Manejo de reporte
         $("#id_btn_reporte").click(function() {
@@ -108,9 +126,9 @@
             }
 
             $.getJSON("consultaSolicitud", {
-                "espacio": varEspacio,
-                "fechaDesde": varFechaDesde,
-                "fechaHasta": varFechaHasta
+                "idEspacio": varEspacio,
+                "fecDesde": varFechaDesde,
+                "fecHasta": varFechaHasta
             }, function(data) {
                 agregarGrilla(data);
             });
@@ -118,8 +136,11 @@
 
         // Agregar datos a la tabla
         function agregarGrilla(lista) {
-            $('#id_table').DataTable().clear();
-            $('#id_table').DataTable().destroy();
+            // Verificar si DataTable ya existe
+            if ($.fn.DataTable.isDataTable('#id_table')) {
+                $('#id_table').DataTable().clear().destroy();
+            }
+
             $('#id_table').DataTable({
                 data: lista,
                 searching: false,
@@ -129,9 +150,15 @@
                 lengthChange: false,
                 columns: [
                     { data: "idSolicitud" },
-                    { data: "espacio.descripcion" },
-                    { data: "fechaDesde" },
-                    { data: "fechaHasta" },
+                    { 
+                        data: function(row) {
+                            return row.vehiculo.marca + ' ' + row.vehiculo.modelo; // Combina marca y modelo
+                        },
+                        className: 'text-center'
+                    },
+                    { data: "espacio.numero" },
+                    { data: "hora" },
+                    { data: "fechaReserva" },
                     { 
                         data: function(row) {
                             return (row.estado == 1) ? 'Activo' : 'Inactivo';

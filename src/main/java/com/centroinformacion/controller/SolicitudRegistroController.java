@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.centroinformacion.entity.Espacio;
-import com.centroinformacion.entity.SolicitudIngreso; // Asegúrate de que tienes la entidad Solicitud
+import com.centroinformacion.entity.Solicitud; // Asegúrate de que tienes la entidad Solicitud
 import com.centroinformacion.entity.Usuario;
 import com.centroinformacion.service.EspacioService;
 import com.centroinformacion.service.SolicitudService; // Servicio para manejar solicitudes
@@ -28,7 +28,7 @@ public class SolicitudRegistroController {
 
     @PostMapping("/registraSolicitud")
     @ResponseBody
-    public Map<String, Object> registraSolicitud(SolicitudIngreso obj, HttpSession session) {
+    public Map<String, Object> registraSolicitud(Solicitud obj, HttpSession session) {
         Map<String, Object> map = new HashMap<>();
         
         // Obtener el usuario de la sesión
@@ -61,7 +61,7 @@ public class SolicitudRegistroController {
         // Asignar el espacio a la solicitud
         obj.setEspacio(espacio); // Establecer el espacio en la solicitud
         // Registrar la solicitud
-        SolicitudIngreso objSalida = solicitudService.registraSolicitud(obj);
+        Solicitud objSalida = solicitudService.registraSolicitud(obj);
         if (objSalida == null) {
             map.put("MENSAJE", "Error en el registro de la solicitud");
             return map;

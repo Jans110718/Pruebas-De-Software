@@ -24,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "solicitud") // Nombre de la tabla
-public class SolicitudIngreso {
+public class Solicitud {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
