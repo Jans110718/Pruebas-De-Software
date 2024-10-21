@@ -69,7 +69,7 @@
         }
 
         h5 {
-            margin-top: 20px; /* Espacio arriba de los títulos */
+            margin-top: 20px; /* Espacio arriba de los t&iacutetulos */
         }
 
         .espacios-container {
@@ -116,13 +116,13 @@
                 <div>
                     <h5>Pabell&oacute;n E - Piso SS</h5>
                     <div class="checkbox-group" id="espaciosSSCheckboxes">
-                        <!-- Los checkboxes del Pabell&oacute;n E - SS se agregarán dinámicamente aquí -->
+                        <!-- Los checkboxes del Pabell&oacute;n E - SS se agregarán dinámicamente aqu&iacute -->
                     </div>
                 </div>
                 <div>
                     <h5>Pabell&oacute;n E - Piso S1</h5>
                     <div class="checkbox-group" id="espaciosS1Checkboxes">
-                        <!-- Los checkboxes del Pabell&oacute;n E - S1 se agregarán dinámicamente aquí -->
+                        <!-- Los checkboxes del Pabell&oacute;n E - S1 se agregarán dinámicamente aqu&iacute -->
                     </div>
                 </div>
             </div>
@@ -150,7 +150,7 @@
                         espaciosSeleccionados.push($(this).val());
                     });
 
-                    // Agregar espacios seleccionados a los datos que se envían
+                    // Agregar espacios seleccionados a los datos que se env&iacutean
                     $.ajax({
                         type: "POST",
                         url: "registraSolicitud", // Cambiar a la URL correspondiente
@@ -209,7 +209,7 @@
                 }
             });
 
-            // Cargar vehículos
+            // Cargar veh&iacuteculos
             $.getJSON("listaVehiculo", {}, function(data) {
                 $.each(data, function(index, item) {
                     var marcavehiculo = item.marca + " " + item.modelo;
@@ -230,7 +230,7 @@
                     selector: '#id_vehiculo',
                     validators: {
                         notEmpty: {
-                            message: 'El vehículo es requerido'
+                            message: 'El veh&iacuteculo es requerido'
                         }
                     }
                 },

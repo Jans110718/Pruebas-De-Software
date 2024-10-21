@@ -59,7 +59,7 @@
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="223eb828-6b2f-489a-b973-42059b6b86a4"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Título]]></text>
+				<text><![CDATA[T&iacutetulo]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="160" y="0" width="120" height="21" forecolor="#FFFFFF" backcolor="#0066CC" uuid="78e421a9-e060-4cdb-b21a-792a9cef8472">

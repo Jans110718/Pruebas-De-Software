@@ -51,7 +51,7 @@ public class Vehiculo {
     private Date fechaActualizacion;
 
     private int estado;
-    
+    private int tipoVehiculo;
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     @ManyToOne(fetch = FetchType.LAZY)

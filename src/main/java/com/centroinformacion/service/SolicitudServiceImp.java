@@ -1,5 +1,8 @@
 package com.centroinformacion.service;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +19,9 @@ public class SolicitudServiceImp implements SolicitudService {
     public SolicitudIngreso registraSolicitud(SolicitudIngreso obj) {
         return repository.save(obj); // Cambiado a guardar Solicitud
     }
+
+	@Override
+	public List<SolicitudIngreso> listaConsultaEspacio(int idEspacio, Date fecDesde, Date fecHasta) {
+		return repository.listaConsultaSolicitudAvanzado(idEspacio, fecDesde, fecHasta);
+	}
 }

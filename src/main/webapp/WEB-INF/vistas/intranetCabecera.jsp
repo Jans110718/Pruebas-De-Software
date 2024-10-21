@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Título</title>
+    <title>Tu T&iacutetulo</title>
     <style>
         .navbar-custom {
             width: 100%; /* Ocupa todo el ancho disponible */

@@ -13,10 +13,10 @@ import com.centroinformacion.entity.Vehiculo;
 @Repository
 public interface VehiculoRepository extends JpaRepository<Vehiculo, Integer> {
 
-    // Método para listar vehículos ordenados por modelo
+    // Método para listar veh&iacuteculos ordenados por modelo
     public abstract List<Vehiculo> findByOrderByModeloAsc();
 
-    // Método para buscar vehículos por placa exacta
+    // Método para buscar veh&iacuteculos por placa exacta
     @Query("select v from Vehiculo v where v.placa = ?1")
     public abstract List<Vehiculo> listaPorPlacaExacta(String placa);
 
@@ -31,15 +31,15 @@ public interface VehiculoRepository extends JpaRepository<Vehiculo, Integer> {
     @Query("select v from Vehiculo v where v.modelo = ?1 and v.marca = ?2")
     public List<Vehiculo> listaVehiculoModeloMarcaExactosRegistra(String modelo, String marca);
 
-    // Validación para actualización: Excluye el vehículo actual por ID
+    // Validación para actualización: Excluye el veh&iacuteculo actual por ID
     @Query("select v from Vehiculo v where v.modelo = ?1 and v.marca = ?2 and v.idVehiculo != ?3")
     public List<Vehiculo> listaVehiculoModeloMarcaExactosActualiza(String modelo, String marca, int idVehiculo);
 
-    // Validación para placa exacta al actualizar un vehículo
+    // Validación para placa exacta al actualizar un veh&iacuteculo
     @Query("select v from Vehiculo v where v.placa = ?1 and v.idVehiculo != ?2")
     public List<Vehiculo> listaVehiculoPlacaExactaActualiza(String placa, int idVehiculo);
 
-    // Consulta avanzada con múltiples filtros para vehículos
+    // Consulta avanzada con múltiples filtros para veh&iacuteculos
     @Query("select v from Vehiculo v where "
             + "( v.estado = ?1 ) and "
             + "( ?2 = -1 or v.usuarioRegistro.idUsuario = ?2 ) and "

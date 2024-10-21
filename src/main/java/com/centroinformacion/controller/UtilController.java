@@ -29,7 +29,7 @@ public class UtilController {
     private EspacioService espacioService; // Asegúrate de que el servicio está inyectado
 
     
-    // Método para listar vehículos
+    // Método para listar veh&iacuteculos
     @GetMapping("/listaVehiculo")
     @ResponseBody
     public List<Vehiculo> listaVehiculo() {
@@ -41,5 +41,10 @@ public class UtilController {
     @ResponseBody
     public List<Espacio> listaEspacio() {
         return espacioService.listaEspacioDisponibles(); // Asegúrate de que este método exista en tu servicio
+    }
+    @GetMapping("/listaEspacios")
+    @ResponseBody
+    public List<Espacio> listaEspacios() {
+        return espacioService.listaTodos(); // Este método debe devolver todos los espacios
     }
 }

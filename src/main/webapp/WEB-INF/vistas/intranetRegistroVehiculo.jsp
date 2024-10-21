@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrapValidator.css"/>
 
-    <title>Registro Vehículo</title>
+    <title>Registro Veh&iacuteculo</title>
 
     <style>
         /* Estilos para centrar el formulario */
@@ -51,8 +51,15 @@
 
     <div class="container">
         <div class="form-container">
-            <h4>Registro de Vehículo</h4>
+            <h4>Registro de Veh&iacuteculo</h4>
             <form id="id_form" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+				    <label class="control-label" for="id_tipoVehiculo">Tipo</label>
+				    <select class="form-control" id="id_tipoVehiculo" name="tipoVehiculo">
+				        <option value="0">Moto</option>
+				        <option value="1">Carro</option>
+				    </select>
+				</div>
                 <div class="form-group">
                     <label class="control-label" for="id_marca">Marca</label>
                     <input class="form-control" type="text" id="id_marca" name="marca" placeholder="Ingrese la marca">
@@ -77,6 +84,7 @@
                     <label class="control-label" for="id_imagen">Imagen</label>
                     <input class="form-control-file" type="file" id="id_imagen" name="file" accept="image/*">
                 </div>
+				
 
                 <div class="form-group text-center">
                     <button id="id_registrar" type="button" class="btn btn-primary">Registrar</button>
@@ -86,7 +94,7 @@
     </div>
 
     <script type="text/javascript">
-        // Validación y envío del formulario
+        // Validación y env&iacuteo del formulario
         $("#id_registrar").click(function() {
             var validator = $('#id_form').data('bootstrapValidator');
             validator.validate();
@@ -103,13 +111,13 @@
                         if(data && data.MENSAJE) {
                             mostrarMensaje(data.MENSAJE);
                         } else {
-                            mostrarMensaje("Ocurrió un error inesperado.");
+                            mostrarMensaje("Ocurri&oacute;un error inesperado.");
                         }
                         validator.resetForm();
                         limpiarFormulario();
                     },
                     error: function() {
-                        mostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                        mostrarMensaje("Ocurri&oacute;un error al procesar la solicitud.");
                     },
                     complete: function() {
                         $("#id_registrar").prop('disabled', false); // Habilitar nuevamente

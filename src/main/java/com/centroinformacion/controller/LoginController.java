@@ -56,7 +56,7 @@ public class LoginController {
 		response.setHeader("Expires", "0");
 		response.setHeader("Pragma", "no-cache");
 
-		request.setAttribute("mensaje", "El usuario salió de sesión");
+		request.setAttribute("mensaje", "El usuario sali&oacute;de sesión");
 		return "intranetLogin";
 
 	}

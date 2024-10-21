@@ -42,13 +42,13 @@
         }
 
         .form-top {
-            margin-bottom: 10px; /* Espacio reducido entre el título y el formulario */
+            margin-bottom: 10px; /* Espacio reducido entre el t&iacutetulo y el formulario */
         }
 
         .form-top h3 {
-            margin-bottom: 5px; /* Menos espacio debajo del título */
+            margin-bottom: 5px; /* Menos espacio debajo del t&iacutetulo */
             font-size: 28px;
-            color: #003366; /* Color del título */
+            color: #003366; /* Color del t&iacutetulo */
             font-weight: 500;
             text-align: center; /* Centra el texto */
         }
@@ -97,7 +97,7 @@
 
         .logo {
             width: 80px; /* Ajusta el tamaño según tus necesidades */
-            margin-bottom: 20px; /* Espacio entre el logo y el título */
+            margin-bottom: 20px; /* Espacio entre el logo y el t&iacutetulo */
         }
 
         /* Estilos para los mensajes de error */

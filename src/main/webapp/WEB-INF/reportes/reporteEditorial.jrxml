@@ -117,7 +117,7 @@
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[País]]></text>
+				<text><![CDATA[Pa&iacutes]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="460" y="0" width="92" height="26" forecolor="#FFFFFF" backcolor="#000000" uuid="bae11842-5c03-4873-9d6b-af3f4152c55c">
