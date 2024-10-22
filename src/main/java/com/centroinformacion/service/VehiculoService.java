@@ -39,4 +39,8 @@ public interface VehiculoService {
 
     // Consulta paginada por modelo, marca o concatenación de ambos
     public abstract List<Vehiculo> listaVehiculo(String filtro, Pageable pageable);
+    public abstract     List<Vehiculo> findByUsuarioRegistroId(int idUsuarioRegistro);
+
+
 }
+

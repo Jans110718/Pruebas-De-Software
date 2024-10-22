@@ -3,12 +3,15 @@ package com.centroinformacion.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.centroinformacion.entity.Vehiculo; // Asegúrate de que esta entidad exista
+import com.centroinformacion.repository.VehiculoRepository;
 import com.centroinformacion.entity.Espacio; // Asegúrate de que esta entidad exista
 
 
@@ -45,5 +48,13 @@ public class UtilController {
     @ResponseBody
     public List<Espacio> listaEspacios() {
         return espacioService.listaTodos(); // Este método debe devolver todos los espacios
+    }
+    @GetMapping("/listaVehiculosUsuario/{idUsuarioRegistro}")
+    public ResponseEntity<List<Vehiculo>> listaVehiculosUsuario(@PathVariable Integer idUsuarioRegistro) {
+        List<Vehiculo> vehiculos = vehiculoService.findByUsuarioRegistroId(idUsuarioRegistro);
+        if (vehiculos.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Retorna 204 No Content si no hay vehículos
+        }
+        return ResponseEntity.ok(vehiculos); // Retorna 200 OK con la lista de vehículos
     }
 }

@@ -18,16 +18,6 @@ public class VehiculoServiceImp implements VehiculoService {
     private VehiculoRepository repository;
 
     @Override
-    public List<Vehiculo> listaTodos() {
-        return repository.findByOrderByModeloAsc();
-    }
-
-    @Override
-    public Vehiculo insertaActualizaVehiculo(Vehiculo obj) {
-        return repository.save(obj);
-    }
-
-    @Override
     public List<Vehiculo> listaPorPlacaExacta(String placa) {
         return repository.listaPorPlacaExacta(placa);
     }
@@ -62,4 +52,21 @@ public class VehiculoServiceImp implements VehiculoService {
     public List<Vehiculo> listaVehiculo(String filtro, Pageable pageable) {
         return repository.listaVehiculo(filtro, pageable);
     }
+
+    @Override
+    public List<Vehiculo> findByUsuarioRegistroId(int idUsuarioRegistro) {
+        return repository.findByUsuarioRegistroId(idUsuarioRegistro);
+    }
+
+	@Override
+	public List<Vehiculo> listaTodos() {
+		// TODO Auto-generated method stub
+		return repository.findByOrderByModeloAsc();
+	}
+
+	@Override
+	public Vehiculo insertaActualizaVehiculo(Vehiculo obj) {
+		// TODO Auto-generated method stub
+		return repository.save(obj);
+	}
 }

@@ -15,7 +15,8 @@ public interface VehiculoRepository extends JpaRepository<Vehiculo, Integer> {
 
     // Método para listar veh&iacuteculos ordenados por modelo
     public abstract List<Vehiculo> findByOrderByModeloAsc();
-
+    @Query("SELECT v FROM Vehiculo v WHERE v.usuarioRegistro.idUsuario = ?1")
+    List<Vehiculo> findByUsuarioRegistroId(int idUsuarioRegistro);
     // Método para buscar veh&iacuteculos por placa exacta
     @Query("select v from Vehiculo v where v.placa = ?1")
     public abstract List<Vehiculo> listaPorPlacaExacta(String placa);

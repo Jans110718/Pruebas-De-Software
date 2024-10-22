@@ -12,9 +12,11 @@ import com.centroinformacion.entity.Solicitud;
 @Repository
 public interface SolicitudIngresoRepository extends JpaRepository<Solicitud, Integer> {
 
-	 @Query("select s from Solicitud s where "
-	            + "(?1 = -1 or s.espacio.idEspacio = ?1) and "
-	            + "(s.fechaReserva >= ?2) and "
-	            + "(s.fechaReserva <= ?3)")
-	    public abstract List<Solicitud> listaConsultaSolicitudAvanzado(int idEspacio, Date fecDesde, Date fecHasta);
+	@Query("SELECT s FROM Solicitud s WHERE "
+		     + "(?1 = -1 OR s.espacio.idEspacio = ?1) AND "
+		     + "(?2 = -1 OR s.vehiculo.tipoVehiculo = ?2) AND "
+		     + "(s.fechaReserva >= ?3) AND "
+		     + "(s.fechaReserva <= ?4)")
+		List<Solicitud> listaConsultaSolicitudAvanzado(int idEspacio, int tipoVehiculo, Date fecDesde, Date fecHasta);
+
 }

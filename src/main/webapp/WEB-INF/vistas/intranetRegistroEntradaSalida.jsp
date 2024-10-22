@@ -1,6 +1,7 @@
 <jsp:include page="intranetValida.jsp" />
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -17,9 +18,9 @@
     <script type="text/javascript" src="js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="js/global.js"></script>
 
-    <link rel="stylesheet" href="css/bootstrap.css"/>
-    <link rel="stylesheet" href="css/dataTables.bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrapValidator.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrapValidator.css" />
     <style>
         /* Estilos para centrar el formulario */
         .form-container {
@@ -30,17 +31,20 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-      
-        body {
-        padding-top: 90px; /* Altura de la navbar */
-    }
 
-    .navbar-fixed-top {
-        height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
-    }
+        body {
+            padding-top: 90px;
+            /* Altura de la navbar */
+        }
+
+        .navbar-fixed-top {
+            height: 100px;
+            /* Ajusta la altura de tu navbar según sea necesario */
+        }
     </style>
     <title>Intranet - Solicitud de Ingreso</title>
 </head>
+
 <body>
     <form id="id_form">
         <jsp:include page="intranetCabecera.jsp" />
@@ -50,20 +54,31 @@
         <div class="container">
             <div class="row" style="margin-top: 2%">
                 <div class="col-md-6">
-                    <label class="control-label" for="id_espacio">Espacio</label> 
+                    <label class="control-label" for="id_espacio">Espacio</label>
                     <select id="id_espacio" name="paramEspacio" class='form-control'>
                         <option value="-1">[Todos]</option>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label class="control-label" for="id_fechaDesde">Fecha Desde</label> 
-                    <input class="form-control" type="date" id="id_fechaDesde" name="paramFechaDesde" value="1900-01-01">
+                    <label class="control-label" for="id_tipoVehiculo">Tipo</label>
+                    <select id="id_tipoVehiculo" name="paramtipoVehiculo" class='form-control'>
+                        <option value="-1">[Todos]</option>
+                        <option value="0">Moto</option>
+                        <option value="1">Carro</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="control-label" for="id_fechaDesde">Fecha Desde</label>
+                    <input class="form-control" type="date" id="id_fechaDesde" name="paramFechaDesde"
+                        value="1900-01-01">
                 </div>
             </div>
             <div class="row" style="margin-top: 2%">
                 <div class="col-md-6">
-                    <label class="control-label" for="id_fechaHasta">Fecha Hasta</label> 
-                    <input class="form-control" type="date" id="id_fechaHasta" name="paramFechaHasta" value="2900-01-01">
+                    <label class="control-label" for="id_fechaHasta">Fecha Hasta</label>
+                    <input class="form-control" type="date" id="id_fechaHasta" name="paramFechaHasta"
+                        value="2900-01-01">
                 </div>
             </div>
             <div class="row" style="margin-top: 3%">
@@ -79,9 +94,11 @@
                             <tr>
                                 <th style="width: 10%">ID</th>
                                 <th style="width: 15%">Marca y Modelo</th> <!-- Modificado -->
+                                <th style="width: 15%">Tipo Vehiculo</th>
                                 <th style="width: 15%">Numero</th>
                                 <th style="width: 15%">Hora</th>
                                 <th style="width: 15%">Fecha reserva</th>
+
                                 <th style="width: 10%">Estado</th>
                             </tr>
                         </thead>
@@ -95,27 +112,30 @@
 
     <script type="text/javascript">
         // Cargar lista de espacios
-        $.getJSON("listaEspacios", {}, function(data) {
-            $.each(data, function(i, item) {
+        $.getJSON("listaEspacios", {}, function (data) {
+            $.each(data, function (i, item) {
                 $("#id_espacio").append("<option value=" + item.idEspacio + ">" + item.numero + "</option>");
             });
         });
 
         // Manejo de reporte
-        $("#id_btn_reporte").click(function() {
+        $("#id_btn_reporte").click(function () {
             $("#id_form").attr('action', 'reporteSolicitudPdf');
             $("#id_form").submit();
         });
 
         // Filtrar datos
-        $("#id_btn_filtra").click(function() {
+        $("#id_btn_filtra").click(function () {
             var varEstado = $("#id_estado").is(':checked') ? 1 : 0;
             var varEspacio = $("#id_espacio").val();
+            var vartipoVehiculo = $("#id_tipoVehiculo").val(); // Tipo de vehículo
             var varFechaDesde = $("#id_fechaDesde").val() || '1900-01-01';
             var varFechaHasta = $("#id_fechaHasta").val() || '2900-01-01';
 
             console.log(">> varEstado >> " + varEstado);
             console.log(">> varEspacio >> " + varEspacio);
+            console.log(">> vartipoVehiculo >> " + vartipoVehiculo); // Verifica el valor del tipo de vehículo
+
             console.log(">> varFechaDesde >> " + varFechaDesde);
             console.log(">> varFechaHasta >> " + varFechaHasta);
 
@@ -127,9 +147,10 @@
 
             $.getJSON("consultaSolicitud", {
                 "idEspacio": varEspacio,
+                "tipoVehiculo": vartipoVehiculo, // Parámetro correcto
                 "fecDesde": varFechaDesde,
                 "fecHasta": varFechaHasta
-            }, function(data) {
+            }, function (data) {
                 agregarGrilla(data);
             });
         });
@@ -150,17 +171,24 @@
                 lengthChange: false,
                 columns: [
                     { data: "idSolicitud" },
-                    { 
-                        data: function(row) {
+                    {
+                        data: function (row) {
                             return row.vehiculo.marca + ' ' + row.vehiculo.modelo; // Combina marca y modelo
                         },
                         className: 'text-center'
                     },
+                    {
+                        data: function (row) {
+                            return (row.vehiculo.tipoVehiculo == 0) ? 'Moto' : 'Carro';
+                        },
+                        className: 'text-center'
+
+                    },
                     { data: "espacio.numero" },
                     { data: "hora" },
                     { data: "fechaReserva" },
-                    { 
-                        data: function(row) {
+                    {
+                        data: function (row) {
                             return (row.estado == 1) ? 'Activo' : 'Inactivo';
                         },
                         className: 'text-center'
@@ -170,4 +198,5 @@
         }
     </script>
 </body>
+
 </html>

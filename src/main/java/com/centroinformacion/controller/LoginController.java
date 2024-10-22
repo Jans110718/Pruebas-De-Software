@@ -37,6 +37,7 @@ public class LoginController {
 			List<Opcion> menusTipo3 = menus.stream().filter(p -> p.getTipo() == 3).toList();
 			List<Opcion> menusTipo4 = menus.stream().filter(p -> p.getTipo() == 4).toList();
 
+	        session.setAttribute("idUsuario", usuario.getIdUsuario());
 			session.setAttribute("objUsuario", usuario);
 			session.setAttribute("objMenusTipo1", menusTipo1);
 			session.setAttribute("objMenusTipo2", menusTipo2);
