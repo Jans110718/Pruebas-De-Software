@@ -1,6 +1,8 @@
 package com.centroinformacion.entity;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -74,4 +76,27 @@ public class Solicitud {
 
     private int entrada; // Campo para marcar entrada (0= no marcado, 1= marcado)
     private int salida; // Campo para marcar salida (0= no marcado, 1= marcado)
+    
+    
+    public String getreporteVehiculo() {
+		return vehiculo.getMarca().concat(" ").concat(vehiculo.getModelo());
+	}
+    public String getreporteEstado() {
+		return estado == 1 ? "Activo" : "Inactivo";
+
+	}
+    
+    public String getreporteNumero() {
+    	return espacio.getNumero();
+    }
+    public String getreportefechaReserva() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(fechaReserva); 
+	}
+    public String getreporteHora() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+        return hora.format(dtf);
+
+}
+  
 }

@@ -103,7 +103,7 @@
 
         // Manejo de reporte
         $("#id_btn_reporte").click(function() {
-            $("#id_form").attr('action', 'reporteSolicitudIngresoPdf');
+            $("#id_form").attr('action', 'reporteSolicitudPdf');
             $("#id_form").submit();
         });
 
