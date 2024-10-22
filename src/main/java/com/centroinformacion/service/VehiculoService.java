@@ -34,10 +34,10 @@ public interface VehiculoService {
     public abstract List<Vehiculo> listaPorPlacaExactaActualiza(String placa, int idVehiculo);
 
     // Consultas avanzadas
-    // Lista veh&iacute;culos con m&uacute;ltiples filtros: estado, usuario, modelo, marca, fechas, color y placa
+    // Lista veh&iacute;culos con m&ntilde;;ltiples filtros: estado, usuario, modelo, marca, fechas, color y placa
     public abstract List<Vehiculo> listaConsultaVehiculo(int estado, int idUsuarioRegistro, String filtroModeloMarca, Date fechaDesde, Date fechaHasta, String color, String placa);
 
-    // Consulta paginada por modelo, marca o concatenaci&oacute;n de ambos
+    // Consulta paginada por modelo, marca o concatenaci&ntilde;;n de ambos
     public abstract List<Vehiculo> listaVehiculo(String filtro, Pageable pageable);
     public abstract     List<Vehiculo> findByUsuarioRegistroId(int idUsuarioRegistro);
 

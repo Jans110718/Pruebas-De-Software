@@ -11,21 +11,21 @@
     <meta http-equiv="Cache-Control" content="no-store" />
     <meta http-equiv="Pragma" content="no-cache" />
 
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	  <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-	  <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
-	  <script type="text/javascript" src="js/bootstrap.min.js"></script>
-	  <script type="text/javascript" src="js/bootstrapValidator.js"></script>
-	  <script type="text/javascript" src="js/global.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrapValidator.js"></script>
+    <script type="text/javascript" src="js/global.js"></script>
 
-	  <link rel="stylesheet" href="css/bootstrap.css" />
-	  <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
-	  <link rel="stylesheet" href="css/bootstrapValidator.css" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrapValidator.css" />
 
     <style>
-        /* Ajuste del contenedor del formulario con un borde más grueso */
+        /* Ajuste del contenedor del formulario con un borde m&aacute;s grueso */
         .form-container {
-            max-width: 1000px; /* Aumenta el ancho del formulario */
+            max-width: 2000px; /* Aumenta el ancho del formulario */
             margin: 50px auto;
             background-color: #ffffff;
             padding: 40px;
@@ -42,12 +42,12 @@
         }
 
         .navbar-fixed-top {
-            height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
+            height: 100px; /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
         }
 
         h4 {
             text-align: center;
-            color: #007bff; /* Color del título */
+            color: #007bff; /* Color del t&iacute;tulo */
             margin-bottom: 30px;
         }
 
@@ -98,7 +98,7 @@
             padding: 8px;
             text-align: left;
         }
-        
+
         /* Aumentar el ancho de las columnas */
         .col-id-solicitud {
             width: 12%; /* Aumenta el ancho de esta columna */
@@ -145,7 +145,7 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label class="control-label" for="id_tipoVehiculo">Tipo de Vehículo</label>
+                    <label class="control-label" for="id_tipoVehiculo">Tipo de Veh&iacute;culo</label>
                     <select id="id_tipoVehiculo" name="paramtipoVehiculo" class='form-control'>
                         <option value="-1">[Todos]</option>
                         <option value="0">Moto</option>
@@ -172,13 +172,13 @@
                     <table id="id_table" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th class="col-id-solicitud">ID Solicitud</th>
-                                <th class="col-marca-modelo">Marca y Modelo</th>
-                                <th class="col-tipo-vehiculo">Tipo de Vehículo</th>
-                                <th class="col-numero-vehiculo">Número de Vehículo</th>
-                                <th class="col-hora">Hora</th>
-                                <th class="col-fecha-reserva">Fecha Reserva</th>
-                                <th class="col-estado">Estado</th>
+                                <th style="width: 16%">ID Solicitud </th>
+                                <th style="width: 22%">Marca y Modelo</th>
+                                <th style="width: 18%">Tipo Vehiculo</th>
+                                <th style="width: 15%">Numero</th>
+                                <th style="width: 10%">Hora</th>
+                                <th style="width: 20%">Fecha reserva</th>
+                                <th style="width: 10%">Estado</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -190,92 +190,91 @@
     </form>
 
 	<script type="text/javascript">
-	     // Cargar lista de espacios
-	     $.getJSON("listaEspacios", {}, function (data) {
-	         $.each(data, function (i, item) {
-	             $("#id_espacio").append("<option value=" + item.idEspacio + ">" + item.numero + "</option>");
-	         });
-	     });
+	       // Cargar lista de espacios
+	       $.getJSON("listaEspacios", {}, function (data) {
+	           $.each(data, function (i, item) {
+	               $("#id_espacio").append("<option value=" + item.idEspacio + ">" + item.numero + "</option>");
+	           });
+	       });
 
-	     // Manejo de reporte
-	     $("#id_btn_reporte").click(function () {
-	         $("#id_form").attr('action', 'reporteSolicitudPdf');
-	         $("#id_form").submit();
-	     });
+	       // Manejo de reporte
+	       $("#id_btn_reporte").click(function () {
+	           $("#id_form").attr('action', 'reporteSolicitudPdf');
+	           $("#id_form").submit();
+	       });
 
-	     // Filtrar datos
-	     $("#id_btn_filtra").click(function () {
-	         var varEstado = $("#id_estado").is(':checked') ? 1 : 0;
-	         var varEspacio = $("#id_espacio").val();
-	         var vartipoVehiculo = $("#id_tipoVehiculo").val(); // Tipo de veh&iacute;culo
-	         var varFechaDesde = $("#id_fechaDesde").val() || '1900-01-01';
-	         var varFechaHasta = $("#id_fechaHasta").val() || '2900-01-01';
+	       // Filtrar datos
+	       $("#id_btn_filtra").click(function () {
+	           var varEstado = $("#id_estado").is(':checked') ? 1 : 0;
+	           var varEspacio = $("#id_espacio").val();
+	           var vartipoVehiculo = $("#id_tipoVehiculo").val(); // Tipo de veh&iacute;culo
+	           var varFechaDesde = $("#id_fechaDesde").val() || '1900-01-01';
+	           var varFechaHasta = $("#id_fechaHasta").val() || '2900-01-01';
 
-	         console.log(">> varEstado >> " + varEstado);
-	         console.log(">> varEspacio >> " + varEspacio);
-	         console.log(">> vartipoVehiculo >> " + vartipoVehiculo); // Verifica el valor del tipo de veh&iacute;culo
+	           console.log(">> varEstado >> " + varEstado);
+	           console.log(">> varEspacio >> " + varEspacio);
+	           console.log(">> vartipoVehiculo >> " + vartipoVehiculo); // Verifica el valor del tipo de veh&iacute;culo
 
-	         console.log(">> varFechaDesde >> " + varFechaDesde);
-	         console.log(">> varFechaHasta >> " + varFechaHasta);
+	           console.log(">> varFechaDesde >> " + varFechaDesde);
+	           console.log(">> varFechaHasta >> " + varFechaHasta);
 
-	         // Validar fechas
-	         if (new Date(varFechaDesde) > new Date(varFechaHasta)) {
-	             alert("La fecha hasta no puede ser menor que la fecha desde");
-	             return;
-	         }
+	           // Validar fechas
+	           if (new Date(varFechaDesde) > new Date(varFechaHasta)) {
+	               alert("La fecha hasta no puede ser menor que la fecha desde");
+	               return;
+	           }
 
-	         $.getJSON("consultaSolicitud", {
-	             "idEspacio": varEspacio,
-	             "tipoVehiculo": vartipoVehiculo, // Par&aacute;metro correcto
-	             "fecDesde": varFechaDesde,
-	             "fecHasta": varFechaHasta
-	         }, function (data) {
-	             agregarGrilla(data);
-	         });
-	     });
+	           $.getJSON("consultaSolicitud", {
+	               "idEspacio": varEspacio,
+	               "tipoVehiculo": vartipoVehiculo, // Par&aacute;metro correcto
+	               "fecDesde": varFechaDesde,
+	               "fecHasta": varFechaHasta
+	           }, function (data) {
+	               agregarGrilla(data);
+	           });
+	       });
 
-	     // Agregar datos a la tabla
-	     function agregarGrilla(lista) {
-	         // Verificar si DataTable ya existe
-	         if ($.fn.DataTable.isDataTable('#id_table')) {
-	             $('#id_table').DataTable().clear().destroy();
-	         }
+	       // Agregar datos a la tabla
+	       function agregarGrilla(lista) {
+	           // Verificar si DataTable ya existe
+	           if ($.fn.DataTable.isDataTable('#id_table')) {
+	               $('#id_table').DataTable().clear().destroy();
+	           }
 
-	         $('#id_table').DataTable({
-	             data: lista,
-	             searching: false,
-	             ordering: true,
-	             processing: true,
-	             pageLength: 10,
-	             lengthChange: false,
-	             columns: [
-	                 { data: "idSolicitud" },
-	                 {
-	                     data: function (row) {
-	                         return row.vehiculo.marca + ' ' + row.vehiculo.modelo; // Combina marca y modelo
-	                     },
-	                     className: 'text-center'
-	                 },
-	                 {
-	                     data: function (row) {
-	                         return (row.vehiculo.tipoVehiculo == 0) ? 'Moto' : 'Carro';
-	                     },
-	                     className: 'text-center'
+	           $('#id_table').DataTable({
+	               data: lista,
+	               searching: false,
+	               ordering: true,
+	               processing: true,
+	               pageLength: 10,
+	               lengthChange: false,
+	               columns: [
+	                   { data: "idSolicitud" },
+	                   {
+	                       data: function (row) {
+	                           return row.vehiculo.marca + ' ' + row.vehiculo.modelo; // Combina marca y modelo
+	                       },
+	                       className: 'text-center'
+	                   },
+	                   {
+	                       data: function (row) {
+	                           return (row.vehiculo.tipoVehiculo == 0) ? 'Moto' : 'Carro';
+	                       },
+	                       className: 'text-center'
 
-	                 },
-	                 { data: "espacio.numero" },
-	                 { data: "hora" },
-	                 { data: "fechaReserva" },
-	                 {
-	                     data: function (row) {
-	                         return (row.estado == 1) ? 'Activo' : 'Inactivo';
-	                     },
-	                     className: 'text-center'
-	                 }
-	             ]
-	         });
-	     }
-	 </script>
+	                   },
+	                   { data: "espacio.numero" },
+	                   { data: "hora" },
+	                   { data: "fechaReserva" },
+	                   {
+	                       data: function (row) {
+	                           return (row.estado == 1) ? 'Activo' : 'Inactivo';
+	                       },
+	                       className: 'text-center'
+	                   }
+	               ]
+	           });
+	       }
+	   </script>
 </body>
-
 </html>

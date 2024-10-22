@@ -85,7 +85,7 @@ public class OpcionController {
 		obj.setRolHasOpcionPK(pk);
 		
 		rolService.eliminaOpcion(obj);
-		maps.put("mensaje", "Eliminaci&oacute;n exitosa");
+		maps.put("mensaje", "Eliminaci&ntilde;;n exitosa");
 		
 		List<Opcion> lstOpcion =  rolService.traerOpcionDeRol(idRol);
         maps.put("lista", lstOpcion);

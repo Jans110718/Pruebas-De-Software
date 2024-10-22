@@ -26,13 +26,13 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra ligera */
             text-align: center;
-            max-width: 400px; /* Ancho m&ntilde;;ximo del contenedor */
+            max-width: 400px; /* Ancho m&ntilde;;;ximo del contenedor */
             width: 100%; /* Asegura que el contenedor se ajuste a la pantalla */
             margin: 0 20px; /* Margen para evitar que el contenedor toque los bordes */
         }
 
         .login-container img {
-            width: 80px; /* Tama&ntilde;o del logo */
+            width: 80px; /* Tama&ntilde;;o del logo */
             margin-bottom: 20px;
         }
 
@@ -59,21 +59,21 @@
         }
 
         .login-container input[type="submit"] {
-            width: 80%; /* Ancho del bot&oacute;n ajustado */
+            width: 80%; /* Ancho del bot&ntilde;;n ajustado */
             padding: 10px;
-            background-color: #024059; /* Azul gris&ntilde;;ceo para el bot&oacute;n */
+            background-color: #024059; /* Azul gris&ntilde;;;ceo para el bot&ntilde;;n */
             border: none;
             border-radius: 5px;
             color: #ffffff; /* Texto blanco */
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin-top: 20px; /* A&ntilde;adir espacio encima del bot&oacute;n */
+            margin-top: 20px; /* A&ntilde;;adir espacio encima del bot&ntilde;;n */
             font-weight: bold;
-            font-size: 16px; /* Tama&ntilde;o del texto para mayor visibilidad */
+            font-size: 16px; /* Tama&ntilde;;o del texto para mayor visibilidad */
         }
 
         .login-container input[type="submit"]:hover {
-            background-color: #023859; /* Color m&ntilde;;s claro en hover */
+            background-color: #023859; /* Color m&ntilde;;;s claro en hover */
         }
 
         .alert {
@@ -85,7 +85,7 @@
         /* Estilos para los mensajes de error */
         .error-message {
             color: red; /* Color del mensaje de error */
-            font-size: 14px; /* Tama&ntilde;o de la fuente */
+            font-size: 14px; /* Tama&ntilde;;o de la fuente */
             margin-top: 5px; /* Espacio entre el campo y el mensaje */
             text-align: left; /* Alinear texto a la izquierda */
         }
@@ -108,8 +108,8 @@
                 <div class="error-message" id="errorLogin"></div> <!-- Mensaje de error para el usuario -->
             </div>
             <div class="form-group">
-                <input type="password" name="password" placeholder="Ingresa la contrase&ntilde;;a" class="form-password" id="form-password" maxlength="20" required>
-                <div class="error-message" id="errorPassword"></div> <!-- Mensaje de error para la contrase&ntilde;;a -->
+                <input type="password" name="password" placeholder="Ingresa la contrase&ntilde;a" class="form-password" id="form-password" maxlength="20" required>
+                <div class="error-message" id="errorPassword"></div> <!-- Mensaje de error para la contrase&ntilde;;;a -->
             </div>
             <input type="submit" value="Ingresar">
         </form>
@@ -126,7 +126,7 @@
             });
 
             $('#id_form').bootstrapValidator({
-                message: 'Este valor no es v&ntilde;;lido',
+                message: 'Este valor no es v&ntilde;;;lido',
                 feedbackIcons: {
                     valid: 'glyphicon glyphicon-ok',
                     invalid: 'glyphicon glyphicon-remove',
@@ -151,13 +151,13 @@
                     password: {
                         validators: {
                             notEmpty: {
-                                message: 'La contrase&ntilde;;a es obligatoria',
+                                message: 'La contrase&ntilde;;;a es obligatoria',
                                 callback: function(value, validator, $field) {
-                                    $('#errorPassword').text('La contrase&ntilde;;a es obligatoria');
+                                    $('#errorPassword').text('La contrase&ntilde;a es obligatoria');
                                 }
                             },
                             stringLength: {
-                                message: 'La contrase&ntilde;;a debe tener entre 3 y 20 caracteres',
+                                message: 'La contrase&ntilde;;;a debe tener entre 3 y 20 caracteres',
                                 min: 3,
                                 max: 20
                             }

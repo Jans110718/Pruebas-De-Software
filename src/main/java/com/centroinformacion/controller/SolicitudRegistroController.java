@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.centroinformacion.entity.Espacio;
-import com.centroinformacion.entity.Solicitud; // Aseg&uacute;rate de que tienes la entidad Solicitud
+import com.centroinformacion.entity.Solicitud; // Aseg&ntilde;;rate de que tienes la entidad Solicitud
 import com.centroinformacion.entity.Usuario;
 import com.centroinformacion.service.EspacioService;
 import com.centroinformacion.service.SolicitudService; // Servicio para manejar solicitudes
@@ -31,7 +31,7 @@ public class SolicitudRegistroController {
     public Map<String, Object> registraSolicitud(Solicitud obj, HttpSession session) {
         Map<String, Object> map = new HashMap<>();
         
-        // Obtener el usuario de la sesi&oacute;n
+        // Obtener el usuario de la sesi&ntilde;;n
         Usuario objUsuario = (Usuario) session.getAttribute("objUsuario");
         if (objUsuario == null) {
             map.put("MENSAJE", "Usuario no autenticado");
