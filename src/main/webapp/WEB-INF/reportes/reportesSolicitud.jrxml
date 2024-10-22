@@ -27,26 +27,28 @@
 	<title>
 		<band height="132" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="451" height="95" backcolor="#000000" uuid="6c6ca4e1-17cd-4913-93d6-5e670ea9ae8a"/>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="95" backcolor="#023859" uuid="6c6ca4e1-17cd-4913-93d6-5e670ea9ae8a"/>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="370" height="66" uuid="a2a2cac8-5a7d-4487-8c54-dab235ce4e21"/>
+					<reportElement style="Title" x="200" y="10" width="190" height="50" backcolor="#FFFFFF" uuid="a2a2cac8-5a7d-4487-8c54-dab235ce4e21"/>
 					<textElement>
-						<font isBold="false"/>
+						<font fontName="Perpetua Titling MT" size="35" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Reportes]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="SubTitle" x="157" y="66" width="249" height="29" uuid="8978eac3-c578-41c9-837e-48d2b0184642"/>
+					<reportElement style="Title" x="209" y="60" width="150" height="30" forecolor="#DBDBDB" backcolor="#CCC8C8" uuid="baa7cd02-ad09-4e24-bd41-c8240f6c91c5"/>
 					<textElement>
-						<font size="22" isBold="false"/>
+						<font size="18" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Solicitud Ingreso Y Salida]]></text>
+					<text><![CDATA[Ingreso y Salida]]></text>
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="100" width="451" height="32" forecolor="#000000" backcolor="#CC0000" uuid="e3c14156-5b51-4201-918b-97fdc012e5d4"/>
+				<reportElement mode="Opaque" x="12" y="100" width="530" height="32" forecolor="#000000" backcolor="#A1D62D" uuid="e3c14156-5b51-4201-918b-97fdc012e5d4">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement x="307" y="12" width="144" height="20" forecolor="#FFFFFF" uuid="5c3301e7-a737-4c59-8a2f-a6c79fd1adb8"/>
+					<reportElement x="307" y="12" width="144" height="20" forecolor="#454537" backcolor="#F1F52C" uuid="5c3301e7-a737-4c59-8a2f-a6c79fd1adb8"/>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
@@ -61,42 +63,42 @@
 	<columnHeader>
 		<band height="26" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="80" height="26" forecolor="#FFFFFF" backcolor="#050000" uuid="9c5f5540-f901-4be8-b767-ec8e4d6251d6">
+				<reportElement mode="Opaque" x="12" y="0" width="78" height="26" forecolor="#FFFFFF" backcolor="#787777" uuid="9c5f5540-f901-4be8-b767-ec8e4d6251d6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dec6b6a6-a0d2-4d3d-872b-c1463ee87a9b"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="70" y="0" width="120" height="26" forecolor="#FFFFFF" backcolor="#050000" uuid="cd756d9d-b50d-4918-9a58-444694eeb7b0">
+				<reportElement mode="Opaque" x="80" y="0" width="120" height="26" forecolor="#FFFFFF" backcolor="#787777" uuid="cd756d9d-b50d-4918-9a58-444694eeb7b0">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="605b3b60-d60a-471e-840b-477b9e4b66d1"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Vehiculo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="180" y="0" width="110" height="26" forecolor="#FFFFFF" backcolor="#050000" uuid="1c45a20f-9824-4fc1-a193-f297d6ac17b7">
+				<reportElement mode="Opaque" x="190" y="0" width="110" height="26" forecolor="#FFFFFF" backcolor="#787777" uuid="1c45a20f-9824-4fc1-a193-f297d6ac17b7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dd847ad8-1910-4229-b1f7-5e0e2fe2d8bd"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Numero de Espacio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="280" y="0" width="80" height="26" forecolor="#FFFFFF" backcolor="#050000" uuid="d2f8a66d-2da7-4f00-b165-d471d70e97c9">
+				<reportElement mode="Opaque" x="290" y="0" width="80" height="26" forecolor="#FFFFFF" backcolor="#787777" uuid="d2f8a66d-2da7-4f00-b165-d471d70e97c9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f57fe70-133f-4a9e-bc98-1ba8b4edc589"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Hora]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="360" y="0" width="91" height="26" forecolor="#FFFFFF" backcolor="#050000" uuid="46f86419-c101-4030-90da-94c2ee5616ef">
+				<reportElement mode="Opaque" x="370" y="0" width="91" height="26" forecolor="#FFFFFF" backcolor="#787777" uuid="46f86419-c101-4030-90da-94c2ee5616ef">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bc9e0103-42da-463e-b046-d8a11e14d672"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Fecha Reserva]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="451" y="0" width="80" height="26" forecolor="#FFFFFF" backcolor="#050000" uuid="ad722f4b-4629-43ed-8163-46915a0be84f">
+				<reportElement mode="Opaque" x="461" y="0" width="81" height="26" forecolor="#FFFFFF" backcolor="#787777" uuid="ad722f4b-4629-43ed-8163-46915a0be84f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="20edc97c-88f6-40bf-9720-33930e318075"/>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -163,7 +165,7 @@
 	<pageFooter>
 		<band height="25" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
+				<reportElement mode="Opaque" x="10" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#787575" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
 				<textField evaluationTime="Report">
 					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="4834e99c-7f6c-485a-b098-50e5187f2ab4"/>
 					<textElement verticalAlignment="Middle">
