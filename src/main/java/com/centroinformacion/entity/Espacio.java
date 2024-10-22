@@ -24,8 +24,8 @@ public class Espacio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idEspacio; // ID del espacio
-    private String numero; // N&ntilde;;mero del espacio
-    private String pabellon; // Pabell&ntilde;;n del espacio
+    private String numero; // N&ntilde;mero del espacio
+    private String pabellon; // Pabell&ntilde;n del espacio
     private String piso; // Piso del espacio
     private int acceso; // 0 para libre, 1 para restringido
     private int estado_reserva; // 0 para no reservado, 1 para reservado
@@ -36,19 +36,19 @@ public class Espacio {
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date fechaActualizacion; // Fecha de actualizaci&ntilde;;n
+    private Date fechaActualizacion; // Fecha de actualizaci&ntilde;n
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuarioRegistro") // Relaci&ntilde;;n con el usuario que registr&ntilde;;
+    @JoinColumn(name = "idUsuarioRegistro") // Relaci&ntilde;n con el usuario que registr&ntilde;
     private Usuario usuarioRegistro;
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuarioActualiza") // Relaci&ntilde;;n con el usuario que actualiz&ntilde;;
+    @JoinColumn(name = "idUsuarioActualiza") // Relaci&ntilde;n con el usuario que actualiz&ntilde;
     private Usuario usuarioActualiza;
 
     public String getReporteEstado() {
-        return estado_reserva == 1 ? "reservado" : "disponible"; // M&ntilde;;todo para obtener el estado de reserva
+        return estado_reserva == 1 ? "reservado" : "disponible"; // M&ntilde;todo para obtener el estado de reserva
     }
 }

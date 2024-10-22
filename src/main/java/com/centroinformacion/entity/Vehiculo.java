@@ -63,7 +63,7 @@ public class Vehiculo {
     @JoinColumn(name = "idUsuarioActualiza")
     private Usuario usuarioActualiza;
 
-    // M&ntilde;;todos para reportes
+    // M&ntilde;todos para reportes
     public String getReporteEstado() {
         return estado == 1 ? "Activo" : "Inactivo";
     }
