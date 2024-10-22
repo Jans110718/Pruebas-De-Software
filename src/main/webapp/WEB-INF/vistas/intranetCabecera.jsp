@@ -7,20 +7,20 @@
     <title>Tu T&iacutetulo</title>
     <style>
         .navbar-custom {
-            width: 100%; /* Ocupa todo el ancho disponible */
+            width: 100%;
             margin: 0% auto;
             padding: 30px;
             background-color: #05407a;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            color: white; /* Texto en blanco para mayor contraste */
+            color: white;
         }
 
         .navbar-custom .navbar-header {
-            width: 80%; /* Asegura que el header ocupe todo el ancho */
+            width: 80%;
         }
 
         .navbar-custom .navbar-collapse {
-            width: 100%; /* Asegura que la parte colapsable ocupe todo el ancho */
+            width: 100%;
         }
     </style>
 </head>
@@ -42,11 +42,11 @@
                     </ul>
 
                     <ul class="nav navbar-nav">
-                        <!-- Opciones de Registros para el tipo 1 (profesores) -->
+                        <!-- Opciones de Registros para el tipo 1 Profesor -->
                         <c:if test="${!empty sessionScope.objMenusTipo1}">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    Profesores <b class="caret"></b>
+                                    Profesor <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <c:forEach var="x" items="${sessionScope.objMenusTipo1}">
@@ -58,14 +58,14 @@
                             </li>
                         </c:if>
 
-                        <!-- Opciones de Registros para el tipo 1 (alumnos) -->
-                        <c:if test="${!empty sessionScope.objMenusTipo1}">
+                        <!-- Opciones para Alumno) -->
+                        <c:if test="${!empty sessionScope.objMenusTipo2}">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    Alumnos <b class="caret"></b>
+                                    Alumno <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <c:forEach var="x" items="${sessionScope.objMenusTipo1}">
+                                    <c:forEach var="x" items="${sessionScope.objMenusTipo2}">
                                         <li>
                                             <a href="${x.ruta}">${x.nombre}</a>
                                         </li>
@@ -74,11 +74,11 @@
                             </li>
                         </c:if>
 
-                        <!-- Opciones para miembros de seguridad (tipo 3) -->
+                        <!-- Opciones para seguridad -->
                         <c:if test="${!empty sessionScope.objMenusTipo3}">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    Seguridad<b class="caret"></b>
+                                    Seguridad <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <c:forEach var="x" items="${sessionScope.objMenusTipo3}">
@@ -90,11 +90,11 @@
                             </li>
                         </c:if>
 
-                        <!-- Opciones para proveedores (tipo 4) -->
+                        <!-- Opciones para proveedor -->
                         <c:if test="${!empty sessionScope.objMenusTipo4}">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    Proveedores<b class="caret"></b>
+                                    Proveedores <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <c:forEach var="x" items="${sessionScope.objMenusTipo4}">
@@ -105,6 +105,7 @@
                                 </ul>
                             </li>
                         </c:if>
+
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
