@@ -86,7 +86,7 @@ public class RolTransaccionController {
 		
 		if (usuarioService.buscaRol(pk).isPresent()) {
 			usuarioService.eliminaRol(usp);
-			maps.put("mensaje", "Se elimin&oacute;el rol");
+			maps.put("mensaje", "Se elimin&oacute;;el rol");
 		}else {
 			maps.put("mensaje", "No existe rol");
 		}

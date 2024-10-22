@@ -26,7 +26,7 @@
             padding-top: 90px; /* Altura de la navbar */
         }
         .navbar-fixed-top {
-            height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
+            height: 100px; /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
         }
         .form-row {
             display: flex;
@@ -38,7 +38,7 @@
             margin-right: 10px; /* Espacio entre las columnas */
         }
         .form-column:last-child {
-            margin-right: 0; /* Sin margen derecho en la última columna */
+            margin-right: 0; /* Sin margen derecho en la &uacute;ltima columna */
         }
         .checkbox-group {
             display: grid;
@@ -61,7 +61,7 @@
             background-color: #e7f1ff; /* Color de fondo al pasar el mouse */
         }
         h5 {
-            margin-top: 20px; /* Espacio arriba de los títulos */
+            margin-top: 20px; /* Espacio arriba de los t&iacute;tulos */
         }
         .espacios-container {
             display: flex;
@@ -83,7 +83,7 @@
             <div class="form-row">
                 <div class="form-column">
                     <div class="form-group">
-                        <label class="control-label" for="id_vehiculo">Vehículo</label>
+                        <label class="control-label" for="id_vehiculo">Veh&iacute;culo</label>
                         <select id="id_vehiculo" name="vehiculo" class='form-control' required>
                             <option value="">[Seleccione]</option>
                         </select>
@@ -100,22 +100,22 @@
                 </div>
             </div>
 
-            <!-- Sección de Pabellones -->
+            <!-- Secci&oacute;n de Pabellones -->
             <div class="espacios-container" style="margin-top: 20px;">
                 <div>
-                    <h5>Pabellón E - Piso SS</h5>
+                    <h5>Pabell&oacute;n E - Piso SS</h5>
                     <div class="checkbox-group" id="espaciosSSCheckboxes">
-                        <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
+                        <!-- Los checkboxes del Pabell&oacute;n E - SS se agregar&aacute;n din&aacute;micamente aqu&iacute; -->
                     </div>
                 </div>
                 <div>
-                    <h5>Pabellón E - Piso S1</h5>
+                    <h5>Pabell&oacute;n E - Piso S1</h5>
                     <div class="checkbox-group" id="espaciosS1Checkboxes">
-                        <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
+                        <!-- Los checkboxes del Pabell&oacute;n E - S1 se agregar&aacute;n din&aacute;micamente aqu&iacute; -->
                     </div>
                 </div>
             </div>
-            <!-- Fin de Sección de Pabellones -->
+            <!-- Fin de Secci&oacute;n de Pabellones -->
 
             <div class="row">
                 <div class="form-group col-md-12" align="center">
@@ -126,7 +126,7 @@
     </div>
 
     <script type="text/javascript">
-          var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesión
+          var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
 		  console.log("ID de Usuario:", idUsuario); // Imprimir el idUsuario en la consola
 
         $(document).ready(function() {
@@ -136,13 +136,13 @@
                 var validator = $('#id_form').data('bootstrapValidator');
                 validator.validate();
 
-                if (validator.isValid()) { // Verifica si el formulario es válido
+                if (validator.isValid()) { // Verifica si el formulario es v&aacute;lido
                     var espaciosSeleccionados = [];
                     $('input[name="espacio"]:checked').each(function() {
                         espaciosSeleccionados.push($(this).val());
                     });
 
-                    // Agregar espacios seleccionados a los datos que se envían
+                    // Agregar espacios seleccionados a los datos que se env&iacute;an
                     $.ajax({
                         type: "POST",
                         url: "registraSolicitud", // Cambiar a la URL correspondiente
@@ -153,7 +153,7 @@
                             validator.resetForm();
                         },
                         error: function() {
-                            mostrarMensaje("Error en la reserva. Inténtalo de nuevo.");
+                            mostrarMensaje("Error en la reserva. Int&eacute;ntalo de nuevo.");
                         }
                     });
                 }
@@ -162,18 +162,21 @@
 
         function limpiarFormulario() {
             $('#id_form')[0].reset();
-            actualizarComboBox(); // Refresca las listas, pero solo después de limpiar el formulario
+            actualizarComboBox(); // Refresca las listas, pero solo despu&eacute;s de limpiar el formulario
         }
 
         function actualizarComboBox() {
+            // Limpiar las listas de checkboxes y el select de veh&iacute;culos
             $("#espaciosS1Checkboxes").empty(); // Limpiar los checkboxes S1
             $("#espaciosSSCheckboxes").empty(); // Limpiar los checkboxes SS
+            $("#id_vehiculo").empty(); // Limpiar el select de veh&iacute;culos
+            $("#id_vehiculo").append("<option value=''>[Seleccione]</option>"); // Opci&oacute;n predeterminada
 
             $.getJSON("listaEspacio", {}, function(data) {
                 var espaciosSS = [];
                 var espaciosS1 = [];
 
-                // Separar espacios según el pabellón y piso
+                // Separar espacios seg&uacute;n el pabell&oacute;n y piso
                 $.each(data, function(index, item) {
                     if (item.piso === "SS") {
                         espaciosSS.push(item);
@@ -182,7 +185,7 @@
                     }
                 });
 
-                // Agregar checkboxes para Pabellón E, Piso SS
+                // Agregar checkboxes para Pabell&oacute;n E, Piso SS
                 if (espaciosSS.length > 0) {
                     $.each(espaciosSS, function(index, item) {
                         $("#espaciosSSCheckboxes").append(
@@ -191,7 +194,7 @@
                     });
                 }
 
-                // Agregar checkboxes para Pabellón E, Piso S1
+                // Agregar checkboxes para Pabell&oacute;n E, Piso S1
                 if (espaciosS1.length > 0) {
                     $.each(espaciosS1, function(index, item) {
                         $("#espaciosS1Checkboxes").append(
@@ -201,7 +204,7 @@
                 }
             });
 
-            // Cargar vehículos del usuario
+            // Cargar veh&iacute;culos del usuario y agregar al select
             $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function(data) {
                 $.each(data, function(index, item) {
                     var marcavehiculo = item.marca + " " + item.modelo;
@@ -211,7 +214,7 @@
         }
 
         $('#id_form').bootstrapValidator({
-            message: 'Este valor no es válido',
+            message: 'Este valor no es v&aacute;lido',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
                 invalid: 'glyphicon glyphicon-remove',
@@ -219,33 +222,28 @@
             },
             fields: {
                 vehiculo: {
-                    selector: '#id_vehiculo',
                     validators: {
                         notEmpty: {
-                            message: 'El vehículo es requerido'
+                            message: 'Seleccione un veh&iacute;culo.'
                         }
                     }
                 },
                 hora: {
                     validators: {
                         notEmpty: {
-                            message: 'La hora es requerida'
+                            message: 'La hora es obligatoria.'
                         }
                     }
                 },
                 fechaReserva: {
                     validators: {
                         notEmpty: {
-                            message: 'La fecha de reserva es requerida'
+                            message: 'La fecha de reserva es obligatoria.'
                         }
                     }
                 }
             }
         });
-
-        function mostrarMensaje(mensaje) {
-            alert(mensaje); // Cambiar a SweetAlert si es necesario
-        }
     </script>
 </body>
 </html>

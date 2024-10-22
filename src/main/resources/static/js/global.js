@@ -1,4 +1,4 @@
-var MSG_ERROR = "Se gener&oacute; un error, consulte al administrador";
+var MSG_ERROR = "Se gener&oacute;; un error, consulte al administrador";
 var MSG_ELIMINAR = "&#191;Desea eliminar el registro&#63;";
 
 function mostrarMensaje(msg, ejecutarAccion){
@@ -22,9 +22,9 @@ function mostrarMensaje(msg, ejecutarAccion){
   
 var IDIOMA = {
 	processing:"procesando...",
-    lengthMenu: "_MENU_ Registros por p&aacute;gina",
+    lengthMenu: "_MENU_ Registros por p&ntilde;;;gina",
     zeroRecords: "No existen registros",
-    info: "P&aacute;gina _PAGE_ de _PAGES_",
+    info: "P&ntilde;;;gina _PAGE_ de _PAGES_",
     infoEmpty: "Sin registros",
     infoFiltered: "(Filtro de _MAX_ registros)",
     search: "Buscar:",

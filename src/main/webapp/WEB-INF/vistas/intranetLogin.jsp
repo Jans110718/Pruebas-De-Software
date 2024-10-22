@@ -4,89 +4,76 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Expires" content="-1" />
-    <meta http-equiv="Cache-Control" content="private" />
-    <meta http-equiv="Cache-Control" content="no-store" />
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/bootstrapValidator.css">
-
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrapValidator.js"></script>
-
-    <title>Intranet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet - Login</title>
     <style>
         body {
-            background: linear-gradient(to right, #003366, #00ff66); /* Degradado de azul oscuro a verde fosforescente */
-            font-family: 'Roboto', sans-serif;
-            color: #333;
-            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #023859; /* Azul oscuro */
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh; /* Asegura que el cuerpo cubra toda la pantalla */
+            background-size: cover;
+            background-position: center;
         }
 
-        .form-box {
-            background: white;
+        .login-container {
+            background: #61788C; /* Fondo semitransparente gris claro */
+            padding: 30px;
             border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            max-width: 300px; /* Ancho reducido */
-            width: 100%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra ligera */
             text-align: center;
+            max-width: 400px; /* Ancho m&ntilde;;ximo del contenedor */
+            width: 100%; /* Asegura que el contenedor se ajuste a la pantalla */
+            margin: 0 20px; /* Margen para evitar que el contenedor toque los bordes */
         }
 
-        .form-top {
-            margin-bottom: 10px; /* Espacio reducido entre el t&iacutetulo y el formulario */
+        .login-container img {
+            width: 80px; /* Tama&ntilde;o del logo */
+            margin-bottom: 20px;
         }
 
-        .form-top h3 {
-            margin-bottom: 5px; /* Menos espacio debajo del t&iacutetulo */
-            font-size: 28px;
-            color: #003366; /* Color del t&iacutetulo */
-            font-weight: 500;
-            text-align: center; /* Centra el texto */
+        .login-container h2 {
+            color: #f0f0f0; /* Texto blanco humo */
+            margin-bottom: 20px;
         }
 
-        .form-bottom {
-            position: relative;
-        }
-
-        .form-control {
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            padding: 15px; /* Aumenta el padding para más espacio */
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-size: 16px; /* Aumenta el tamaño de la fuente */
-            margin-bottom: 10px; /* Espacio entre campos de texto */
-        }
-
-        .form-control:focus {
-            border-color: #00ff66; /* Color del borde al enfocar */
-            box-shadow: 0 0 5px rgba(0, 255, 102, 0.5);
-        }
-
-        .btn-primary {
-            background-color: #007bff; /* Color de fondo del botón */
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
             border: none;
             border-radius: 5px;
-            padding: 10px 20px;
-            color: white; /* Color del texto del botón */
-            font-weight: bold; /* Negrita para el texto del botón */
-            text-transform: uppercase; /* Texto en mayúsculas */
-            transition: background-color 0.3s, transform 0.2s;
-            width: 100%; /* Botón a ancho completo */
-            font-size: 16px; /* Aumenta el tamaño de la fuente del botón */
+            background-color: rgba(255, 255, 255, 0.2); /* Fondo gris claro */
+            color: #ffffff; /* Texto blanco */
+            outline: none;
         }
 
-        .btn-primary:hover {
-            background-color: #0056b3; /* Color de fondo al pasar el ratón */
-            transform: translateY(-2px);
+        .login-container input[type="text"]::placeholder,
+        .login-container input[type="password"]::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Placeholder blanco suave */
+        }
+
+        .login-container input[type="submit"] {
+            width: 80%; /* Ancho del bot&oacute;n ajustado */
+            padding: 10px;
+            background-color: #024059; /* Azul gris&ntilde;;ceo para el bot&oacute;n */
+            border: none;
+            border-radius: 5px;
+            color: #ffffff; /* Texto blanco */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; /* A&ntilde;adir espacio encima del bot&oacute;n */
+            font-weight: bold;
+            font-size: 16px; /* Tama&ntilde;o del texto para mayor visibilidad */
+        }
+
+        .login-container input[type="submit"]:hover {
+            background-color: #023859; /* Color m&ntilde;;s claro en hover */
         }
 
         .alert {
@@ -95,15 +82,10 @@
             border-radius: 5px;
         }
 
-        .logo {
-            width: 80px; /* Ajusta el tamaño según tus necesidades */
-            margin-bottom: 20px; /* Espacio entre el logo y el t&iacutetulo */
-        }
-
         /* Estilos para los mensajes de error */
         .error-message {
             color: red; /* Color del mensaje de error */
-            font-size: 14px; /* Tamaño de la fuente */
+            font-size: 14px; /* Tama&ntilde;o de la fuente */
             margin-top: 5px; /* Espacio entre el campo y el mensaje */
             text-align: left; /* Alinear texto a la izquierda */
         }
@@ -111,33 +93,31 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="login-container">
         <c:if test="${requestScope.mensaje != null}">
             <div class="alert alert-danger fade in" id="success-alert">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <strong>${requestScope.mensaje}</strong>
             </div>
         </c:if>
-        <div class="form-box">
-            <img src="https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black-thumbnail.png" alt="Logo" class="logo"> <!-- Logo de la persona -->
-            <div class="form-top">
-                <h3>LOGIN</h3>
+        <img src="https://cdn-icons-png.flaticon.com/512/5264/5264565.png" alt="Logo"> <!-- Logo de la persona -->
+        <h2>LOGIN</h2>
+        <form id="id_form" action="login" method="post" class="login-form">
+            <div class="form-group">
+                <input type="text" name="login" placeholder="Ingresa el usuario" class="form-username" id="form-username" maxlength="20" required>
+                <div class="error-message" id="errorLogin"></div> <!-- Mensaje de error para el usuario -->
             </div>
-            <div class="form-bottom">
-                <form id="id_form" action="login" method="post" class="login-form">
-                    <div class="form-group">
-                        <input type="text" name="login" placeholder="Ingresa el usuario" class="form-username form-control" id="form-username" maxlength="20" >
-                        <div class="error-message" id="errorLogin"></div> <!-- Mensaje de error para el usuario -->
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" placeholder="Ingresa la contrase&ntilde;a" class="form-password form-control" id="form-password" maxlength="20" >
-                        <div class="error-message" id="errorPassword"></div> <!-- Mensaje de error para la contrase&ntilde;a -->
-                    </div>
-                    <button type="submit" class="btn btn-primary">Ingresar</button>
-                </form>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Ingresa la contrase&ntilde;;a" class="form-password" id="form-password" maxlength="20" required>
+                <div class="error-message" id="errorPassword"></div> <!-- Mensaje de error para la contrase&ntilde;;a -->
             </div>
-        </div>
+            <input type="submit" value="Ingresar">
+        </form>
     </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrapValidator.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -146,7 +126,7 @@
             });
 
             $('#id_form').bootstrapValidator({
-                message: 'Este valor no es válido',
+                message: 'Este valor no es v&ntilde;;lido',
                 feedbackIcons: {
                     valid: 'glyphicon glyphicon-ok',
                     invalid: 'glyphicon glyphicon-remove',
@@ -171,13 +151,13 @@
                     password: {
                         validators: {
                             notEmpty: {
-                                message: 'La contrase&ntilde;a es obligatoria',
+                                message: 'La contrase&ntilde;;a es obligatoria',
                                 callback: function(value, validator, $field) {
-                                    $('#errorPassword').text('La contrase&ntilde;a es obligatoria');
+                                    $('#errorPassword').text('La contrase&ntilde;;a es obligatoria');
                                 }
                             },
                             stringLength: {
-                                message: 'La contrase&ntilde;a debe tener entre 3 y 20 caracteres',
+                                message: 'La contrase&ntilde;;a debe tener entre 3 y 20 caracteres',
                                 min: 3,
                                 max: 20
                             }
@@ -185,7 +165,7 @@
                     }
                 },
                 excluded: [':disabled'], // Ignorar campos deshabilitados
-                submitButtons: 'button[type="submit"]',
+                submitButtons: 'input[type="submit"]',
                 feedbackIcons: {
                     valid: 'glyphicon glyphicon-ok',
                     invalid: 'glyphicon glyphicon-remove',
@@ -203,10 +183,6 @@
                 if (data.field === 'password') {
                     $('#errorPassword').text(data.message);
                 }
-            });
-
-            $('#validateBtn').click(function() {
-                $('#id_form').bootstrapValidator('validate');
             });
         });
     </script>

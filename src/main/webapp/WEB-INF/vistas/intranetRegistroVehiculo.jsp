@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrapValidator.css"/>
 
-    <title>Registro Veh&iacuteculo</title>
+    <title>Registro Veh&iacute;culo</title>
 
     <style>
         /* Estilos para centrar el formulario */
@@ -42,7 +42,7 @@
     }
 
     .navbar-fixed-top {
-        height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
+        height: 100px; /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
     }
     </style>
 </head>
@@ -51,7 +51,7 @@
 
     <div class="container">
         <div class="form-container">
-            <h4>Registro de Veh&iacuteculo</h4>
+            <h4>Registro de Veh&iacute;culo</h4>
             <form id="id_form" method="post" enctype="multipart/form-data">
 				<div class="form-group">
 				    <label class="control-label" for="id_tipoVehiculo">Tipo</label>
@@ -94,13 +94,13 @@
     </div>
 
     <script type="text/javascript">
-        // Validación y env&iacuteo del formulario
+        // Validaci&oacute;n y env&iacute;o del formulario
         $("#id_registrar").click(function() {
             var validator = $('#id_form').data('bootstrapValidator');
             validator.validate();
 
             if (validator.isValid()) {
-                $("#id_registrar").prop('disabled', true); // Deshabilitar botón
+                $("#id_registrar").prop('disabled', true); // Deshabilitar bot&oacute;n
                 $.ajax({
                     type: "POST",
                     url: "registraVehiculo",
@@ -111,13 +111,13 @@
                         if(data && data.MENSAJE) {
                             mostrarMensaje(data.MENSAJE);
                         } else {
-                            mostrarMensaje("Ocurri&oacute;un error inesperado.");
+                            mostrarMensaje("Ocurri&oacute;;un error inesperado.");
                         }
                         validator.resetForm();
                         limpiarFormulario();
                     },
                     error: function() {
-                        mostrarMensaje("Ocurri&oacute;un error al procesar la solicitud.");
+                        mostrarMensaje("Ocurri&oacute;;un error al procesar la solicitud.");
                     },
                     complete: function() {
                         $("#id_registrar").prop('disabled', false); // Habilitar nuevamente
@@ -134,9 +134,9 @@
             $('#id_imagen').val(''); // Limpiar campo de imagen
         }
 
-        // Validación del formulario con Bootstrap Validator
+        // Validaci&oacute;n del formulario con Bootstrap Validator
         $('#id_form').bootstrapValidator({
-            message: 'Este valor no es válido',
+            message: 'Este valor no es v&ntilde;;lido',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
                 invalid: 'glyphicon glyphicon-remove',

@@ -29,7 +29,7 @@
     }
 
     .navbar-fixed-top {
-        height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
+        height: 100px; /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
     }
     </style>
 </head>
@@ -39,7 +39,7 @@
 
     <!-- Contenido principal -->
     <div class="container">
-        <h3>Sistema Gesti&oacute;n de Ingreso y Salida Vehicular</h3>
+        <h3>Sistema Gesti&oacute;;n de Ingreso y Salida Vehicular</h3>
         <br><br>
         <h4>Bienvenido: ${sessionScope.objUsuario.nombreCompleto}</h4><br>                
         <h4>DNI: ${sessionScope.objUsuario.dni}</h4><br>
