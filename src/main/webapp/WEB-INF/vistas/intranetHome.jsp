@@ -29,7 +29,7 @@
     }
 
     .navbar-fixed-top {
-        height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
+        height: 100px; /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
     }
     </style>
 </head>

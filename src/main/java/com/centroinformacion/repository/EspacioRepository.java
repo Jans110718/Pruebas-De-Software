@@ -9,29 +9,29 @@ import java.util.List;
 
 public interface EspacioRepository extends JpaRepository<Espacio, Integer> {
     
-    // Consulta para buscar espacios disponibles según un filtro
+    // Consulta para buscar espacios disponibles seg&uacute;n un filtro
 	@Query("SELECT e FROM Espacio e WHERE e.numero LIKE %:filtro% OR CONCAT(e.pabellon, ' ', e.piso) LIKE %:filtro%")
 	List<Espacio> findByFiltro(String filtro, Pageable pageable);
     
-    // Obtener todos los espacios ordenados por número ascendente
+    // Obtener todos los espacios ordenados por n&uacute;mero ascendente
     List<Espacio> findByOrderByNumeroAsc();
     @Query("SELECT e FROM Espacio e ORDER BY CAST(e.numero AS int)")
     List<Espacio> findByOrderByNumeroAscCustom();
-    // Buscar espacios por número
+    // Buscar espacios por n&uacute;mero
     List<Espacio> findByNumero(String numero);
 
-    // Buscar espacios por número, ignorando mayúsculas y minúsculas
+    // Buscar espacios por n&uacute;mero, ignorando may&uacute;sculas y min&uacute;sculas
     List<Espacio> findByNumeroIgnoreCase(String numero);
 
-    // Buscar espacios que contengan el número como parte del string
+    // Buscar espacios que contengan el n&uacute;mero como parte del string
     @Query("SELECT e FROM Espacio e WHERE e.numero LIKE %?1%")
     List<Espacio> listaPorNumeroLike(String filtro);
 
-    // Buscar espacios por número exacto
+    // Buscar espacios por n&uacute;mero exacto
     @Query("SELECT e FROM Espacio e WHERE e.numero = ?1")
     List<Espacio> listaPorNumeroIgualRegistra(String numero);
 
-    // Buscar espacios por número, excluyendo el espacio actual
+    // Buscar espacios por n&uacute;mero, excluyendo el espacio actual
     @Query("SELECT e FROM Espacio e WHERE e.numero = ?1 AND e.idEspacio != ?2")
     List<Espacio> listaPorNumeroIgualActualiza(String numero, int id);
 

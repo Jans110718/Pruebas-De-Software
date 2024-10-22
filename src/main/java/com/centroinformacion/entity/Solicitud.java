@@ -50,13 +50,13 @@ public class Solicitud {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora para binding
-    private Date fechaActualizacion; // Fecha de actualización
+    private Date fechaActualizacion; // Fecha de actualizaci&oacute;n
 
     private int estado; // Estado de la solicitud
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) // Ignorar propiedades de Hibernate
-    @ManyToOne(fetch = FetchType.LAZY) // Relación con la entidad Vehiculo
-    @JoinColumn(name = "idVehiculo", nullable = false) // Clave foránea con la tabla Vehiculo
+    @ManyToOne(fetch = FetchType.LAZY) // Relaci&oacute;n con la entidad Vehiculo
+    @JoinColumn(name = "idVehiculo", nullable = false) // Clave for&aacute;nea con la tabla Vehiculo
     private Vehiculo vehiculo;
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -70,9 +70,9 @@ public class Solicitud {
     private Usuario usuarioActualiza;
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) // Ignorar propiedades de Hibernate
-    @ManyToOne(fetch = FetchType.LAZY) // Relación con la entidad Espacio
-    @JoinColumn(name = "idEspacio", nullable = false) // Clave foránea con la tabla Espacio
-    private Espacio espacio; // Nuevo campo para la relación con Espacio
+    @ManyToOne(fetch = FetchType.LAZY) // Relaci&oacute;n con la entidad Espacio
+    @JoinColumn(name = "idEspacio", nullable = false) // Clave for&aacute;nea con la tabla Espacio
+    private Espacio espacio; // Nuevo campo para la relaci&oacute;n con Espacio
 
     private int entrada; // Campo para marcar entrada (0= no marcado, 1= marcado)
     private int salida; // Campo para marcar salida (0= no marcado, 1= marcado)

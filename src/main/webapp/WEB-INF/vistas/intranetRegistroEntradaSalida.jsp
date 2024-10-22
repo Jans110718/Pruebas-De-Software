@@ -39,7 +39,7 @@
 
         .navbar-fixed-top {
             height: 100px;
-            /* Ajusta la altura de tu navbar según sea necesario */
+            /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
         }
     </style>
     <title>Intranet - Solicitud de Ingreso</title>
@@ -98,7 +98,8 @@
                                 <th style="width: 15%">Numero</th>
                                 <th style="width: 15%">Hora</th>
                                 <th style="width: 15%">Fecha reserva</th>
-
+                                <th style="width: 10%">Actualiza</th>
+                                <th style="width: 10%">Elimina</th>
                                 <th style="width: 10%">Estado</th>
                             </tr>
                         </thead>
@@ -128,13 +129,13 @@
         $("#id_btn_filtra").click(function () {
             var varEstado = $("#id_estado").is(':checked') ? 1 : 0;
             var varEspacio = $("#id_espacio").val();
-            var vartipoVehiculo = $("#id_tipoVehiculo").val(); // Tipo de vehículo
+            var vartipoVehiculo = $("#id_tipoVehiculo").val(); // Tipo de veh&iacute;culo
             var varFechaDesde = $("#id_fechaDesde").val() || '1900-01-01';
             var varFechaHasta = $("#id_fechaHasta").val() || '2900-01-01';
 
             console.log(">> varEstado >> " + varEstado);
             console.log(">> varEspacio >> " + varEspacio);
-            console.log(">> vartipoVehiculo >> " + vartipoVehiculo); // Verifica el valor del tipo de vehículo
+            console.log(">> vartipoVehiculo >> " + vartipoVehiculo); // Verifica el valor del tipo de veh&iacute;culo
 
             console.log(">> varFechaDesde >> " + varFechaDesde);
             console.log(">> varFechaHasta >> " + varFechaHasta);
@@ -147,7 +148,7 @@
 
             $.getJSON("consultaSolicitud", {
                 "idEspacio": varEspacio,
-                "tipoVehiculo": vartipoVehiculo, // Parámetro correcto
+                "tipoVehiculo": vartipoVehiculo, // Par&aacute;metro correcto
                 "fecDesde": varFechaDesde,
                 "fecHasta": varFechaHasta
             }, function (data) {

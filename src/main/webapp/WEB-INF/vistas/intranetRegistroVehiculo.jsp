@@ -42,7 +42,7 @@
     }
 
     .navbar-fixed-top {
-        height: 100px; /* Ajusta la altura de tu navbar según sea necesario */
+        height: 100px; /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
     }
     </style>
 </head>
@@ -94,13 +94,13 @@
     </div>
 
     <script type="text/javascript">
-        // Validación y env&iacuteo del formulario
+        // Validaci&oacute;n y env&iacuteo del formulario
         $("#id_registrar").click(function() {
             var validator = $('#id_form').data('bootstrapValidator');
             validator.validate();
 
             if (validator.isValid()) {
-                $("#id_registrar").prop('disabled', true); // Deshabilitar botón
+                $("#id_registrar").prop('disabled', true); // Deshabilitar bot&oacute;n
                 $.ajax({
                     type: "POST",
                     url: "registraVehiculo",
@@ -134,9 +134,9 @@
             $('#id_imagen').val(''); // Limpiar campo de imagen
         }
 
-        // Validación del formulario con Bootstrap Validator
+        // Validaci&oacute;n del formulario con Bootstrap Validator
         $('#id_form').bootstrapValidator({
-            message: 'Este valor no es válido',
+            message: 'Este valor no es v&aacute;lido',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
                 invalid: 'glyphicon glyphicon-remove',

@@ -56,12 +56,12 @@ public class SolicitudMarcarController {
 	        List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(paramEspacio, paramtipoVehiculo, paramFechaDesde, paramFechaHasta);
 	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(lstSalida);
 
-	        // PASO 2: OBTENER EL ARCHIVO QUE CONTIENE EL DISEÑO DEL REPORTE 
+	        // PASO 2: OBTENER EL ARCHIVO QUE CONTIENE EL DISE&ntilde;O DEL REPORTE 
 	        String fileDirectory = request.getServletContext().getRealPath("/WEB-INF/reportes/reportesSolicitud.jasper");
 	        log.info(">>> File Reporte >> " + fileDirectory);
 	        FileInputStream stream = new FileInputStream(new File(fileDirectory));
 	    	
-	        // PASO 4: ENVIAMOS DATASOURCE, DISEÑO Y PARÁMETROS PARA GENERAR EL PDF 
+	        // PASO 4: ENVIAMOS DATASOURCE, DISE&ntilde;O Y PAR&aacute;METROS PARA GENERAR EL PDF 
 	        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(stream);
 	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
 
@@ -72,7 +72,7 @@ public class SolicitudMarcarController {
 	        OutputStream outStream = response.getOutputStream();
 	        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
 	    } catch (Exception e) {
-                    e.printStackTrace();	        // Aquí puedes manejar la excepción según sea necesario
+                    e.printStackTrace();	        // Aqu&iacute; puedes manejar la excepci&oacute;n seg&uacute;n sea necesario
 	    }
 	}
 

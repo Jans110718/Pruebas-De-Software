@@ -60,9 +60,9 @@
         .form-control {
             border-radius: 5px;
             border: 1px solid #ddd;
-            padding: 15px; /* Aumenta el padding para más espacio */
+            padding: 15px; /* Aumenta el padding para m&aacute;s espacio */
             transition: border-color 0.3s, box-shadow 0.3s;
-            font-size: 16px; /* Aumenta el tamaño de la fuente */
+            font-size: 16px; /* Aumenta el tama&ntilde;o de la fuente */
             margin-bottom: 10px; /* Espacio entre campos de texto */
         }
 
@@ -72,20 +72,20 @@
         }
 
         .btn-primary {
-            background-color: #007bff; /* Color de fondo del botón */
+            background-color: #007bff; /* Color de fondo del bot&oacute;n */
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
-            color: white; /* Color del texto del botón */
-            font-weight: bold; /* Negrita para el texto del botón */
-            text-transform: uppercase; /* Texto en mayúsculas */
+            color: white; /* Color del texto del bot&oacute;n */
+            font-weight: bold; /* Negrita para el texto del bot&oacute;n */
+            text-transform: uppercase; /* Texto en may&uacute;sculas */
             transition: background-color 0.3s, transform 0.2s;
-            width: 100%; /* Botón a ancho completo */
-            font-size: 16px; /* Aumenta el tamaño de la fuente del botón */
+            width: 100%; /* Bot&oacute;n a ancho completo */
+            font-size: 16px; /* Aumenta el tama&ntilde;o de la fuente del bot&oacute;n */
         }
 
         .btn-primary:hover {
-            background-color: #0056b3; /* Color de fondo al pasar el ratón */
+            background-color: #0056b3; /* Color de fondo al pasar el rat&oacute;n */
             transform: translateY(-2px);
         }
 
@@ -96,14 +96,14 @@
         }
 
         .logo {
-            width: 80px; /* Ajusta el tamaño según tus necesidades */
+            width: 80px; /* Ajusta el tama&ntilde;o seg&uacute;n tus necesidades */
             margin-bottom: 20px; /* Espacio entre el logo y el t&iacutetulo */
         }
 
         /* Estilos para los mensajes de error */
         .error-message {
             color: red; /* Color del mensaje de error */
-            font-size: 14px; /* Tamaño de la fuente */
+            font-size: 14px; /* Tama&ntilde;o de la fuente */
             margin-top: 5px; /* Espacio entre el campo y el mensaje */
             text-align: left; /* Alinear texto a la izquierda */
         }
@@ -146,7 +146,7 @@
             });
 
             $('#id_form').bootstrapValidator({
-                message: 'Este valor no es válido',
+                message: 'Este valor no es v&aacute;lido',
                 feedbackIcons: {
                     valid: 'glyphicon glyphicon-ok',
                     invalid: 'glyphicon glyphicon-remove',

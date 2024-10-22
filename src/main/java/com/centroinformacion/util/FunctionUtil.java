@@ -350,13 +350,13 @@ public class FunctionUtil {
 		case 3:
 			return "Martes";
 		case 4:
-			return "Miércoles";
+			return "Mi&eacute;rcoles";
 		case 5:
 			return "Jueves";
 		case 6:
 			return "Viernes";
 		default:
-			return "Sábado";
+			return "S&aacute;bado";
 		}
 	}
 
@@ -368,7 +368,7 @@ public class FunctionUtil {
 			return 2;
 		case "martes":
 			return 3;
-		case "miércoles":
+		case "mi&eacute;rcoles":
 			return 4;
 		case "miercoles":
 			return 4;
@@ -376,7 +376,7 @@ public class FunctionUtil {
 			return 5;
 		case "viernes":
 			return 6;
-		case "sábado":
+		case "s&aacute;bado":
 			return 7;
 		case "sabado":
 			return 7;

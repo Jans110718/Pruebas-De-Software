@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.centroinformacion.entity.Solicitud; // Asegúrate de que la entidad Solicitud esté importada
+import com.centroinformacion.entity.Solicitud; // Aseg&uacute;rate de que la entidad Solicitud est&eacute; importada
 import com.centroinformacion.repository.SolicitudIngresoRepository; // Cambia esto al repositorio adecuado
 
 @Service

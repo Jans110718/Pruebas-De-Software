@@ -59,7 +59,7 @@ public class VehiculoRegistroController {
         vehiculoService.insertaActualizaVehiculo(vehiculo);
         status.setComplete();
 
-        // Mensaje de éxito con SweetAlert o Flash
+        // Mensaje de &eacute;xito con SweetAlert o Flash
         flash.addFlashAttribute("success", "Veh&iacuteculo registrado exitosamente");
         HashMap<String, String> map = new HashMap<>();
         Vehiculo objSalida = vehiculoService.insertaActualizaVehiculo(vehiculo);
