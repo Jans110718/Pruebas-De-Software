@@ -51,6 +51,17 @@ public class Solicitud {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora para binding
     private Date fechaActualizacion; // Fecha de actualizaci&oacute;n
+    
+    // Nuevos campos para fecha y hora de entrada y salida
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora para binding
+    private Date fechaHoraEntrada; // Fecha y hora de entrada
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora para binding
+    private Date fechaHoraSalida; // Fecha y hora de salida
 
     private int estado; // Estado de la solicitud
 
@@ -68,6 +79,7 @@ public class Solicitud {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuarioActualiza")
     private Usuario usuarioActualiza;
+    
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) // Ignorar propiedades de Hibernate
     @ManyToOne(fetch = FetchType.LAZY) // Relaci&oacute;n con la entidad Espacio

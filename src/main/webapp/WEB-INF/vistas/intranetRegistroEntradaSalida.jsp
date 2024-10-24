@@ -60,6 +60,12 @@
             transition: background-color 0.3s;
         }
 
+        .checkbox-reservado {
+            background-color: red;
+            /* Cambia el fondo a rojo */
+
+        }
+
         .checkbox-group input[type="checkbox"] {
             margin-right: 10px;
         }
@@ -136,15 +142,16 @@
                         <table id="id_table" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width: 10%">ID</th>
-                                    <th style="width: 15%">Marca y modelo</th>
-                                    <th style="width: 15%">Tipo Vehiculo</th>
-                                    <th style="width: 15%">Numero</th>
-                                    <th style="width: 15%">Hora</th>
+                                    <th style="width: 8%">ID</th>
+                                    <th style="width: 18%">Marca y modelo</th>
+                                    <th style="width: 15%">Tipo Vehículo</th>
+                                    <th style="width: 12%">Número</th>
+                                    <th style="width: 10%">Hora</th>
                                     <th style="width: 15%">Fecha reserva</th>
-                                    <th style="width: 10%">Actualiza</th>
-                                    <th style="width: 10%">Elimina</th>
-                                    <th style="width: 10%">Estado</th>
+                                    <th style="width: 7%">Actualizar</th>
+                                    <th style="width: 10%">Entrada y Salida</th>
+                                    <th style="width: 8%">Estado</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -392,45 +399,8 @@
             $("#espaciosSSCheckboxesActualiza").empty(); // Limpiar los checkboxes SS
             $("#espaciosS1Checkboxes").empty();
             $("#espaciosSSCheckboxes").empty();
-            $("#id_vehiculo").empty(); // Limpiar el select de veh&iacute;culos
+            $("#id_vehiculo").empty(); // Limpiar el select de vehículos
             $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>"); // Opción predeterminada
-            // Cargar lista de espacios
-            $.getJSON("listaEspacios", {}, function (data) {
-                var espaciosSSActualiza = [];
-                var espaciosS1Actualiza = [];
-                var espaciosSS = [];
-                var espaciosS1 = [];
-
-                // Separar espacios según el pabellón y piso
-                $.each(data, function (index, item) {
-                    if (item.piso === "SS") {
-                        espaciosSSActualiza.push(item);
-                    } else if (item.piso === "S1") {
-                        espaciosS1Actualiza.push(item);
-                    }
-                });
-
-                if (espaciosSSActualiza.length > 0) {
-                    $.each(espaciosSSActualiza, function (index, item) {
-                        $("#espaciosSSCheckboxesActualiza").append(
-                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-
-                        );
-
-                    });
-                }
-
-                // Agregar checkboxes para Pabellón E, Piso S1
-                if (espaciosS1Actualiza.length > 0) {
-                    $.each(espaciosS1Actualiza, function (index, item) {
-                        $("#espaciosS1CheckboxesActualiza").append(
-                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-                        );
-
-
-                    });
-                }
-            });
             $.getJSON("listaEspacio", {}, function (data) {
                 var espaciosSS = [];
                 var espaciosS1 = [];
@@ -462,6 +432,64 @@
                     });
                 }
             });
+            // Cargar lista de espacios
+            $.getJSON("listaEspacios", {}, function (data) {
+                var espaciosSSActualiza = [];
+                var espaciosS1Actualiza = [];
+
+                // Separar espacios según el pabellón y piso
+                $.each(data, function (index, item) {
+                    if (item.piso === "SS") {
+                        espaciosSSActualiza.push(item);
+                    } else if (item.piso === "S1") {
+                        espaciosS1Actualiza.push(item);
+                    }
+                });
+
+                // Agregar checkboxes para Pabellón SS
+                if (espaciosSSActualiza.length > 0) {
+                    $.each(espaciosSSActualiza, function (index, item) {
+                        var checkbox = "<label";
+
+                        // Si el espacio está reservado (estado_reserva = 1), añadir clase de CSS y deshabilitar el checkbox
+                        if (item.estado_reserva === 1) {
+                            checkbox += " class='checkbox-reservado'";
+                        }
+
+                        checkbox += "><input type='checkbox' name='espacio' value='" + item.idEspacio + "'";
+
+                        if (item.estado_reserva === 1) {
+                            checkbox += " disabled"; // Deshabilitar el checkbox si está reservado
+                        }
+
+                        checkbox += "> " + item.numero + "</label>";
+
+                        $("#espaciosSSCheckboxesActualiza").append(checkbox);
+                    });
+                }
+
+                // Agregar checkboxes para Pabellón S1
+                if (espaciosS1Actualiza.length > 0) {
+                    $.each(espaciosS1Actualiza, function (index, item) {
+                        var checkbox = "<label";
+
+                        // Si el espacio está reservado (estado_reserva = 1), añadir clase de CSS y deshabilitar el checkbox
+                        if (item.estado_reserva === 1) {
+                            checkbox += " class='checkbox-reservado'";
+                        }
+
+                        checkbox += "><input type='checkbox' name='espacio' value='" + item.idEspacio + "'";
+
+                        if (item.estado_reserva === 1) {
+                            checkbox += " disabled"; // Deshabilitar el checkbox si está reservado
+                        }
+
+                        checkbox += "> " + item.numero + "</label>";
+
+                        $("#espaciosS1CheckboxesActualiza").append(checkbox);
+                    });
+                }
+            });
 
             // Cargar los vehículos del usuario y seleccionar el vehículo correspondiente
             $.getJSON(`listaVehiculosUsuario/${idUsuario}`, function (data, item) {
@@ -469,7 +497,6 @@
                 $.each(data, function (index, item) {
                     var marcavehiculo = item.marca + " " + item.modelo;
                     $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
-
                 });
 
                 // Seleccionar el vehículo correspondiente si está disponible
@@ -477,18 +504,20 @@
                     $('#id_act_vehiculo').val(vehiculo); // Selecciona el vehículo
                 }
             });
-            // Cargar veh&iacute;culos del usuario y agregar al select
-            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
-                $.each(data, function (index, item) {
-                    $("#id_reg_vehiculo").empty(); // Limpiar el select antes de agregar nuevas opciones
 
-                    // Agregar la opción "Selecciona"
-                    $("#id_reg_vehiculo").append("<option value=''>[Seleccione]</option>");
+            // Cargar vehículos del usuario y agregar al select
+            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
+                $("#id_reg_vehiculo").empty(); // Limpiar el select antes de agregar nuevas opciones
+                // Agregar la opción "Seleccione"
+                $("#id_reg_vehiculo").append("<option value=''>[Seleccione]</option>");
+                $.each(data, function (index, item) {
                     var marcavehiculo = item.marca + " " + item.modelo;
                     $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
                 });
             });
         }
+
+
 
         // Configuración del validador de formularios
         $('#id_form_actualiza').bootstrapValidator({
@@ -598,7 +627,7 @@
             });
         });
 
-        // Agregar datos a la tabla
+
         function agregarGrilla(lista) {
             // Verificar si DataTable ya existe
             if ($.fn.DataTable.isDataTable('#id_table')) {
@@ -631,14 +660,36 @@
                     { data: "fechaReserva" },
                     {
                         data: function (row) {
-                            return '<button type="button" class="btn btn-info btn-sm" onclick="editar(\'' + row.idSolicitud + '\', \'' + row.vehiculo.idVehiculo + '\', \'' + row.hora + '\', \'' + row.fechaReserva + '\', \'' + row.espacio.idEspacio + '\')">Editar</button>';
+                            // Verificar si el estado de la solicitud es 0
+                            var botonEditar = row.estado === 0 ?
+                                // Si el estado es 0, deshabilitar el botón
+                                '<button type="button" class="btn btn-info btn-sm" disabled>Editar</button>' :
+                                // Si el estado es diferente de 0, habilitar el botón
+                                '<button type="button" class="btn btn-info btn-sm" onclick="editar(\'' + row.idSolicitud + '\', \'' + row.vehiculo.idVehiculo + '\', \'' + row.hora + '\', \'' + row.fechaReserva + '\', \'' + row.espacio.idEspacio + '\')">Editar</button>';
 
+                            return botonEditar;
                         },
                         className: 'text-center'
                     },
+
                     {
                         data: function (row) {
-                            return '<button type="button" class="btn btn-danger btn-sm" onclick="eliminar(\'' + row.idSolicitud + '\')">Eliminar</button>';
+                            // Mantener el estado original de entrada y salida sin cambios por actualizaciones de otros campos
+                            var isEntradaRegistrada = row.entrada;  // Asegúrate de que row.entrada es constante
+                            var isSalidaRegistrada = row.salida;    // Asegúrate de que row.salida es constante
+
+                            var botonEntrada = isEntradaRegistrada ?
+                                '<button type="button" class="btn btn-danger btn-sm" disabled onclick="alert(\'Registro de entrada ya realizado\')">Registrar Entrada</button>' :
+                                '<button type="button" class="btn btn-danger btn-sm" onclick="registrarEntrada(\'' + row.idSolicitud + '\')">Registrar Entrada</button>';
+
+                            var botonSalida = isSalidaRegistrada ?
+                                '<button type="button" class="btn btn-danger btn-sm" disabled onclick="alert(\'Registro de salida ya realizado\')">Registrar Salida</button>' :
+                                '<button type="button" class="btn btn-danger btn-sm" onclick="registrarSalida(\'' + row.idSolicitud + '\')">Registrar Salida</button>';
+
+                            return '<div class="d-flex justify-content-center">' +
+                                '<div style="margin-right: 5px;">' + botonEntrada + '</div>' +
+                                '<div>' + botonSalida + '</div>' +
+                                '</div>';
                         },
                         className: 'text-center'
                     },
@@ -651,6 +702,43 @@
                 ]
             });
         }
+        function registrarEntrada(idSolicitud) {
+            $.ajax({
+                url: 'registrarEntradaSalida',
+                type: 'POST',
+                data: {
+                    "idSolicitud": idSolicitud, // ID de la solicitud
+                    accion: 'entrada' // Tipo de acción a realizar
+                },
+                success: function (response) {
+                    alert("Registrado Exitosamente entrada"); // Mensaje de éxito
+                    // Aquí podrías hacer algo más, como actualizar la tabla o la interfaz
+                },
+                error: function (xhr, status, error) {
+                    alert("Error al registrar entrada: " + error); // Mensaje de error
+                }
+            });
+        }
+
+        // Función para registrar salida
+        function registrarSalida(idSolicitud) {
+            $.ajax({
+                url: 'registrarEntradaSalida',
+                type: 'POST',
+                data: {
+                    "idSolicitud": idSolicitud, // ID de la solicitud
+                    accion: 'salida' // Tipo de acción a realizar
+                },
+                success: function (response) {
+                    alert("Registrado Exitosamente salida"); // Mensaje de éxito
+                    // Aquí podrías hacer algo más, como actualizar la tabla o la interfaz
+                },
+                error: function (xhr, status, error) {
+                    alert("Error al registrar salida: " + error); // Mensaje de error
+                }
+            });
+        }
+
     </script>
 </body>
 
