@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.centroinformacion.entity.Solicitud; // Aseg&uacute;rate de que la entidad Solicitud est&eacute; importada
+import com.centroinformacion.entity.Usuario;
 import com.centroinformacion.repository.SolicitudIngresoRepository; // Cambia esto al repositorio adecuado
 
 @Service
@@ -29,5 +30,14 @@ public class SolicitudServiceImp implements SolicitudService {
 	public Optional<Solicitud> buscaSolicitud(int idSolicitud) {
 		return repository.findById(idSolicitud);
 	}
+
+	@Override
+    public boolean existeSolicitudActiva(Usuario usuarioRegistro) {
+        // Verifica si hay alguna solicitud activa (estado 1) para el usuario registrado
+        return repository.existsByUsuarioRegistroAndEstado(usuarioRegistro, 1);
+    }
+	
+
+	
 
 }

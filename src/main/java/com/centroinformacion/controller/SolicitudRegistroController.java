@@ -32,15 +32,22 @@ public class SolicitudRegistroController {
     public Map<String, Object> registraSolicitud(Solicitud obj, HttpSession session) {
         Map<String, Object> map = new HashMap<>();
         
-        // Obtener el usuario de la sesi&oacute;n
+        // Obtener el usuario de la sesión
         Usuario objUsuario = (Usuario) session.getAttribute("objUsuario");
         if (objUsuario == null) {
             map.put("MENSAJE", "Usuario no autenticado");
             return map;
         }
 
+        // Verificar si existe una solicitud activa para el usuario actual
+        boolean existeSolicitudActiva = solicitudService.existeSolicitudActiva(objUsuario);
+        if (existeSolicitudActiva) {
+            map.put("MENSAJE", "No se puede crear una nueva solicitud, ya existe una activa.");
+            return map;
+        }
+
         // Obtener el espacio por ID
-        Espacio espacio = espacioService.obtenerEspacioPorId(obj.getEspacio().getIdEspacio()); // Usa el espacio directamente
+        Espacio espacio = espacioService.obtenerEspacioPorId(obj.getEspacio().getIdEspacio());
         if (espacio == null) {
             map.put("MENSAJE", "Espacio no encontrado");
             return map;
@@ -52,8 +59,8 @@ public class SolicitudRegistroController {
 
         // Configurar la solicitud
         obj.setEstado(AppSettings.ACTIVO);
-        obj.setUsuarioRegistro(objUsuario);
-        obj.setUsuarioActualiza(objUsuario);
+        obj.setUsuarioRegistro(objUsuario); // Usa el usuario de la sesión
+        obj.setUsuarioActualiza(objUsuario); // Usa el usuario de la sesión
         obj.setFechaRegistro(new Date());
         obj.setFechaActualizacion(new Date());
         obj.setEntrada(0);
@@ -61,16 +68,19 @@ public class SolicitudRegistroController {
         
         // Asignar el espacio a la solicitud
         obj.setEspacio(espacio); // Establecer el espacio en la solicitud
+
         // Registrar la solicitud
         Solicitud objSalida = solicitudService.insertaActualizaSolicitud(obj);
         if (objSalida == null) {
             map.put("MENSAJE", "Error en el registro de la solicitud");
             return map;
-        } 
+        }
 
         map.put("MENSAJE", "Registro de solicitud exitoso");
         return map;
     }
+
+
     @PostMapping("/actualizaSolicitud")
     @ResponseBody
     public Map<?, ?> actualiza(Solicitud obj, HttpSession session) {
@@ -133,7 +143,6 @@ public class SolicitudRegistroController {
         map.put("MENSAJE", "Actualización de solicitud exitosa");
         return map;
     }
-
     @ResponseBody
     @PostMapping("/registrarEntradaSalida")
     public Map<String, Object> registrarEntradaSalida(int idSolicitud, String accion) {
@@ -142,7 +151,14 @@ public class SolicitudRegistroController {
         // Buscar la solicitud por ID
         Solicitud objSolicitud = solicitudService.buscaSolicitud(idSolicitud).orElse(null);
         if (objSolicitud == null) {
-            map.put("mensaje", "Solicitud no encontrada");
+            map.put("MENSAJE", "Solicitud no encontrada");
+            return map;
+        }
+
+        // Obtener el espacio asociado a la solicitud
+        Espacio espacio = objSolicitud.getEspacio();
+        if (espacio == null) {
+            map.put("MENSAJE", "Espacio no asociado a la solicitud");
             return map;
         }
 
@@ -150,18 +166,20 @@ public class SolicitudRegistroController {
         if ("entrada".equalsIgnoreCase(accion)) {
         	 objSolicitud.setFechaHoraEntrada(new Date()); // Registrar la fecha y hora de entrada
              objSolicitud.setEntrada(1); // Cambiar el atributo entrada a 1
-             map.put("mensaje", "Entrada registrada exitosamente");
+             map.put("MENSAJE", "Entrada registrada exitosamente");
         } else if ("salida".equalsIgnoreCase(accion)) {
             objSolicitud.setFechaHoraSalida(new Date());
             objSolicitud.setSalida(1);
-            objSolicitud.setEstado(0);  // Cambiar el estado de la solicitud a 0
+            objSolicitud.setEstado(0);
+         // Cambiar el estado del espacio a 0 (disponible)
+            espacio.setEstado_reserva(0);
+            espacioService.actualizarEspacio(espacio);
             // Cambiar el atributo salida a 1
-// Registrar la fecha y hora de salida
+            // Registrar la fecha y hora de salida
             // Puedes actualizar otros campos si es necesario
-            map.put("mensaje", "Salida registrada exitosamente");
+            map.put("MENSAJE", "Salida registrada exitosamente");
         } else {
-            map.put("mensaje", "Acción no válida");
-            return map;
+            map.put("MENSAJE", "Acción no válida");
         }
 
         // Guardar los cambios en la solicitud
@@ -169,6 +187,7 @@ public class SolicitudRegistroController {
 
         return map;
     }
+   
 
 
   

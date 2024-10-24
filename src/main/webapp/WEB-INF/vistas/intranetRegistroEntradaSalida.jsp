@@ -336,6 +336,8 @@
                             mostrarMensaje(data.MENSAJE);
                             limpiarFormulario(); // Limpiar y actualizar ComboBox
                             validator.resetForm();
+                            actualizarComboBox()
+
                             $('#id_div_modal_registra').modal('hide');
 
                         },
@@ -363,6 +365,7 @@
                         success: function (data) {
                             mostrarMensaje(data.MENSAJE);
                             validator.resetForm();
+                            actualizarComboBox()
                             // Cerrar el modal después de la actualización
                             $('#id_div_modal_actualiza').modal('hide');
                         },
@@ -674,17 +677,18 @@
 
                     {
                         data: function (row) {
-                            // Mantener el estado original de entrada y salida sin cambios por actualizaciones de otros campos
-                            var isEntradaRegistrada = row.entrada;  // Asegúrate de que row.entrada es constante
-                            var isSalidaRegistrada = row.salida;    // Asegúrate de que row.salida es constante
+                            var isEntradaRegistrada = row.entrada;  // Valor de entrada, 0 o 1
+                            var isSalidaRegistrada = row.salida;    // Valor de salida, 0 o 1
 
+                            // Botón para registrar entrada
                             var botonEntrada = isEntradaRegistrada ?
                                 '<button type="button" class="btn btn-danger btn-sm" disabled onclick="alert(\'Registro de entrada ya realizado\')">Registrar Entrada</button>' :
-                                '<button type="button" class="btn btn-danger btn-sm" onclick="registrarEntrada(\'' + row.idSolicitud + '\')">Registrar Entrada</button>';
+                                '<button type="button" class="btn btn-success" onclick="registrarEntrada(\'' + row.idSolicitud + '\')">Registrar Entrada</button>';
 
-                            var botonSalida = isSalidaRegistrada ?
-                                '<button type="button" class="btn btn-danger btn-sm" disabled onclick="alert(\'Registro de salida ya realizado\')">Registrar Salida</button>' :
-                                '<button type="button" class="btn btn-danger btn-sm" onclick="registrarSalida(\'' + row.idSolicitud + '\')">Registrar Salida</button>';
+                            // Botón para registrar salida: deshabilitado si la entrada no ha sido registrada (isEntradaRegistrada == 0)
+                            var botonSalida = (!isEntradaRegistrada || isSalidaRegistrada) ?
+                                '<button type="button" class="btn btn-danger btn-sm" disabled onclick="alert(\'No se puede registrar la salida sin registrar la entrada\')">Registrar Salida</button>' :
+                                '<button type="button" class="btn btn-success" onclick="registrarSalida(\'' + row.idSolicitud + '\')">Registrar Salida</button>';
 
                             return '<div class="d-flex justify-content-center">' +
                                 '<div style="margin-right: 5px;">' + botonEntrada + '</div>' +
@@ -710,12 +714,13 @@
                     "idSolicitud": idSolicitud, // ID de la solicitud
                     accion: 'entrada' // Tipo de acción a realizar
                 },
-                success: function (response) {
-                    alert("Registrado Exitosamente entrada"); // Mensaje de éxito
-                    // Aquí podrías hacer algo más, como actualizar la tabla o la interfaz
+                success: function (data) {
+                    mostrarMensaje(data.MENSAJE);  // Aquí se está accediendo a la clave "MENSAJE" de la respuesta
+                    actualizarComboBox()
+
                 },
-                error: function (xhr, status, error) {
-                    alert("Error al registrar entrada: " + error); // Mensaje de error
+                error: function () {
+                    mostrarMensaje("Error al registrar entrada: "); // Mensaje de error
                 }
             });
         }
@@ -723,18 +728,19 @@
         // Función para registrar salida
         function registrarSalida(idSolicitud) {
             $.ajax({
-                url: 'registrarEntradaSalida',
                 type: 'POST',
+                url: 'registrarEntradaSalida',
                 data: {
                     "idSolicitud": idSolicitud, // ID de la solicitud
                     accion: 'salida' // Tipo de acción a realizar
                 },
-                success: function (response) {
-                    alert("Registrado Exitosamente salida"); // Mensaje de éxito
-                    // Aquí podrías hacer algo más, como actualizar la tabla o la interfaz
+                success: function (data) {
+                    mostrarMensaje(data.MENSAJE);  // Aquí se está accediendo a la clave "MENSAJE" de la respuesta
+                    actualizarComboBox()
+
                 },
-                error: function (xhr, status, error) {
-                    alert("Error al registrar salida: " + error); // Mensaje de error
+                error: function () {
+                    mostrarMensaje("Error al registrar salida: "); // Mensaje de error
                 }
             });
         }

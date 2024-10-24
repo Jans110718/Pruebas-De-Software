@@ -17,9 +17,11 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.centroinformacion.entity.Solicitud;
 import com.centroinformacion.entity.Usuario;
 import com.centroinformacion.entity.Vehiculo;
 import com.centroinformacion.service.IUploadFileService;
+import com.centroinformacion.service.SolicitudService;
 import com.centroinformacion.service.VehiculoService;
 import com.centroinformacion.util.AppSettings;
 
@@ -27,7 +29,6 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class VehiculoRegistroController {
-
     @Autowired
     private VehiculoService vehiculoService;
  
@@ -83,4 +84,5 @@ public class VehiculoRegistroController {
             return "{\"valid\" : false }";
         }
     }
+    
 }

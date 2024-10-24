@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.centroinformacion.entity.Solicitud;
+import com.centroinformacion.entity.Usuario;
 
 
 @Repository
@@ -20,5 +21,8 @@ public interface SolicitudIngresoRepository extends JpaRepository<Solicitud, Int
 		     + "(s.fechaReserva <= ?4)")
 		List<Solicitud> listaConsultaSolicitudAvanzado(int idEspacio, int tipoVehiculo, Date fecDesde, Date fecHasta);
     Optional<Solicitud> findById(Integer idSolicitud);
+    
+    boolean existsByUsuarioRegistroAndEstado(Usuario usuarioRegistro, int estado);
+
 
 }
