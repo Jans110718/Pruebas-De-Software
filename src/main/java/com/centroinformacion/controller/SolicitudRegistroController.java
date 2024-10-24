@@ -117,7 +117,6 @@ if (!optSolicitud.isPresent()) {
             map.put("MENSAJE", "Error en la actualizacion de la solicitud");
             return map;
         } 
-
         map.put("MENSAJE", "Actualizacion de solicitud exitoso");
         return map;
     }

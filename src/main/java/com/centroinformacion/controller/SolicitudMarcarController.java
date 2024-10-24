@@ -51,8 +51,7 @@ public class SolicitudMarcarController {
 	        @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecDesde,
 	        @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecHasta) {
 	    
-	    List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(idEspacio,tipoVehiculo,fecDesde, fecHasta);
-	    
+	    List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(idEspacio,tipoVehiculo,fecDesde, fecHasta);    
 	    return lstSalida;
 	}
 	@GetMapping("/reporteSolicitudPdf")
