@@ -6,11 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tu T&iacutetulo</title>
     <style>
+       
+        body {
+            font-family: Arial, sans-serif; 
+        }
+
         .navbar-custom {
+            background-color: #020732; 
             width: 100%;
-            margin: 0% auto;
+            margin: 0 auto;
             padding: 30px;
-            background-color: #05407a;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             color: white;
         }
@@ -21,6 +26,45 @@
 
         .navbar-custom .navbar-collapse {
             width: 100%;
+        }
+
+   
+        .navbar-custom .navbar-left a {
+            font-size: 24px; 
+            font-weight: bold; 
+            color: white; 
+            text-decoration: none; 
+        }
+
+      
+        .navbar-custom .dropdown-menu {
+            background-color: #a2fe1d; 
+            border: 1px solid #ccc; 
+            display: none; 
+            position: absolute; 
+            z-index: 1000;
+        }
+
+        .navbar-custom .dropdown:hover .dropdown-menu {
+            display: block; 
+        }
+
+        .navbar-custom .dropdown-menu a {
+            font-family: Arial, sans-serif; 
+            color: black; 
+            display: block;
+            padding: 10px 15px; 
+            text-decoration: none; 
+        }
+
+        .navbar-custom .dropdown-menu a:hover {
+            background-color: #f3f0f0; 
+            color: black; 
+        }
+
+      
+        .navbar-custom .nav > li {
+            margin-left: 30px; 
         }
     </style>
 </head>
@@ -38,7 +82,7 @@
 
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a href="verIntranetHome">Home</a></li>
+                        <li><a href="verIntranetHome">CiberCocher</a></li> <!-- Texto del logo -->
                     </ul>
 
                     <ul class="nav navbar-nav">
@@ -58,7 +102,7 @@
                             </li>
                         </c:if>
 
-                        <!-- Opciones para Alumno) -->
+                        <!-- Opciones para Alumno -->
                         <c:if test="${!empty sessionScope.objMenusTipo2}">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
