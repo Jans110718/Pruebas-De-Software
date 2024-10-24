@@ -36,7 +36,6 @@ import com.centroinformacion.util.AppSettings;
 
 @CommonsLog
 @Controller
-
 public class SolicitudMarcarController {
 	@Autowired
     private SolicitudService solicitudService;

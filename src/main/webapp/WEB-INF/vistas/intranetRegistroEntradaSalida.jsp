@@ -338,7 +338,6 @@
                     });
                 }
             });
-
             $("#id_btn_actualiza").click(function () {
                 var modo = $('#modo').val(); // 'registrar' o 'actualizar'
                 var validator = $('#id_form_actualiza').data('bootstrapValidator');

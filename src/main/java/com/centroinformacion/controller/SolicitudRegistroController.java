@@ -108,7 +108,6 @@ if (!optSolicitud.isPresent()) {
 		obj.setUsuarioActualiza(objUsuario);
         obj.setEntrada(0);
         obj.setSalida(0);
-        
         // Asignar el espacio a la solicitud
         obj.setEspacio(espacio); // Establecer el espacio en la solicitud
         // Registrar la solicitud
