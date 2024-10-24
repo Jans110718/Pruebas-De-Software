@@ -67,17 +67,6 @@
             display: flex;
             justify-content: space-evenly; /* Espacio entre los grupos de espacios */
         }
-        /* Nuevos estilos para el formulario */
-        .form-container {
-            margin: 50px auto;
-            background-color: #ffffff;
-            padding: 40px;
-            border: 5px solid #007bff; /* Borde grueso alrededor del formulario */
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            box-sizing: border-box;
-        }
     </style>
 
     <title>Reserva de Espacios</title>
@@ -85,8 +74,11 @@
 <body>
     <jsp:include page="intranetCabecera.jsp" />
     
-    <div class="container form-container">
+    <div class="container" style="margin-top: 4%">
         <h4>Reserva de Espacios</h4>
+    </div>
+
+    <div class="container" style="margin-top: 1%">
         <form id="id_form" method="post">
             <div class="form-row">
                 <div class="form-column">
@@ -133,126 +125,125 @@
         </form>
     </div>
 
-   
-	<script type="text/javascript">
-	      var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
+    <script type="text/javascript">
+          var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
 		  console.log("ID de Usuario:", idUsuario); // Imprimir el idUsuario en la consola
 
-	    $(document).ready(function() {
-	        actualizarComboBox(); // Cargar datos solo una vez al inicio
+        $(document).ready(function() {
+            actualizarComboBox(); // Cargar datos solo una vez al inicio
 
-	        $("#id_registrar").click(function() {
-	            var validator = $('#id_form').data('bootstrapValidator');
-	            validator.validate();
+            $("#id_registrar").click(function() {
+                var validator = $('#id_form').data('bootstrapValidator');
+                validator.validate();
 
-	            if (validator.isValid()) { // Verifica si el formulario es v&aacute;lido
-	                var espaciosSeleccionados = [];
-	                $('input[name="espacio"]:checked').each(function() {
-	                    espaciosSeleccionados.push($(this).val());
-	                });
+                if (validator.isValid()) { // Verifica si el formulario es v&aacute;lido
+                    var espaciosSeleccionados = [];
+                    $('input[name="espacio"]:checked').each(function() {
+                        espaciosSeleccionados.push($(this).val());
+                    });
 
-	                // Agregar espacios seleccionados a los datos que se env&iacute;an
-	                $.ajax({
-	                    type: "POST",
-	                    url: "registraSolicitud", // Cambiar a la URL correspondiente
-	                    data: $('#id_form').serialize() + "&espacios=" + espaciosSeleccionados.join(','),
-	                    success: function(data) {
-	                        mostrarMensaje(data.MENSAJE);
-	                        limpiarFormulario(); // Limpiar y actualizar ComboBox
-	                        validator.resetForm();
-	                    },
-	                    error: function() {
-	                        mostrarMensaje("Error en la reserva. Int&eacute;ntalo de nuevo.");
-	                    }
-	                });
-	            }
-	        });
-	    });
+                    // Agregar espacios seleccionados a los datos que se env&iacute;an
+                    $.ajax({
+                        type: "POST",
+                        url: "registraSolicitud", // Cambiar a la URL correspondiente
+                        data: $('#id_form').serialize() + "&espacios=" + espaciosSeleccionados.join(','),
+                        success: function(data) {
+                            mostrarMensaje(data.MENSAJE);
+                            limpiarFormulario(); // Limpiar y actualizar ComboBox
+                            validator.resetForm();
+                        },
+                        error: function() {
+                            mostrarMensaje("Error en la reserva. Int&eacute;ntalo de nuevo.");
+                        }
+                    });
+                }
+            });
+        });
 
-	    function limpiarFormulario() {
-	        $('#id_form')[0].reset();
-	        actualizarComboBox(); // Refresca las listas, pero solo despu&eacute;s de limpiar el formulario
-	    }
+        function limpiarFormulario() {
+            $('#id_form')[0].reset();
+            actualizarComboBox(); // Refresca las listas, pero solo despu&eacute;s de limpiar el formulario
+        }
 
-	    function actualizarComboBox() {
-	        // Limpiar las listas de checkboxes y el select de veh&iacute;culos
-	        $("#espaciosS1Checkboxes").empty(); // Limpiar los checkboxes S1
-	        $("#espaciosSSCheckboxes").empty(); // Limpiar los checkboxes SS
-	        $("#id_vehiculo").empty(); // Limpiar el select de veh&iacute;culos
-	        $("#id_vehiculo").append("<option value=''>[Seleccione]</option>"); // Opci&oacute;n predeterminada
+        function actualizarComboBox() {
+            // Limpiar las listas de checkboxes y el select de veh&iacute;culos
+            $("#espaciosS1Checkboxes").empty(); // Limpiar los checkboxes S1
+            $("#espaciosSSCheckboxes").empty(); // Limpiar los checkboxes SS
+            $("#id_vehiculo").empty(); // Limpiar el select de veh&iacute;culos
+            $("#id_vehiculo").append("<option value=''>[Seleccione]</option>"); // Opci&oacute;n predeterminada
 
-	        $.getJSON("listaEspacio", {}, function(data) {
-	            var espaciosSS = [];
-	            var espaciosS1 = [];
+            $.getJSON("listaEspacio", {}, function(data) {
+                var espaciosSS = [];
+                var espaciosS1 = [];
 
-	            // Separar espacios seg&uacute;n el pabell&oacute;n y piso
-	            $.each(data, function(index, item) {
-	                if (item.piso === "SS") {
-	                    espaciosSS.push(item);
-	                } else if (item.piso === "S1") {
-	                    espaciosS1.push(item);
-	                }
-	            });
+                // Separar espacios seg&uacute;n el pabell&oacute;n y piso
+                $.each(data, function(index, item) {
+                    if (item.piso === "SS") {
+                        espaciosSS.push(item);
+                    } else if (item.piso === "S1") {
+                        espaciosS1.push(item);
+                    }
+                });
 
-	            // Agregar checkboxes para Pabell&oacute;n E, Piso SS
-	            if (espaciosSS.length > 0) {
-	                $.each(espaciosSS, function(index, item) {
-	                    $("#espaciosSSCheckboxes").append(
-	                        "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-	                    );
-	                });
-	            }
+                // Agregar checkboxes para Pabell&oacute;n E, Piso SS
+                if (espaciosSS.length > 0) {
+                    $.each(espaciosSS, function(index, item) {
+                        $("#espaciosSSCheckboxes").append(
+                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
+                        );
+                    });
+                }
 
-	            // Agregar checkboxes para Pabell&oacute;n E, Piso S1
-	            if (espaciosS1.length > 0) {
-	                $.each(espaciosS1, function(index, item) {
-	                    $("#espaciosS1Checkboxes").append(
-	                        "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-	                    );
-	                });
-	            }
-	        });
+                // Agregar checkboxes para Pabell&oacute;n E, Piso S1
+                if (espaciosS1.length > 0) {
+                    $.each(espaciosS1, function(index, item) {
+                        $("#espaciosS1Checkboxes").append(
+                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
+                        );
+                    });
+                }
+            });
 
-	        // Cargar veh&iacute;culos del usuario y agregar al select
-	        $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function(data) {
-	            $.each(data, function(index, item) {
-	                var marcavehiculo = item.marca + " " + item.modelo;
-	                $("#id_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
-	            });
-	        });
-	    }
+            // Cargar veh&iacute;culos del usuario y agregar al select
+            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function(data) {
+                $.each(data, function(index, item) {
+                    var marcavehiculo = item.marca + " " + item.modelo;
+                    $("#id_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
+                });
+            });
+        }
 
-	    $('#id_form').bootstrapValidator({
-	        message: 'Este valor no es v&aacute;lido',
-	        feedbackIcons: {
-	            valid: 'glyphicon glyphicon-ok',
-	            invalid: 'glyphicon glyphicon-remove',
-	            validating: 'glyphicon glyphicon-refresh'
-	        },
-	        fields: {
-	            vehiculo: {
-	                validators: {
-	                    notEmpty: {
-	                        message: 'Seleccione un veh&iacute;culo.'
-	                    }
-	                }
-	            },
-	            hora: {
-	                validators: {
-	                    notEmpty: {
-	                        message: 'La hora es obligatoria.'
-	                    }
-	                }
-	            },
-	            fechaReserva: {
-	                validators: {
-	                    notEmpty: {
-	                        message: 'La fecha de reserva es obligatoria.'
-	                    }
-	                }
-	            }
-	        }
-	    });
-	</script>
+        $('#id_form').bootstrapValidator({
+            message: 'Este valor no es v&aacute;lido',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                vehiculo: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Seleccione un veh&iacute;culo.'
+                        }
+                    }
+                },
+                hora: {
+                    validators: {
+                        notEmpty: {
+                            message: 'La hora es obligatoria.'
+                        }
+                    }
+                },
+                fechaReserva: {
+                    validators: {
+                        notEmpty: {
+                            message: 'La fecha de reserva es obligatoria.'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
