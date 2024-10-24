@@ -21,31 +21,29 @@
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrapValidator.css"/>
 
-    <title>Registro Veh&iacute;culo</title>
+    <title>Registro Veh&iacuteculo</title>
 
     <style>
         /* Estilos para centrar el formulario */
         .form-container {
-            max-width: 600px; /* Aumenta el ancho del formulario */
+            max-width: 600px;
             margin: 50px auto;
-            background-color: #ffffff;
-            padding: 40px;
-            border: 5px solid #007bff; /* Borde grueso alrededor del formulario */
+            background-color: #f9f9f9;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            box-sizing: border-box;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
         h4 {
             text-align: center;
             margin-bottom: 20px;
         }
         body {
-            padding-top: 90px; /* Altura de la navbar */
-        }
-        .navbar-fixed-top {
-            height: 100px; /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
-        }
+        padding-top: 90px; /* Altura de la navbar */
+    }
+
+    .navbar-fixed-top {
+        height: 100px; /* Ajusta la altura de tu navbar seg&uacute;n sea necesario */
+    }
     </style>
 </head>
 <body>
@@ -53,22 +51,15 @@
 
     <div class="container">
         <div class="form-container">
-            <h4>Registro de Veh&iacute;culo</h4> <!-- Moved inside the form-container -->
-
+            <h4>Registro de Veh&iacuteculo</h4>
             <form id="id_form" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label class="control-label" for="id_tipoVehiculo">Tipo</label>
-                    <select class="form-control" id="id_tipoVehiculo" name="tipoVehiculo">
-                        <option value="0">Moto</option>
-                        <option value="1">Carro</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label" for="id_reservaEspacio">Reserva de Espacios</label>
-                    <input class="form-control" type="text" id="id_reservaEspacio" name="reservaEspacio" placeholder="Ingrese la reserva de espacio">
-                </div>
-
+				<div class="form-group">
+				    <label class="control-label" for="id_tipoVehiculo">Tipo</label>
+				    <select class="form-control" id="id_tipoVehiculo" name="tipoVehiculo">
+				        <option value="0">Moto</option>
+				        <option value="1">Carro</option>
+				    </select>
+				</div>
                 <div class="form-group">
                     <label class="control-label" for="id_marca">Marca</label>
                     <input class="form-control" type="text" id="id_marca" name="marca" placeholder="Ingrese la marca">
@@ -88,11 +79,12 @@
                     <label class="control-label" for="id_color">Color</label>
                     <input class="form-control" type="text" id="id_color" name="color" placeholder="Ingrese el color" maxlength="50">
                 </div>
-
+                
                 <div class="form-group">
                     <label class="control-label" for="id_imagen">Imagen</label>
                     <input class="form-control-file" type="file" id="id_imagen" name="file" accept="image/*">
                 </div>
+				
 
                 <div class="form-group text-center">
                     <button id="id_registrar" type="button" class="btn btn-primary">Registrar</button>
@@ -102,7 +94,7 @@
     </div>
 
     <script type="text/javascript">
-        // Validaci&oacute;n y env&iacute;o del formulario
+        // Validaci&oacute;n y env&iacuteo del formulario
         $("#id_registrar").click(function() {
             var validator = $('#id_form').data('bootstrapValidator');
             validator.validate();
@@ -119,13 +111,13 @@
                         if(data && data.MENSAJE) {
                             mostrarMensaje(data.MENSAJE);
                         } else {
-                            mostrarMensaje("Ocurri&oacute; un error inesperado.");
+                            mostrarMensaje("Ocurri&oacute;un error inesperado.");
                         }
                         validator.resetForm();
                         limpiarFormulario();
                     },
                     error: function() {
-                        mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
+                        mostrarMensaje("Ocurri&oacute;un error al procesar la solicitud.");
                     },
                     complete: function() {
                         $("#id_registrar").prop('disabled', false); // Habilitar nuevamente
@@ -140,7 +132,6 @@
             $('#id_placa').val('');
             $('#id_color').val('');
             $('#id_imagen').val(''); // Limpiar campo de imagen
-            $('#id_reservaEspacio').val(''); // Limpiar campo de reserva
         }
 
         // Validaci&oacute;n del formulario con Bootstrap Validator
@@ -192,13 +183,6 @@
                     validators: {
                         notEmpty: {
                             message: 'El color es obligatorio'
-                        }
-                    }
-                },
-                reservaEspacio: {
-                    validators: {
-                        notEmpty: {
-                            message: 'La reserva de espacio es obligatoria'
                         }
                     }
                 }
