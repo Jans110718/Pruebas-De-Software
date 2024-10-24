@@ -1,6 +1,7 @@
 package com.centroinformacion.repository;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +19,6 @@ public interface SolicitudIngresoRepository extends JpaRepository<Solicitud, Int
 		     + "(s.fechaReserva >= ?3) AND "
 		     + "(s.fechaReserva <= ?4)")
 		List<Solicitud> listaConsultaSolicitudAvanzado(int idEspacio, int tipoVehiculo, Date fecDesde, Date fecHasta);
+    Optional<Solicitud> findById(Integer idSolicitud);
 
 }

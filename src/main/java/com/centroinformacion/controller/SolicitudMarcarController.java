@@ -2,6 +2,7 @@ package com.centroinformacion.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.apachecommons.CommonsLog;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -15,16 +16,23 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.centroinformacion.entity.Espacio;
 import com.centroinformacion.entity.Solicitud;
+import com.centroinformacion.entity.Usuario;
+import com.centroinformacion.service.EspacioService;
 import com.centroinformacion.service.SolicitudService;
+import com.centroinformacion.util.AppSettings;
 
 @CommonsLog
 @Controller
@@ -32,6 +40,9 @@ import com.centroinformacion.service.SolicitudService;
 public class SolicitudMarcarController {
 	@Autowired
     private SolicitudService solicitudService;
+	@Autowired
+    private EspacioService espacioService;
+
 	@GetMapping("/consultaSolicitud")
 	@ResponseBody
 	public List<Solicitud> consulta(
@@ -75,6 +86,7 @@ public class SolicitudMarcarController {
                     e.printStackTrace();	        // Aqu&iacute; puedes manejar la excepci&oacute;n seg&uacute;n sea necesario
 	    }
 	}
+	 
 
 
 }
