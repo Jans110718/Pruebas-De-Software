@@ -398,17 +398,20 @@
         }
 
         function actualizarComboBox(vehiculo) {
-            $("#espaciosS1CheckboxesActualiza").empty(); // Limpiar los checkboxes S1
-            $("#espaciosSSCheckboxesActualiza").empty(); // Limpiar los checkboxes SS
+            // Limpiar los elementos en el DOM
+            $("#espaciosS1CheckboxesActualiza").empty();
+            $("#espaciosSSCheckboxesActualiza").empty();
             $("#espaciosS1Checkboxes").empty();
             $("#espaciosSSCheckboxes").empty();
-            $("#id_vehiculo").empty(); // Limpiar el select de vehículos
-            $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>"); // Opción predeterminada
+            $("#id_vehiculo").empty();
+            $("#id_vehiculo").append("<option value=''>[Seleccione]</option>");
+            $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+
+            // Obtener la lista de espacios para registro
             $.getJSON("listaEspacio", {}, function (data) {
                 var espaciosSS = [];
                 var espaciosS1 = [];
 
-                // Separar espacios seg&uacute;n el pabell&oacute;n y piso
                 $.each(data, function (index, item) {
                     if (item.piso === "SS") {
                         espaciosSS.push(item);
@@ -417,30 +420,35 @@
                     }
                 });
 
-                // Agregar checkboxes para Pabell&oacute;n E, Piso SS
+                // Crear checkboxes para Pabellón E, Piso SS (registro)
                 if (espaciosSS.length > 0) {
                     $.each(espaciosSS, function (index, item) {
                         $("#espaciosSSCheckboxes").append(
-                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
+                            "<label><input type='checkbox' class='checkbox-espacio-reg' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
                         );
                     });
                 }
 
-                // Agregar checkboxes para Pabell&oacute;n E, Piso S1
+                // Crear checkboxes para Pabellón E, Piso S1 (registro)
                 if (espaciosS1.length > 0) {
                     $.each(espaciosS1, function (index, item) {
                         $("#espaciosS1Checkboxes").append(
-                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
+                            "<label><input type='checkbox' class='checkbox-espacio-reg' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
                         );
                     });
                 }
+
+                // Solo permitir una selección de checkbox en el registro
+                $(".checkbox-espacio-reg").on("change", function () {
+                    $(".checkbox-espacio-reg").not(this).prop("checked", false);
+                });
             });
-            // Cargar lista de espacios
+
+            // Obtener lista de espacios para actualización
             $.getJSON("listaEspacios", {}, function (data) {
                 var espaciosSSActualiza = [];
                 var espaciosS1Actualiza = [];
 
-                // Separar espacios según el pabellón y piso
                 $.each(data, function (index, item) {
                     if (item.piso === "SS") {
                         espaciosSSActualiza.push(item);
@@ -449,20 +457,19 @@
                     }
                 });
 
-                // Agregar checkboxes para Pabellón SS
+                // Crear checkboxes para Pabellón SS (actualización)
                 if (espaciosSSActualiza.length > 0) {
                     $.each(espaciosSSActualiza, function (index, item) {
                         var checkbox = "<label";
 
-                        // Si el espacio está reservado (estado_reserva = 1), añadir clase de CSS y deshabilitar el checkbox
                         if (item.estado_reserva === 1) {
                             checkbox += " class='checkbox-reservado'";
                         }
 
-                        checkbox += "><input type='checkbox' name='espacio' value='" + item.idEspacio + "'";
+                        checkbox += "><input type='checkbox' class='checkbox-espacio-act' name='espacio' value='" + item.idEspacio + "'";
 
                         if (item.estado_reserva === 1) {
-                            checkbox += " disabled"; // Deshabilitar el checkbox si está reservado
+                            checkbox += " disabled";
                         }
 
                         checkbox += "> " + item.numero + "</label>";
@@ -471,20 +478,19 @@
                     });
                 }
 
-                // Agregar checkboxes para Pabellón S1
+                // Crear checkboxes para Pabellón S1 (actualización)
                 if (espaciosS1Actualiza.length > 0) {
                     $.each(espaciosS1Actualiza, function (index, item) {
                         var checkbox = "<label";
 
-                        // Si el espacio está reservado (estado_reserva = 1), añadir clase de CSS y deshabilitar el checkbox
                         if (item.estado_reserva === 1) {
                             checkbox += " class='checkbox-reservado'";
                         }
 
-                        checkbox += "><input type='checkbox' name='espacio' value='" + item.idEspacio + "'";
+                        checkbox += "><input type='checkbox' class='checkbox-espacio-act' name='espacio' value='" + item.idEspacio + "'";
 
                         if (item.estado_reserva === 1) {
-                            checkbox += " disabled"; // Deshabilitar el checkbox si está reservado
+                            checkbox += " disabled";
                         }
 
                         checkbox += "> " + item.numero + "</label>";
@@ -492,26 +498,27 @@
                         $("#espaciosS1CheckboxesActualiza").append(checkbox);
                     });
                 }
+                // Solo permitir una selección de checkbox en la actualización
+                $(".checkbox-espacio-act").on("change", function () {
+                    $(".checkbox-espacio-act").not(this).prop("checked", false);
+                });
             });
 
-            // Cargar los vehículos del usuario y seleccionar el vehículo correspondiente
-            $.getJSON(`listaVehiculosUsuario/${idUsuario}`, function (data, item) {
-                // Agregar opciones al select
+            // Cargar vehículos del usuario en el select de actualización y seleccionar el vehículo correspondiente
+            $.getJSON(`listaVehiculosUsuario/${idUsuario}`, function (data) {
                 $.each(data, function (index, item) {
                     var marcavehiculo = item.marca + " " + item.modelo;
                     $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
                 });
 
-                // Seleccionar el vehículo correspondiente si está disponible
                 if (vehiculo) {
-                    $('#id_act_vehiculo').val(vehiculo); // Selecciona el vehículo
+                    $('#id_act_vehiculo').val(vehiculo);
                 }
             });
 
-            // Cargar vehículos del usuario y agregar al select
+            // Cargar vehículos del usuario en el select de registro
             $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
-                $("#id_reg_vehiculo").empty(); // Limpiar el select antes de agregar nuevas opciones
-                // Agregar la opción "Seleccione"
+                $("#id_reg_vehiculo").empty();
                 $("#id_reg_vehiculo").append("<option value=''>[Seleccione]</option>");
                 $.each(data, function (index, item) {
                     var marcavehiculo = item.marca + " " + item.modelo;
