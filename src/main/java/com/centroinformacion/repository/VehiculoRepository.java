@@ -47,9 +47,8 @@ public interface VehiculoRepository extends JpaRepository<Vehiculo, Integer> {
             + "( v.modelo like ?3 or v.marca like ?3 ) and "
             + "( v.fechaRegistro >= ?4 ) and "
             + "( v.fechaRegistro <= ?5 ) and "
-            + "( v.color like ?6 ) and "
-            + "( v.placa like ?7 )")
-    public abstract List<Vehiculo> listaConsultaVehiculo(int estado, int idUsuarioRegistro, String filtroModeloMarca, Date fechaDesde, Date fechaHasta, String color, String placa);
+            + "( v.placa like ?6 )")
+    public abstract List<Vehiculo> listaConsultaVehiculo(int estado, int idUsuarioRegistro, String filtroModeloMarca, Date fechaDesde, Date fechaHasta, String placa);
 
     // Consulta para b&uacute;squeda por modelo, marca o combinaci&oacute;n de ambos
     @Query("select v from Vehiculo v where "

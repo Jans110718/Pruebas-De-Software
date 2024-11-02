@@ -35,7 +35,7 @@ public interface VehiculoService {
 
     // Consultas avanzadas
     // Lista veh&iacuteculos con m&uacute;ltiples filtros: estado, usuario, modelo, marca, fechas, color y placa
-    public abstract List<Vehiculo> listaConsultaVehiculo(int estado, int idUsuarioRegistro, String filtroModeloMarca, Date fechaDesde, Date fechaHasta, String color, String placa);
+    public abstract List<Vehiculo> listaConsultaVehiculo(int estado, int idUsuarioRegistro, String filtroModeloMarca, Date fechaDesde, Date fechaHasta, String placa);
 
     // Consulta paginada por modelo, marca o concatenaci&oacute;n de ambos
     public abstract List<Vehiculo> listaVehiculo(String filtro, Pageable pageable);

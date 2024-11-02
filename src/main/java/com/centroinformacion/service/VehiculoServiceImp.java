@@ -44,8 +44,8 @@ public class VehiculoServiceImp implements VehiculoService {
 
     @Override
     public List<Vehiculo> listaConsultaVehiculo(int estado, int idUsuarioRegistro, String filtroModeloMarca, Date fechaDesde,
-            Date fechaHasta, String color, String placa) {
-        return repository.listaConsultaVehiculo(estado, idUsuarioRegistro, filtroModeloMarca, fechaDesde, fechaHasta, color, placa);
+            Date fechaHasta, String placa) {
+        return repository.listaConsultaVehiculo(estado, idUsuarioRegistro, filtroModeloMarca, fechaDesde, fechaHasta, placa);
     }
 
     @Override

@@ -69,7 +69,7 @@ public class VehiculoRegistroController {
         } else {
             map.put("MENSAJE", "Veh&iacuteculo registrado exitosamente");
             
-          
+    
         }
         return map;
     }

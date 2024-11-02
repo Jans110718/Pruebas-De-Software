@@ -38,8 +38,10 @@ public class Vehiculo {
     private String modelo;
     private String placa;
     private String marca;
-    private String color;
     private String imagen;
+    private String tipo;
+    private String tipoVehiculo;
+
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
@@ -51,7 +53,6 @@ public class Vehiculo {
     private Date fechaActualizacion;
 
     private int estado;
-    private int tipoVehiculo;
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     @ManyToOne(fetch = FetchType.LAZY)
