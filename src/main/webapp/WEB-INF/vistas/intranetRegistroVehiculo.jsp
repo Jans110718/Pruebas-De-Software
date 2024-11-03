@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrapValidator.css" />
 
-    <title>Registro Vehículo</title>
+    <title>Registro Veh&iacute;culo</title>
 
     <style>
         .form-container {
@@ -54,13 +54,13 @@
 
     <div class="container">
         <div class="form-container">
-            <h4>Registro de Vehículo</h4>
+            <h4>Registro de Veh&iacute;culo</h4>
             <form id="id_form" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="control-label" for="id_tipoVehiculo">Tipo</label>
                     <select class="form-control" id="id_tipoVehiculo" name="tipoVehiculo" required>
                         <option value="">Seleccione un tipo</option>
-                        <!-- Las opciones se llenarán aquí mediante AJAX -->
+                        <!-- Las opciones se llenar&aacute;n aqu&iacute; mediante AJAX -->
                     </select>
                 </div>
 
@@ -68,7 +68,7 @@
                     <label for="id_marca">Marca:</label>
                     <select id="id_marca" class="form-control" required name="marca">
                         <option value="">Seleccione una marca</option>
-                        <!-- Las marcas se llenarán aquí mediante AJAX -->
+                        <!-- Las marcas se llenar&aacute;n aqu&iacute; mediante AJAX -->
                     </select>
                 </div>
 
@@ -76,7 +76,7 @@
                     <label for="id_modelo">Modelo:</label>
                     <select id="id_modelo" class="form-control" required name="modelo">
                         <option value="">Seleccione un modelo</option>
-                        <!-- Los modelos se llenarán aquí según la marca seleccionada -->
+                        <!-- Los modelos se llenar&aacute;n aqu&iacute; seg&uacute;n la marca seleccionada -->
                     </select>
                 </div>
 
@@ -87,7 +87,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="id_tipo">Tipo de Vehículo:</label>
+                    <label for="id_tipo">Tipo de Veh&iacute;culo:</label>
                     <input type="text" id="id_tipo" class="form-control" readonly name="tipo">
                 </div>
 
@@ -105,7 +105,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            // Cargar tipos de vehículo al iniciar
+            // Cargar tipos de veh&iacute;culo al iniciar
             cargarTiposVehiculo();
 
             function cargarTiposVehiculo() {
@@ -127,12 +127,12 @@
                         });
                     },
                     error: function () {
-                        console.error("Error al cargar los tipos de vehículo.");
+                        console.error("Error al cargar los tipos de veh&iacute;culo.");
                     }
                 });
             }
 
-            // Cargar marcas según el tipo de vehículo seleccionado
+            // Cargar marcas seg&uacute;n el tipo de veh&iacute;culo seleccionado
             $("#id_tipoVehiculo").change(function () {
                 limpiarFormulario(); // Limpiar los datos de los campos al cambiar el tipo
                 cargarMarcas();
@@ -166,12 +166,12 @@
                 });
             }
 
-            // Cargar modelos según la marca seleccionada
+            // Cargar modelos seg&uacute;n la marca seleccionada
             $("#id_marca").change(function () {
                 var marcaSeleccionada = $(this).val();
                 var tipoVehiculoSeleccionado = $("#id_tipoVehiculo").val();
                 if (tipoVehiculoSeleccionado === "") {
-                    alert("Por favor, selecciona primero un tipo de vehículo.");
+                    alert("Por favor, selecciona primero un tipo de veh&iacute;culo.");
                     $(this).val('');
                     $("#id_modelo").empty().append("<option value=''>Seleccione un modelo</option>");
                     return;
@@ -185,7 +185,7 @@
                         $modeloSelect.append("<option value=''>Seleccione un modelo</option>");
 
                         $.each(data, function (index, vehiculo) {
-                            // Filtrar modelos por marca y tipo de vehículo
+                            // Filtrar modelos por marca y tipo de veh&iacute;culo
                             if (vehiculo.marca === marcaSeleccionada && vehiculo.transporte === tipoVehiculoSeleccionado) {
                                 $modeloSelect.append(
                                     "<option value='" + vehiculo.modelo + "' data-tipo='" + vehiculo.tipo + "'>" + vehiculo.modelo + "</option>"
@@ -199,13 +199,13 @@
                 });
             });
 
-            // Actualizar tipo de vehículo al seleccionar un modelo
+            // Actualizar tipo de veh&iacute;culo al seleccionar un modelo
             $("#id_modelo").change(function () {
                 var tipoSeleccionado = $(this).find(':selected').data('tipo');
                 $("#id_tipo").val(tipoSeleccionado);
             });
 
-            // Manejo del envío del formulario
+            // Manejo del env&iacute;o del formulario
             $("#id_registrar").click(function () {
                 var validator = $('#id_form').data('bootstrapValidator');
                 validator.validate();
@@ -222,13 +222,13 @@
                             if (data && data.MENSAJE) {
                                 mostrarMensaje(data.MENSAJE);
                             } else {
-                                mostrarMensaje("Ocurrió un error inesperado.");
+                                mostrarMensaje("Ocurri&oacute; un error inesperado.");
                             }
                             validator.resetForm();
                             limpiarFormulario();
                         },
                         error: function () {
-                            mostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                            mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
                         },
                         complete: function () {
                             $("#id_registrar").prop('disabled', false);
@@ -243,12 +243,12 @@
                 $('#id_placa').val('');
                 $('#id_tipo').val('');
                 $('#id_imagen').val('');
-                $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer el estado de validación
+                $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer el estado de validaci&oacute;n
 
 
             }
 
-            // Validación del formulario con Bootstrap Validator
+            // Validaci&oacute;n del formulario con Bootstrap Validator
             $('#id_form').bootstrapValidator({
                 feedbackIcons: {
                     valid: 'glyphicon glyphicon-ok',
@@ -259,7 +259,7 @@
                     tipoVehiculo: {
                         validators: {
                             notEmpty: {
-                                message: 'El tipo de vehículo es obligatorio'
+                                message: 'El tipo de veh&iacute;culo es obligatorio'
                             }
                         }
                     },
@@ -285,17 +285,17 @@
                             callback: {
                                 message: 'El formato de la placa es incorrecto.',
                                 callback: function (value, validator, $field) {
-                                    // Si el campo está vacío, no hacer la validación de formato
+                                    // Si el campo est&aacute; vac&iacute;o, no hacer la validaci&oacute;n de formato
                                     if (!value) {
                                         return true; // Permitir valores nulos
                                     }
 
-                                    // Obtener el tipo de vehículo seleccionado
+                                    // Obtener el tipo de veh&iacute;culo seleccionado
                                     var tipoVehiculo = $("#id_tipoVehiculo").val();
                                     var regexCarro = /^[A-Z]{3}-\d{3}$/; // Formato para "carro"
                                     var regexOtro = /^[A-Z]{2}-\d{4}$/;  // Formato para otros tipos
 
-                                    // Validar el formato de la placa seg&uacute;n el tipo de vehículo
+                                    // Validar el formato de la placa seg&uacute;n el tipo de veh&iacute;culo
                                     if (tipoVehiculo === "CARRO") {
                                         if (!regexCarro.test(value)) {
                                             return {
