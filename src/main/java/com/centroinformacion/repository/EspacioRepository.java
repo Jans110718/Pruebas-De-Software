@@ -33,7 +33,7 @@ public interface EspacioRepository extends JpaRepository<Espacio, Integer> {
 
     // Buscar espacios por n&uacute;mero, excluyendo el espacio actual
     @Query("SELECT e FROM Espacio e WHERE e.numero = ?1 AND e.idEspacio != ?2")
-    List<Espacio> listaPorNumeroIgualActualiza(String numero, int id);
+    List<Espacio> listaPorNumeroIgualActualiza(String numero, int idEspacio);
 
     // Consultar espacios con filtros
     @Query("SELECT e FROM Espacio e WHERE " +

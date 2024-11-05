@@ -42,8 +42,8 @@ public class EspacioServiceImp implements EspacioService {
     }
 
     @Override
-    public List<Espacio> listaPorNumeroIgualActualiza(String numero, int id) {
-        return repository.listaPorNumeroIgualActualiza(numero, id);
+    public List<Espacio> listaPorNumeroIgualActualiza(String numero, int idEspacio) {
+        return repository.listaPorNumeroIgualActualiza(numero, idEspacio);
     }
 
     @Override
@@ -78,8 +78,8 @@ public class EspacioServiceImp implements EspacioService {
 	}
 
 	@Override
-	public Espacio obtenerEspacioPorId(Integer id) {
+	public Espacio obtenerEspacioPorId(Integer idEspacio) {
 		// TODO Auto-generated method stub
-		return repository.findById(id).orElse(null);
+		return repository.findById(idEspacio).orElse(null);
 	}
 }

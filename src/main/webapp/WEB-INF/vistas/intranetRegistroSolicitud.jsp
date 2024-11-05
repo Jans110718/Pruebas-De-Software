@@ -112,13 +112,18 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label class="control-label" for="id_fecha_reserva">Fecha Reserva</label>
+                        <input class="form-control" type="date" id="id_fecha_reserva" name="fechaReserva" required
+                            min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
+                            max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date(System.currentTimeMillis() + 86400000)) %>">
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="control-label" for="id_hora">Hora</label>
                         <input class="form-control" type="time" id="id_hora" name="hora" required>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label" for="id_fecha_reserva">Fecha Reserva</label>
-                        <input class="form-control" type="date" id="id_fecha_reserva" name="fechaReserva" required>
-                    </div>
+
+
                     <label class="control-label" for="id_Espacios">Espacios</label>
                 </div>
             </div>
@@ -152,9 +157,21 @@
         var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
         console.log("ID de Usuario:", idUsuario); // Imprimir el idUsuario en la consola
 
+
         $(document).ready(function () {
             actualizarComboBox(); // Cargar datos solo una vez al inicio
+            // Evento para habilitar el campo de hora cuando se selecciona una fecha
+            // Inicialmente deshabilitar el campo de hora
+            $('#id_hora').prop('disabled', true);
 
+            // Evento para habilitar el campo de hora cuando se selecciona una fecha
+            $('#id_fecha_reserva').change(function () {
+                if ($(this).val()) {
+                    $('#id_hora').prop('disabled', false); // Habilitar el campo de hora
+                } else {
+                    $('#id_hora').prop('disabled', true); // Deshabilitar si no hay fecha seleccionada
+                }
+            });
             $("#id_registrar").click(function () {
                 var validator = $('#id_form').data('bootstrapValidator');
                 validator.validate();
@@ -163,6 +180,7 @@
                     var espaciosSeleccionados = [];
                     $('input[name="espacio"]:checked').each(function () {
                         espaciosSeleccionados.push($(this).val());
+
                     });
 
                     // Agregar espacios seleccionados a los datos que se env&iacute;an
@@ -170,18 +188,20 @@
                         type: "POST",
                         url: "registraSolicitud", // Cambiar a la URL correspondiente
                         data: $('#id_form').serialize() + "&espacios=" + espaciosSeleccionados.join(','),
-                        success: function (data) {
+                        success: function(data) {
                             mostrarMensaje(data.MENSAJE);
                             limpiarFormulario(); // Limpiar y actualizar ComboBox
                             validator.resetForm();
                         },
-                        error: function () {
-                            mostrarMensaje("Error en la reserva. Int&eacute;ntalo de nuevo.");
+                        error: function() {
+                            mostrarMensaje("Error en la reserva. Inténtalo de nuevo.");
                         }
                     });
                 }
             });
         });
+
+
 
         function limpiarFormulario() {
             $('#id_form')[0].reset();
@@ -213,7 +233,7 @@
                 if (espaciosSS.length > 0) {
                     $.each(espaciosSS, function (index, item) {
                         $("#espaciosSSCheckboxes").append(
-                            "<label><input type='checkbox' name='espacioUnico' value='" + item.idEspacio + "'> " + item.numero + "</label>"
+                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
                         );
                     });
                 }
@@ -222,14 +242,14 @@
                 if (espaciosS1.length > 0) {
                     $.each(espaciosS1, function (index, item) {
                         $("#espaciosS1Checkboxes").append(
-                            "<label><input type='checkbox' name='espacioUnico' value='" + item.idEspacio + "'> " + item.numero + "</label>"
+                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
                         );
                     });
                 }
 
                 // Evento para permitir solo una selección entre todos los checkboxes
-                $("input[name='espacioUnico']").on("change", function () {
-                    $("input[name='espacioUnico']").not(this).prop("checked", false);
+                $("input[name='espacio']").on("change", function () {
+                    $("input[name='espacio']").not(this).prop("checked", false);
                 });
             });
 
@@ -262,9 +282,48 @@
                     validators: {
                         notEmpty: {
                             message: 'La hora es obligatoria.'
+                        },
+                        callback: {
+                            message: 'La hora debe estar entre 07:00 am y 8:00 pm.',
+                            callback: function (value, validator) {
+                                var fechaReserva = $('#id_fecha_reserva').val();
+                                if (!fechaReserva) {
+                                    return {
+                                        valid: false,
+                                        message: 'No se puede validar la hora sin una fecha.'
+                                    }; // Retorna el mensaje específico si no hay fecha
+                                }
+
+                                var fechaCompleta = new Date(fechaReserva + "T" + value + ":00");
+                                var minHora = new Date(fechaReserva + "T07:00:00");
+                                var maxHora = new Date(fechaReserva + "T20:00:00"); // 8:00 pm
+
+                                // Validar que la hora no sea menor a la hora actual, ignorando segundos
+                                var fechaActual = new Date();
+                                fechaActual.setSeconds(0);
+                                fechaActual.setMilliseconds(0);
+
+                                if (fechaCompleta < fechaActual) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora seleccionada (' + value + ') es anterior a la hora actual.'
+                                    }; // Retorna un mensaje dinámico si es menor a la hora actual
+                                }
+
+                                // Validar que la hora esté entre el rango permitido
+                                if (fechaCompleta < minHora || fechaCompleta > maxHora) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora debe estar entre 07:00 am y 8:00 pm.'
+                                    }; // Retorna el mensaje de rango
+                                }
+
+                                return true; // La validación pasa
+                            }
                         }
                     }
                 },
+
                 fechaReserva: {
                     validators: {
                         notEmpty: {
@@ -274,6 +333,23 @@
                 }
             }
         });
+        $('#id_hora').on('change', function () {
+            $('#id_form').bootstrapValidator('revalidateField', 'hora');
+        });
+        function validarFechaHora() {
+            var fechaReserva = $('#id_fecha_reserva').val();
+            var horaReserva = $('#id_hora').val();
+
+            if (fechaReserva && horaReserva) {
+                var fechaActual = new Date();
+                var fechaReservaActual = new Date(fechaReserva + 'T' + horaReserva + ':00');
+
+                if (fechaReservaActual < fechaActual) {
+                    return false; // La hora es inválida
+                }
+            }
+            return true; // La validación es correcta
+        }
     </script>
 </body>
 

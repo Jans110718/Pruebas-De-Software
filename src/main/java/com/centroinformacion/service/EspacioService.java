@@ -43,6 +43,6 @@ public interface EspacioService {
     
     // Actualizar un espacio
     Espacio actualizarEspacio(Espacio espacio);
-    Espacio obtenerEspacioPorId(Integer id); // Cambia Integer al tipo de ID que uses
+    Espacio obtenerEspacioPorId(Integer idEspacio); // Cambia Integer al tipo de ID que uses
 
 }
