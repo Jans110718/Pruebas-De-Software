@@ -143,10 +143,10 @@
                             <thead>
                                 <tr>
                                     <th style="width: 8%">ID</th>
+                                    <th style="width: 8%">Nombres</th>
                                     <th style="width: 18%">Marca y modelo</th>
                                     <th style="width: 15%">Tipo Vehículo</th>
-                                    <th style="width: 12%">Número</th>
-                                    <th style="width: 10%">Hora</th>
+                                    <th style="width: 08%">Número</th>
                                     <th style="width: 15%">Fecha reserva</th>
                                     <th style="width: 7%">Actualizar</th>
                                     <th style="width: 10%">Entrada y Salida</th>
@@ -233,6 +233,7 @@
         </div>
     </div>
 
+
     <!-- Modal para actualizar -->
     <div class="modal fade" id="id_div_modal_actualiza">
         <div class="modal-dialog" style="width: 60%">
@@ -307,6 +308,84 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="id_div_modal_detalle">
+    <div class="modal-dialog" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 35px 50px">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4><span class="glyphicon glyphicon-ok-sign"></span> Detalle de la Solicitud</h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 10px;">
+                <form id="id_form_detalle" accept-charset="UTF-8" action="insertaActualizaSolicitud"
+                    class="form-horizontal" method="post">
+                    <input type="hidden" id="modo" value="detalle"> <!-- Establecer el modo a detalle -->
+                    <div class="panel-group" id="steps">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#steps" href="#stepDetail">Datos de la solicitud</a>
+                                </h4>
+                            </div>
+                            <div id="stepDetail" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label class="col-lg-3 control-label" for="id_ID">ID</label>
+                                        <div class="col-lg-6">
+                                            <input class="form-control" id="id_ID" readonly="readonly"
+                                                name="idSolicitud" type="text" maxlength="8" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_act_vehiculo">Vehículo</label>
+                                        <select id="id_act_vehiculo" name="vehiculo" class="form-control" disabled>
+                                            <option value="">[Seleccione]</option>
+                                            <!-- Agregar opciones aquí -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_act_hora">Hora</label>
+                                        <input class="form-control" type="time" id="id_act_hora" name="hora"
+                                            readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_act_fechaReserva">Fecha Reserva</label>
+                                        <input class="form-control" type="date" id="id_act_fechaReserva"
+                                            name="fechaReserva" readonly="readonly">
+                                    </div>
+                                    <label class="control-label" for="id_Espacios">Espacios</label>
+                                </div>
+                            </div>
+                            <div class="espacio-container" style="margin-top: 20px;">
+                                <div>
+                                    <h5>Pabellón E - Piso SS</h5>
+                                    <div class="checkbox-group" id="espaciosSSCheckboxesDetalle">
+                                        <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5>Pabellón E - Piso S1</h5>
+                                    <div class="checkbox-group" id="espaciosS1CheckboxesDetalle">
+                                        <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-9 col-lg-offset-3">
+                                <button type="button" class="btn btn-success" id="id_btn_entrada">Registrar Entrada</button>
+                                <button type="button" class="btn btn-danger" id="id_btn_salida">Registrar Salida</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
     </div>
     <script type="text/javascript">
         var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
@@ -390,6 +469,21 @@
 
             // Muestra el modal de actualización
             $('#id_div_modal_actualiza').modal("show");
+        }
+        function detalles(idSolicitud, vehiculo, hora, fechaReserva, numero) {
+
+            // Asigna los valores a los campos del modal de actualización
+            $('#id_ID').val(idSolicitud);
+            $('#id_act_vehiculo').val(vehiculo);
+            $('#id_act_hora').val(hora);
+            $('#id_act_fechaReserva').val(fechaReserva);
+
+
+            // Cargar los vehículos y seleccionar el correspondiente
+            actualizarComboBox(vehiculo); // Pasa el vehículo a seleccionar
+
+            // Muestra el modal de actualización
+            $('#id_div_modal_detalles').modal("show");
         }
 
         function limpiarFormulario() {
@@ -653,6 +747,7 @@
                 lengthChange: false,
                 columns: [
                     { data: "idSolicitud" },
+                    { data: "usuarioRegistro.nombres" },
                     {
                         data: function (row) {
                             return row.vehiculo.marca + ' ' + row.vehiculo.modelo; // Combina marca y modelo
@@ -666,8 +761,12 @@
                         className: 'text-center'
                     },
                     { data: "espacio.numero" },
-                    { data: "hora" },
-                    { data: "fechaReserva" },
+                    {
+                        data: function (row) {
+                            return row.hora + ' ' + row.fechaReserva;
+                        },
+                        className: 'text-center'
+                    },
                     {
                         data: function (row) {
                             // Verificar si el estado de la solicitud es 0
@@ -724,6 +823,8 @@
                 success: function (data) {
                     mostrarMensaje(data.MENSAJE);  // Aquí se está accediendo a la clave "MENSAJE" de la respuesta
                     actualizarComboBox()
+                    $('#id_btn_filtra').click();    // Activa el botón de filtro automáticamente
+
 
                 },
                 error: function () {
@@ -744,6 +845,8 @@
                 success: function (data) {
                     mostrarMensaje(data.MENSAJE);  // Aquí se está accediendo a la clave "MENSAJE" de la respuesta
                     actualizarComboBox()
+                    $('#id_btn_filtra').click();    // Activa el botón de filtro automáticamente
+
 
                 },
                 error: function () {
@@ -751,6 +854,7 @@
                 }
             });
         }
+
 
     </script>
 </body>
