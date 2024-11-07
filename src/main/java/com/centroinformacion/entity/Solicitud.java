@@ -62,8 +62,20 @@ public class Solicitud {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora para binding
     private Date fechaHoraSalida; // Fecha y hora de salida
+    
+    // Nuevos campos para fecha y hora de entrada y salida
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora para binding
+    private Date fechaHoraAceptacion; // Fecha y hora de entrada
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Formato de fecha y hora para binding
+    private Date fechaHoraRechazo; // Fecha y hora de salida
 
     private int estado; // Estado de la solicitud
+    private int estadoEspecial; // Estado de la solicitud
 
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) // Ignorar propiedades de Hibernate
     @ManyToOne(fetch = FetchType.LAZY) // Relaci&oacute;n con la entidad Vehiculo
@@ -88,6 +100,8 @@ public class Solicitud {
 
     private int entrada; // Campo para marcar entrada (0= no marcado, 1= marcado)
     private int salida; // Campo para marcar salida (0= no marcado, 1= marcado)
+    private int aceptar; // Campo para marcar aceptar (0= no marcado, 1= marcado)
+    private int rechazar; // Campo para marcar rechazar (0= no marcado, 1= marcado)
     
     
     public String getreporteVehiculo() {

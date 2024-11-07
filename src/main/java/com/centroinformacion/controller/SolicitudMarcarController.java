@@ -24,12 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.centroinformacion.entity.Espacio;
 import com.centroinformacion.entity.Solicitud;
 import com.centroinformacion.entity.Usuario;
+import com.centroinformacion.repository.SolicitudIngresoRepository;
+import com.centroinformacion.repository.UsuarioHasRolRepository;
 import com.centroinformacion.service.EspacioService;
 import com.centroinformacion.service.SolicitudService;
 import com.centroinformacion.util.AppSettings;
@@ -41,6 +44,8 @@ public class SolicitudMarcarController {
     private SolicitudService solicitudService;
 	@Autowired
     private EspacioService espacioService;
+	  @Autowired
+	    private SolicitudIngresoRepository solicitudIngresoRepository;
 
 	@GetMapping("/consultaSolicitud")
 	@ResponseBody
@@ -84,7 +89,6 @@ public class SolicitudMarcarController {
                     e.printStackTrace();	        // Aqu&iacute; puedes manejar la excepci&oacute;n seg&uacute;n sea necesario
 	    }
 	}
-	 
 
 
 }

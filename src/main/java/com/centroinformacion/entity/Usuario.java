@@ -1,13 +1,16 @@
 package com.centroinformacion.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -43,4 +46,7 @@ public class Usuario {
 	public String getNombreCompleto() {
 		return nombres.concat(" ").concat(apellidos);
 	}
+	@JsonManagedReference
+	@OneToMany(mappedBy = "usuario")
+	private List<UsuarioHasRol> usuarioHasRol;
 }

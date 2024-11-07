@@ -1,5 +1,7 @@
 package com.centroinformacion.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -17,7 +19,7 @@ public class UsuarioHasRol {
 
 	@EmbeddedId
 	private UsuarioHasRolPK usuarioHasRolPk;
-
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "idUsuario", nullable = false, insertable = false, updatable = false)
 	private Usuario usuario;

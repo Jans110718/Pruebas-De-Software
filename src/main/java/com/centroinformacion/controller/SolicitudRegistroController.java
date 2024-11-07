@@ -2,6 +2,7 @@ package com.centroinformacion.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,11 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.centroinformacion.entity.Solicitud;
 import com.centroinformacion.entity.Espacio;
 import com.centroinformacion.entity.Usuario;
+import com.centroinformacion.entity.UsuarioHasRol;
+import com.centroinformacion.repository.UsuarioHasRolRepository;
 import com.centroinformacion.service.EspacioService;
 import com.centroinformacion.service.SolicitudService; // Servicio para manejar solicitudes
 import com.centroinformacion.util.AppSettings;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 
 @Controller
 public class SolicitudRegistroController {
@@ -26,7 +30,8 @@ public class SolicitudRegistroController {
     private SolicitudService solicitudService; // Cambia el nombre del servicio para gestionar solicitudes
     @Autowired
     private EspacioService espacioService;
-
+    @Autowired
+    private UsuarioHasRolRepository usuarioHasRolRepository;
     @PostMapping("/registraSolicitud")
     @ResponseBody
     public Map<String, Object> registraSolicitud(Solicitud obj, HttpSession session) {
@@ -57,8 +62,18 @@ public class SolicitudRegistroController {
         espacio.setEstado_reserva(1);
         espacioService.actualizarEspacio(espacio);
 
-        // Configurar la solicitud
-        obj.setEstado(AppSettings.ACTIVO);
+        // Configurar el estado de la solicitud basado en el ID del usuario
+     // Asumiendo que tienes un servicio o repositorio para llamar a la consulta.
+        List<UsuarioHasRol> rolesDelUsuario = usuarioHasRolRepository.findUsuarioHasRolByRol(4);
+
+        // Verificar si la lista no está vacía, lo que indica que el usuario tiene el rol 4
+        if (!rolesDelUsuario.isEmpty()) {
+            obj.setEstadoEspecial(1);
+            obj.setEstado(AppSettings.INACTIVO);
+        } else {
+            obj.setEstadoEspecial(0);
+        }
+        // Configurar otros campos de la solicitud
         obj.setUsuarioRegistro(objUsuario); // Usa el usuario de la sesión
         obj.setUsuarioActualiza(objUsuario); // Usa el usuario de la sesión
         obj.setFechaRegistro(new Date());
@@ -79,6 +94,7 @@ public class SolicitudRegistroController {
         map.put("MENSAJE", "Registro de solicitud exitoso");
         return map;
     }
+
 
 
     @PostMapping("/actualizaSolicitud")
@@ -189,6 +205,60 @@ public class SolicitudRegistroController {
     }
    
 
+    @ResponseBody
+    @PostMapping("/validarSolicitudEspecial")
+    public Map<String, Object> validarSolicitudEspecial(int idSolicitud, String accion,HttpSession session) {
+        HashMap<String, Object> map = new HashMap<>();
+
+        // Buscar la solicitud por ID
+        Solicitud objSolicitud = solicitudService.buscaSolicitud(idSolicitud).orElse(null);
+        if (objSolicitud == null) {
+            map.put("MENSAJE", "Solicitud no encontrada");
+            return map;
+        }
+
+        // Obtener el espacio asociado a la solicitud
+        Espacio espacio = objSolicitud.getEspacio();
+        if (espacio == null) {
+            map.put("MENSAJE", "Espacio no asociado a la solicitud");
+            return map;
+        }
+        // Obtener el usuario de la sesión
+        Usuario objUsuario = (Usuario) session.getAttribute("objUsuario");
+        if (objUsuario == null) {
+            map.put("MENSAJE", "Usuario no autenticado");
+            return map;
+        }
+
+        // Registrar la entrada o salida según la acción
+        if ("aceptar".equalsIgnoreCase(accion)) {
+        	 objSolicitud.setFechaHoraEntrada(new Date()); // Registrar la fecha y hora de entrada
+             objSolicitud.setAceptar(1); // Cambiar el atributo entrada a 1
+             objSolicitud.setEstadoEspecial(0);
+             objSolicitud.setEstado(AppSettings.ACTIVO);
+             espacio.setEstado_reserva(1);
+
+             map.put("MENSAJE", "Se acepto la solicitud exitosamente");
+        } else if ("rechazar".equalsIgnoreCase(accion)) {
+            objSolicitud.setFechaHoraSalida(new Date());
+            objSolicitud.setRechazar(1);
+            objSolicitud.setEstadoEspecial(1);
+         // Cambiar el estado del espacio a 0 (disponible)
+            espacio.setEstado_reserva(0);
+            espacioService.actualizarEspacio(espacio);
+            // Cambiar el atributo salida a 1
+            // Registrar la fecha y hora de salida
+            // Puedes actualizar otros campos si es necesario
+            map.put("MENSAJE", "Se rechazo la solicitud exitosamente");
+        } else {
+            map.put("MENSAJE", "Acción no válida");
+        }
+
+        // Guardar los cambios en la solicitud
+        solicitudService.insertaActualizaSolicitud(objSolicitud);
+
+        return map;
+    }
 
   
 }

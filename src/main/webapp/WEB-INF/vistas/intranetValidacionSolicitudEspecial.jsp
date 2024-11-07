@@ -92,7 +92,7 @@
 <body>
     <jsp:include page="intranetCabecera.jsp" />
     <div class="container" style="margin-top: 4%">
-        <h4>Registrar Entrada y Salida</h4>
+        <h4>Validar Solicitud Especial </h4>
     </div>
 
     <div class="container" style="margin-top: 1%">
@@ -150,9 +150,8 @@
                                     <th style="width: 15%">Fecha reserva</th>
                                     <th style="width: 7%">Actualizar</th>
                                     <th style="width: 10%">Entrada y Salida</th>
-                                    <th style="width: 7%">Estado</th>
-                                    <th style="width: 7%">Estado Especial</th>
-
+                                    <th style="width: 8%">Estado</th>
+                                    <th style="width: 8%">Estado Especial</th>
 
 
                                 </tr>
@@ -313,81 +312,84 @@
     </div>
 
     <div class="modal fade" id="id_div_modal_detalle">
-    <div class="modal-dialog" style="width: 60%">
-        <div class="modal-content">
-            <div class="modal-header" style="padding: 35px 50px">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4><span class="glyphicon glyphicon-ok-sign"></span> Detalle de la Solicitud</h4>
-            </div>
-            <div class="modal-body" style="padding: 20px 10px;">
-                <form id="id_form_detalle" accept-charset="UTF-8" action="insertaActualizaSolicitud"
-                    class="form-horizontal" method="post">
-                    <input type="hidden" id="modo" value="detalle"> <!-- Establecer el modo a detalle -->
-                    <div class="panel-group" id="steps">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#steps" href="#stepDetail">Datos de la solicitud</a>
-                                </h4>
-                            </div>
-                            <div id="stepDetail" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label" for="id_ID">ID</label>
-                                        <div class="col-lg-6">
-                                            <input class="form-control" id="id_ID" readonly="readonly"
-                                                name="idSolicitud" type="text" maxlength="8" />
+        <div class="modal-dialog" style="width: 60%">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 35px 50px">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4><span class="glyphicon glyphicon-ok-sign"></span> Detalle de la Solicitud</h4>
+                </div>
+                <div class="modal-body" style="padding: 20px 10px;">
+                    <form id="id_form_detalle" accept-charset="UTF-8" action="insertaActualizaSolicitud"
+                        class="form-horizontal" method="post">
+                        <input type="hidden" id="modo" value="detalle"> <!-- Establecer el modo a detalle -->
+                        <div class="panel-group" id="steps">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#steps" href="#stepDetail">Datos de la
+                                            solicitud</a>
+                                    </h4>
+                                </div>
+                                <div id="stepDetail" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label" for="id_ID">ID</label>
+                                            <div class="col-lg-6">
+                                                <input class="form-control" id="id_ID" readonly="readonly"
+                                                    name="idSolicitud" type="text" maxlength="8" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="id_act_vehiculo">Vehículo</label>
+                                            <select id="id_act_vehiculo" name="vehiculo" class="form-control" disabled>
+                                                <option value="">[Seleccione]</option>
+                                                <!-- Agregar opciones aquí -->
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="id_act_hora">Hora</label>
+                                            <input class="form-control" type="time" id="id_act_hora" name="hora"
+                                                readonly="readonly">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="id_act_fechaReserva">Fecha Reserva</label>
+                                            <input class="form-control" type="date" id="id_act_fechaReserva"
+                                                name="fechaReserva" readonly="readonly">
+                                        </div>
+                                        <label class="control-label" for="id_Espacios">Espacios</label>
+                                    </div>
+                                </div>
+                                <div class="espacio-container" style="margin-top: 20px;">
+                                    <div>
+                                        <h5>Pabellón E - Piso SS</h5>
+                                        <div class="checkbox-group" id="espaciosSSCheckboxesDetalle">
+                                            <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label" for="id_act_vehiculo">Vehículo</label>
-                                        <select id="id_act_vehiculo" name="vehiculo" class="form-control" disabled>
-                                            <option value="">[Seleccione]</option>
-                                            <!-- Agregar opciones aquí -->
-                                        </select>
+                                    <div>
+                                        <h5>Pabellón E - Piso S1</h5>
+                                        <div class="checkbox-group" id="espaciosS1CheckboxesDetalle">
+                                            <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label" for="id_act_hora">Hora</label>
-                                        <input class="form-control" type="time" id="id_act_hora" name="hora"
-                                            readonly="readonly">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label" for="id_act_fechaReserva">Fecha Reserva</label>
-                                        <input class="form-control" type="date" id="id_act_fechaReserva"
-                                            name="fechaReserva" readonly="readonly">
-                                    </div>
-                                    <label class="control-label" for="id_Espacios">Espacios</label>
                                 </div>
                             </div>
-                            <div class="espacio-container" style="margin-top: 20px;">
-                                <div>
-                                    <h5>Pabellón E - Piso SS</h5>
-                                    <div class="checkbox-group" id="espaciosSSCheckboxesDetalle">
-                                        <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5>Pabellón E - Piso S1</h5>
-                                    <div class="checkbox-group" id="espaciosS1CheckboxesDetalle">
-                                        <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
-                                    </div>
+                            <div class="form-group">
+                                <div class="col-lg-9 col-lg-offset-3">
+                                    <button type="button" class="btn btn-success" id="id_btn_entrada">Registrar
+                                        Entrada</button>
+                                    <button type="button" class="btn btn-danger" id="id_btn_salida">Registrar
+                                        Salida</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-lg-9 col-lg-offset-3">
-                                <button type="button" class="btn btn-success" id="id_btn_entrada">Registrar Entrada</button>
-                                <button type="button" class="btn btn-danger" id="id_btn_salida">Registrar Salida</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-    
+
 
     </div>
     <script type="text/javascript">
@@ -735,20 +737,20 @@
         });
 
 
-        function agregarGrilla(lista) {
-                     // Filtrar la lista para incluir solo registros con estado "Inactivo" (estado = 0)
-    var listaFiltrada = lista.filter(function(row) {
-        return row.estadoEspecial === 0
+        function agregarGrilla() {
+    // Realizamos una llamada a la API, pasando idRol como parte de la URL
+    $.ajax({
+        url: '/api/solicitudes/porRol/4', // Se pasa el idRol directamente en la URL
+        method: 'GET',
+        success: function(lista) {
+            // Verificar si DataTable ya existe y destruirlo si es necesario
+            if ($.fn.DataTable.isDataTable('#id_table')) {
+                $('#id_table').DataTable().clear().destroy();
+            }
 
-    });
-
-    // Verificar si DataTable ya existe
-    if ($.fn.DataTable.isDataTable('#id_table')) {
-        $('#id_table').DataTable().clear().destroy();
-    }
-
+            // Crear DataTable con la lista recibida de la API
             $('#id_table').DataTable({
-                data: listaFiltrada,
+                data: lista,  // No es necesario filtrar, porque ya lo hace la API
                 searching: false,
                 ordering: true,
                 processing: true,
@@ -758,81 +760,90 @@
                     { data: "idSolicitud" },
                     { data: "usuarioRegistro.nombres" },
                     {
-                        data: function (row) {
+                        data: function(row) {
                             return row.vehiculo.marca + ' ' + row.vehiculo.modelo; // Combina marca y modelo
                         },
                         className: 'text-center'
                     },
                     {
-                        data: function (row) {
+                        data: function(row) {
                             return (row.vehiculo.tipoVehiculo == 0) ? 'Moto' : 'Carro';
                         },
                         className: 'text-center'
                     },
                     { data: "espacio.numero" },
                     {
-                        data: function (row) {
+                        data: function(row) {
                             return row.hora + ' ' + row.fechaReserva;
                         },
                         className: 'text-center'
                     },
                     {
-                        data: function (row) {
-                            // Verificar si el estado de la solicitud es 0
+                        data: function(row) {
                             var botonEditar = row.estado === 0 ?
                                 // Si el estado es 0, deshabilitar el botón
                                 '<button type="button" class="btn btn-info btn-sm" disabled>Editar</button>' :
                                 // Si el estado es diferente de 0, habilitar el botón
                                 '<button type="button" class="btn btn-info btn-sm" onclick="editar(\'' + row.idSolicitud + '\', \'' + row.vehiculo.idVehiculo + '\', \'' + row.hora + '\', \'' + row.fechaReserva + '\', \'' + row.espacio.idEspacio + '\')">Editar</button>';
-
                             return botonEditar;
                         },
                         className: 'text-center'
                     },
-
                     {
-                        data: function (row) {
-                            var isEntradaRegistrada = row.entrada;  // Valor de entrada, 0 o 1
-                            var isSalidaRegistrada = row.salida;    // Valor de salida, 0 o 1
+                        data: function(row) {
+                            var estado = row.estado; 
+                            var aceptar = row.aceptar;
+                            var rechazar = row.rechazar;
 
-                            // Botón para registrar entrada
-                            var botonEntrada = isEntradaRegistrada ?
-                                '<button type="button" class="btn btn-danger btn-sm" disabled onclick="alert(\'Registro de entrada ya realizado\')">Registrar Entrada</button>' :
-                                '<button type="button" class="btn btn-success" onclick="registrarEntrada(\'' + row.idSolicitud + '\')">Registrar Entrada</button>';
+                            var estadoEspecial = row.estadoEspecial // Estado de la solicitud (0: pendiente, 1: aceptado o rechazado)
+                            var idAceptar = 'btnAceptar_' + row.idSolicitud;
+                            var idRechazar = 'btnRechazar_' + row.idSolicitud;
 
-                            // Botón para registrar salida: deshabilitado si la entrada no ha sido registrada (isEntradaRegistrada == 0)
-                            var botonSalida = (!isEntradaRegistrada || isSalidaRegistrada) ?
-                                '<button type="button" class="btn btn-danger btn-sm" disabled onclick="alert(\'No se puede registrar la salida sin registrar la entrada\')">Registrar Salida</button>' :
-                                '<button type="button" class="btn btn-success" onclick="registrarSalida(\'' + row.idSolicitud + '\')">Registrar Salida</button>';
+                            // Botón para aceptar la solicitud
+                            var botonAceptar = (aceptar === 1 || rechazar== 1) ?
+                            '<button type="button" id="' + idAceptar + '" class="btn btn-success btn-sm" disabled>Aceptado</button>' :
+                                '<button type="button" id="' + idAceptar + '" class="btn btn-success btn-sm" onclick="registrarAceptar(\'' + row.idSolicitud + '\', \'aceptar\')">Aceptar</button>';
+
+                            // Botón para rechazar la solicitud
+                            var botonRechazar = (aceptar === 1 || rechazar== 1) ?
+                            '<button type="button" id="' + idRechazar + '" class="btn btn-danger btn-sm" disabled>Rechazado</button>' :
+                                '<button type="button" id="' + idRechazar + '" class="btn btn-danger btn-sm" onclick="registrarRechazar(\'' + row.idSolicitud + '\', \'rechazar\')">Rechazar</button>';
 
                             return '<div class="d-flex justify-content-center">' +
-                                '<div style="margin-right: 5px;">' + botonEntrada + '</div>' +
-                                '<div>' + botonSalida + '</div>' +
+                                '<div style="margin-right: 5px;">' + botonAceptar + '</div>' +
+                                '<div>' + botonRechazar + '</div>' +
                                 '</div>';
                         },
                         className: 'text-center'
-                    },{
-                        data: function (row) {
+                    },
+                    {
+                        data: function(row) {
                             return (row.estado == 1) ? 'Activo' : 'Inactivo';
                         },
                         className: 'text-center'
-                    }, {
+                    },
+                    {
                         data: function(row) {
                             return (row.estadoEspecial == 1) ? 'Activo' : 'Inactivo';
                         },
                         className: 'text-center'
                     }
-                   
                 ]
             });
+        },
+        error: function() {
+            alert('Error al obtener los datos.');
         }
-        function registrarEntrada(idSolicitud) {
+    });
+}
+
+        function registrarAceptar(idSolicitud) {
             $.ajax({
-                url: 'registrarEntradaSalida',
+                url: 'validarSolicitudEspecial',
                 type: 'POST',
                 data: {
                     "idSolicitud": idSolicitud, // ID de la solicitud
-                    accion: 'entrada' // Tipo de acción a realizar
+                    accion: 'aceptar' // Tipo de acción a realizar
                 },
                 success: function (data) {
                     mostrarMensaje(data.MENSAJE);  // Aquí se está accediendo a la clave "MENSAJE" de la respuesta
@@ -848,13 +859,13 @@
         }
 
         // Función para registrar salida
-        function registrarSalida(idSolicitud) {
+        function registrarRechazar(idSolicitud) {
             $.ajax({
                 type: 'POST',
-                url: 'registrarEntradaSalida',
+                url: 'validarSolicitudEspecial',
                 data: {
                     "idSolicitud": idSolicitud, // ID de la solicitud
-                    accion: 'salida' // Tipo de acción a realizar
+                    accion: 'rechazar' // Tipo de acción a realizar
                 },
                 success: function (data) {
                     mostrarMensaje(data.MENSAJE);  // Aquí se está accediendo a la clave "MENSAJE" de la respuesta
