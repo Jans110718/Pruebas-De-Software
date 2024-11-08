@@ -196,16 +196,18 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="id_reg_hora">Hora</label>
-                                            <input class="form-control" type="time" id="id_hora" name="hora" required>
+                                            <label class="control-label" for="id_reg_fecha_reserva">Fecha Reserva</label>
+                                            <input class="form-control" type="date" id="id_reg_fecha_reserva" name="fechaReserva" required
+                                                min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
+                                                max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date(System.currentTimeMillis() + 86400000)) %>">
                                         </div>
+
                                         <div class="form-group">
-                                            <label class="control-label" for="id__reg_fecha_reserva">Fecha
-                                                Reserva</label>
-                                            <input class="form-control" type="date" id="id_fecha_reserva"
-                                                name="fechaReserva" required>
+                                            <label class="control-label" for="id_reg_hora">Hora</label>
+                                            <input class="form-control" type="time" id="id_reg_hora" name="hora" required>
                                         </div>
-                                        <label class="control-label" for="id_Espacios">Espacios</label>
+
+                                        <label class="control-label" for="id__reg_Espacios">Espacios</label>
                                     </div>
                                 </div>
                                 <div class="espacios-container" style="margin-top: -30px;">
@@ -271,16 +273,18 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
+                                            <label class="control-label" for="id__act_fecha_reserva">Fecha Reserva</label>
+                                            <input class="form-control" type="date" id="id_act_fecha_reserva" name="fechaReserva" required
+                                                min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
+                                                max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date(System.currentTimeMillis() + 86400000)) %>">
+                                        </div>
+
+                                        <div class="form-group">
                                             <label class="control-label" for="id_act_hora">Hora</label>
                                             <input class="form-control" type="time" id="id_act_hora" name="hora"
                                                 required>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="control-label" for="id_act_fechaReserva">Fecha
-                                                Reserva</label>
-                                            <input class="form-control" type="date" id="id_act_fechaReserva"
-                                                name="fechaReserva" required>
-                                        </div>
+
                                         <label class="control-label" for="id_Espacios">Espacios</label>
                                     </div>
                                 </div>
@@ -312,91 +316,35 @@
         </div>
     </div>
 
-    <div class="modal fade" id="id_div_modal_detalle">
-    <div class="modal-dialog" style="width: 60%">
-        <div class="modal-content">
-            <div class="modal-header" style="padding: 35px 50px">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4><span class="glyphicon glyphicon-ok-sign"></span> Detalle de la Solicitud</h4>
-            </div>
-            <div class="modal-body" style="padding: 20px 10px;">
-                <form id="id_form_detalle" accept-charset="UTF-8" action="insertaActualizaSolicitud"
-                    class="form-horizontal" method="post">
-                    <input type="hidden" id="modo" value="detalle"> <!-- Establecer el modo a detalle -->
-                    <div class="panel-group" id="steps">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#steps" href="#stepDetail">Datos de la solicitud</a>
-                                </h4>
-                            </div>
-                            <div id="stepDetail" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <label class="col-lg-3 control-label" for="id_ID">ID</label>
-                                        <div class="col-lg-6">
-                                            <input class="form-control" id="id_ID" readonly="readonly"
-                                                name="idSolicitud" type="text" maxlength="8" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label" for="id_act_vehiculo">Vehículo</label>
-                                        <select id="id_act_vehiculo" name="vehiculo" class="form-control" disabled>
-                                            <option value="">[Seleccione]</option>
-                                            <!-- Agregar opciones aquí -->
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label" for="id_act_hora">Hora</label>
-                                        <input class="form-control" type="time" id="id_act_hora" name="hora"
-                                            readonly="readonly">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label" for="id_act_fechaReserva">Fecha Reserva</label>
-                                        <input class="form-control" type="date" id="id_act_fechaReserva"
-                                            name="fechaReserva" readonly="readonly">
-                                    </div>
-                                    <label class="control-label" for="id_Espacios">Espacios</label>
-                                </div>
-                            </div>
-                            <div class="espacio-container" style="margin-top: 20px;">
-                                <div>
-                                    <h5>Pabellón E - Piso SS</h5>
-                                    <div class="checkbox-group" id="espaciosSSCheckboxesDetalle">
-                                        <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5>Pabellón E - Piso S1</h5>
-                                    <div class="checkbox-group" id="espaciosS1CheckboxesDetalle">
-                                        <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-9 col-lg-offset-3">
-                                <button type="button" class="btn btn-success" id="id_btn_entrada">Registrar Entrada</button>
-                                <button type="button" class="btn btn-danger" id="id_btn_salida">Registrar Salida</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-    
+
+
+
+
+    </div>
+
+
 
     </div>
     <script type="text/javascript">
         var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
 
-
         $(document).ready(function () {
             // Cargar datos solo una vez al inicio
+             // Inicialmente deshabilitar ambos campos de hora
+    $('#id_reg_hora').prop('disabled', true);
+        
+
+    // Evento para habilitar/deshabilitar el campo de hora cuando se selecciona una fecha en id_reg_fechaReserva
+    $('#id_reg_fecha_reserva').change(function () {
+        if ($(this).val()) {
+            $('#id_reg_hora').prop('disabled', false); // Habilitar el campo de hora correspondiente
+        } else {
+            $('#id_reg_hora').prop('disabled', true); // Deshabilitar si no hay fecha seleccionada
+        }
+    });
             actualizarComboBox();
+
 
             $("#id_registrar").click(function () {
                 var modo = $('#modo').val(); // 'registrar' o 'actualizar'
@@ -624,11 +572,8 @@
             });
         }
 
-
-
-        // Configuración del validador de formularios
         $('#id_form_actualiza').bootstrapValidator({
-            message: 'Este valor no es válido',
+            message: 'Este valor no es v&aacute;lido',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
                 invalid: 'glyphicon glyphicon-remove',
@@ -638,7 +583,7 @@
                 vehiculo: {
                     validators: {
                         notEmpty: {
-                            message: 'Seleccione un vehículo.'
+                            message: 'Seleccione un veh&iacute;culo.'
                         }
                     }
                 },
@@ -646,9 +591,48 @@
                     validators: {
                         notEmpty: {
                             message: 'La hora es obligatoria.'
+                        },
+                        callback: {
+                            message: 'La hora debe estar entre 07:00 am y 8:00 pm.',
+                            callback: function (value, validator) {
+                                var fechaReserva = $('#id_act_fecha_reserva').val();
+                                if (!fechaReserva) {
+                                    return {
+                                        valid: false,
+                                        message: 'No se puede validar la hora sin una fecha.'
+                                    }; // Retorna el mensaje específico si no hay fecha
+                                }
+
+                                var fechaCompleta = new Date(fechaReserva + "T" + value + ":00");
+                                var minHora = new Date(fechaReserva + "T07:00:00");
+                                var maxHora = new Date(fechaReserva + "T20:00:00"); // 8:00 pm
+
+                                // Validar que la hora no sea menor a la hora actual, ignorando segundos
+                                var fechaActual = new Date();
+                                fechaActual.setSeconds(0);
+                                fechaActual.setMilliseconds(0);
+
+                                if (fechaCompleta < fechaActual) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora seleccionada (' + value + ') es anterior a la hora actual.'
+                                    }; // Retorna un mensaje dinámico si es menor a la hora actual
+                                }
+
+                                // Validar que la hora esté entre el rango permitido
+                                if (fechaCompleta < minHora || fechaCompleta > maxHora) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora debe estar entre 07:00 am y 8:00 pm.'
+                                    }; // Retorna el mensaje de rango
+                                }
+
+                                return true; // La validación pasa
+                            }
                         }
                     }
                 },
+
                 fechaReserva: {
                     validators: {
                         notEmpty: {
@@ -658,8 +642,6 @@
                 }
             }
         });
-
-
 
         $('#id_form_registra').bootstrapValidator({
             message: 'Este valor no es v&aacute;lido',
@@ -680,9 +662,48 @@
                     validators: {
                         notEmpty: {
                             message: 'La hora es obligatoria.'
+                        },
+                        callback: {
+                            message: 'La hora debe estar entre 07:00 am y 8:00 pm.',
+                            callback: function (value, validator) {
+                                var fechaReserva = $('#id_reg_fecha_reserva').val();
+                                if (!fechaReserva) {
+                                    return {
+                                        valid: false,
+                                        message: 'No se puede validar la hora sin una fecha.'
+                                    }; // Retorna el mensaje específico si no hay fecha
+                                }
+
+                                var fechaCompleta = new Date(fechaReserva + "T" + value + ":00");
+                                var minHora = new Date(fechaReserva + "T07:00:00");
+                                var maxHora = new Date(fechaReserva + "T20:00:00"); // 8:00 pm
+
+                                // Validar que la hora no sea menor a la hora actual, ignorando segundos
+                                var fechaActual = new Date();
+                                fechaActual.setSeconds(0);
+                                fechaActual.setMilliseconds(0);
+
+                                if (fechaCompleta < fechaActual) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora seleccionada (' + value + ') es anterior a la hora actual.'
+                                    }; // Retorna un mensaje dinámico si es menor a la hora actual
+                                }
+
+                                // Validar que la hora esté entre el rango permitido
+                                if (fechaCompleta < minHora || fechaCompleta > maxHora) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora debe estar entre 07:00 am y 8:00 pm.'
+                                    }; // Retorna el mensaje de rango
+                                }
+
+                                return true; // La validación pasa
+                            }
                         }
                     }
                 },
+
                 fechaReserva: {
                     validators: {
                         notEmpty: {
@@ -736,16 +757,16 @@
 
 
         function agregarGrilla(lista) {
-                     // Filtrar la lista para incluir solo registros con estado "Inactivo" (estado = 0)
-    var listaFiltrada = lista.filter(function(row) {
-        return row.estadoEspecial === 0
+            // Filtrar la lista para incluir solo registros con estado "Inactivo" (estado = 0)
+            var listaFiltrada = lista.filter(function (row) {
+                return row.estadoEspecial === 0
 
-    });
+            });
 
-    // Verificar si DataTable ya existe
-    if ($.fn.DataTable.isDataTable('#id_table')) {
-        $('#id_table').DataTable().clear().destroy();
-    }
+            // Verificar si DataTable ya existe
+            if ($.fn.DataTable.isDataTable('#id_table')) {
+                $('#id_table').DataTable().clear().destroy();
+            }
 
             $('#id_table').DataTable({
                 data: listaFiltrada,
@@ -811,18 +832,18 @@
                                 '</div>';
                         },
                         className: 'text-center'
-                    },{
+                    }, {
                         data: function (row) {
                             return (row.estado == 1) ? 'Activo' : 'Inactivo';
                         },
                         className: 'text-center'
                     }, {
-                        data: function(row) {
+                        data: function (row) {
                             return (row.estadoEspecial == 1) ? 'Activo' : 'Inactivo';
                         },
                         className: 'text-center'
                     }
-                   
+
                 ]
             });
         }

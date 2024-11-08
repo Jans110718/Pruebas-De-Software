@@ -11,19 +11,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.centroinformacion.entity.Vehiculo; // Aseg&uacute;rate de que esta entidad exista
+import com.centroinformacion.repository.SolicitudIngresoRepository;
 import com.centroinformacion.repository.VehiculoRepository;
 import com.centroinformacion.entity.Espacio; // Aseg&uacute;rate de que esta entidad exista
-
-
-
+import com.centroinformacion.entity.Solicitud;
 import com.centroinformacion.service.VehiculoService; // Aseg&uacute;rate de que este servicio exista
 import com.centroinformacion.service.EspacioService; // Aseg&uacute;rate de que este servicio exista
 
 
 @Controller
 public class UtilController {
-
-   
 
     @Autowired
     private VehiculoService vehiculoService; // Aseg&uacute;rate de que el servicio est&aacute; inyectado
@@ -57,4 +54,5 @@ public class UtilController {
         }
         return ResponseEntity.ok(vehiculos); // Retorna 200 OK con la lista de veh&iacute;culos
     }
+    
 }

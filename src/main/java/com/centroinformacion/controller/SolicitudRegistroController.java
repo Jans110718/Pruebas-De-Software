@@ -1,13 +1,19 @@
 package com.centroinformacion.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,9 +26,18 @@ import com.centroinformacion.service.EspacioService;
 import com.centroinformacion.service.SolicitudService; // Servicio para manejar solicitudes
 import com.centroinformacion.util.AppSettings;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
-
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import lombok.extern.apachecommons.CommonsLog;
+@CommonsLog
 @Controller
 public class SolicitudRegistroController {
 
@@ -62,17 +77,21 @@ public class SolicitudRegistroController {
         espacio.setEstado_reserva(1);
         espacioService.actualizarEspacio(espacio);
 
-        // Configurar el estado de la solicitud basado en el ID del usuario
-     // Asumiendo que tienes un servicio o repositorio para llamar a la consulta.
-        List<UsuarioHasRol> rolesDelUsuario = usuarioHasRolRepository.findUsuarioHasRolByRol(4);
+        // Verificar si el usuario tiene el rol con ID 4
+        List<UsuarioHasRol> rolesDelUsuario = usuarioHasRolRepository.findByUsuario(objUsuario);
+        boolean tieneRol4 = rolesDelUsuario.stream().anyMatch(rol -> rol.getRol().getIdRol() == 4);
 
-        // Verificar si la lista no está vacía, lo que indica que el usuario tiene el rol 4
-        if (!rolesDelUsuario.isEmpty()) {
+        // Ajustar estado y estadoEspecial en función del rol
+        if (rolesDelUsuario.size() == 1 && tieneRol4) {
+            System.out.println("Usuario: " + objUsuario.getIdUsuario() + " tiene rol 4. Estableciendo estado en 0 y estadoEspecial en 1.");
+            obj.setEstado(0);
             obj.setEstadoEspecial(1);
-            obj.setEstado(AppSettings.INACTIVO);
         } else {
+            System.out.println("Usuario: " + objUsuario.getIdUsuario() + " no tiene rol 4. Estableciendo estado en 1 y estadoEspecial en 0.");
+            obj.setEstado(1);
             obj.setEstadoEspecial(0);
         }
+
         // Configurar otros campos de la solicitud
         obj.setUsuarioRegistro(objUsuario); // Usa el usuario de la sesión
         obj.setUsuarioActualiza(objUsuario); // Usa el usuario de la sesión
@@ -80,7 +99,7 @@ public class SolicitudRegistroController {
         obj.setFechaActualizacion(new Date());
         obj.setEntrada(0);
         obj.setSalida(0);
-        
+
         // Asignar el espacio a la solicitud
         obj.setEspacio(espacio); // Establecer el espacio en la solicitud
 
@@ -103,7 +122,6 @@ public class SolicitudRegistroController {
         Usuario objUsuario = (Usuario) session.getAttribute("objUsuario");
 
         HashMap<String, Object> map = new HashMap<>();
-
         Optional<Solicitud> optSolicitud = solicitudService.buscaSolicitud(obj.getIdSolicitud());
         System.out.println("ID de Solicitud: " + obj.getIdSolicitud());
 
@@ -259,6 +277,48 @@ public class SolicitudRegistroController {
 
         return map;
     }
+    @GetMapping("/consultaSolicitud")
+	@ResponseBody
+	public List<Solicitud> consulta(
+	        int idEspacio,
+	        int tipoVehiculo,
+	        @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecDesde,
+	        @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecHasta) {
+	    
+	    List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(idEspacio,tipoVehiculo,fecDesde, fecHasta);    
+	    return lstSalida;
+	}
+	@GetMapping("/reporteSolicitudPdf")
+	public void reportes(HttpServletRequest request, 
+			             HttpServletResponse response,
+	                     int paramEspacio,
+	                     int paramtipoVehiculo,
+	                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date paramFechaDesde,
+	                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date paramFechaHasta) {
+	    try {
+	        // PASO 1: OBTENER EL DATASOURCE QUE VA A GENERAR EL REPORTE 
+	        List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(paramEspacio, paramtipoVehiculo, paramFechaDesde, paramFechaHasta);
+	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(lstSalida);
+
+	        // PASO 2: OBTENER EL ARCHIVO QUE CONTIENE EL DISE&ntilde;O DEL REPORTE 
+	        String fileDirectory = request.getServletContext().getRealPath("/WEB-INF/reportes/reportesSolicitud.jasper");
+	        log.info(">>> File Reporte >> " + fileDirectory);
+	        FileInputStream stream = new FileInputStream(new File(fileDirectory));
+	    	
+	        // PASO 4: ENVIAMOS DATASOURCE, DISE&ntilde;O Y PAR&aacute;METROS PARA GENERAR EL PDF 
+	        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(stream);
+	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
+
+	        // PASO 5: ENVIAR EL PDF GENERADO 
+	        response.setContentType("application/x-pdf");
+	        response.addHeader("Content-disposition", "attachment; filename=reporteSolicitud.pdf");
+
+	        OutputStream outStream = response.getOutputStream();
+	        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+	    } catch (Exception e) {
+                    e.printStackTrace();	        // Aqu&iacute; puedes manejar la excepci&oacute;n seg&uacute;n sea necesario
+	    }
+	}
 
   
 }

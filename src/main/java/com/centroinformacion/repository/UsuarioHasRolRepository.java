@@ -14,5 +14,6 @@ public interface UsuarioHasRolRepository extends JpaRepository<UsuarioHasRol, Us
 	// Esta consulta devuelve una lista de usuarios que tienen un rol específico
     @Query("SELECT uhr FROM UsuarioHasRol uhr WHERE uhr.rol.idRol = :idRol")
     List<UsuarioHasRol> findUsuarioHasRolByRol(@Param("idRol") int idRol);
+    List<UsuarioHasRol> findByUsuario(Usuario usuario);
 
 }

@@ -150,10 +150,7 @@
                                     <th style="width: 15%">Fecha reserva</th>
                                     <th style="width: 7%">Actualizar</th>
                                     <th style="width: 10%">Entrada y Salida</th>
-                                    <th style="width: 8%">Estado</th>
-                                    <th style="width: 8%">Estado Especial</th>
-
-
+                                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -813,18 +810,6 @@
                                 '<div style="margin-right: 5px;">' + botonAceptar + '</div>' +
                                 '<div>' + botonRechazar + '</div>' +
                                 '</div>';
-                        },
-                        className: 'text-center'
-                    },
-                    {
-                        data: function(row) {
-                            return (row.estado == 1) ? 'Activo' : 'Inactivo';
-                        },
-                        className: 'text-center'
-                    },
-                    {
-                        data: function(row) {
-                            return (row.estadoEspecial == 1) ? 'Activo' : 'Inactivo';
                         },
                         className: 'text-center'
                     }
