@@ -22,6 +22,28 @@
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrapValidator.css" />
     <style>
+    
+
+    /* Estilos para la columna de Estado */
+    .estado-activo {
+        color: green;
+        font-weight: bold;
+    }
+
+    .estado-inactivo {
+        color: red;
+        font-weight: bold;
+    }
+
+    /* Estilo para los botones dentro de la tabla */
+    .btn-table {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+
+    .btn-table:hover {
+        cursor: pointer;
+    }
         /* Estilos para centrar el formulario */
         .form-container {
             max-width: 600px;
@@ -98,63 +120,67 @@
     <div class="container" style="margin-top: 1%">
         <form id="id_form">
             <div class="row" style="height: 70px">
-                <div class="col-md-6">
-                    <label class="control-label" for="id_espacio">Espacio</label>
-                    <select id="id_espacio" name="paramEspacio" class='form-control'>
-                        <option value="-1">[Todos]</option>
-                    </select>
+                <div class="row">
+                    <!-- Filtros -->
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_espacio">Espacio</label>
+                        <select id="id_espacio" name="paramEspacio" class="form-control">
+                            <option value="-1">[Todos]</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_tipoVehiculo">Tipo</label>
+                        <select id="id_tipoVehiculo" name="paramtipoVehiculo" class="form-control">
+                            <option value="-1">[Todos]</option>
+                            <option value="0">Moto</option>
+                            <option value="1">Carro</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_fechaDesde">Fecha Desde</label>
+                        <input class="form-control" type="date" id="id_fechaDesde" name="paramFechaDesde" value="1900-01-01">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_fechaHasta">Fecha Hasta</label>
+                        <input class="form-control" type="date" id="id_fechaHasta" name="paramFechaHasta" value="2900-01-01">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_placa">Placa</label>
+                        <input class="form-control" type="text" id="id_placa" name="paramPlaca" placeholder="Ingrese la placa">
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label class="control-label" for="id_tipoVehiculo">Tipo</label>
-                    <select id="id_tipoVehiculo" name="paramtipoVehiculo" class='form-control'>
-                        <option value="-1">[Todos]</option>
-                        <option value="0">Moto</option>
-                        <option value="1">Carro</option>
-                    </select>
+                
+                <!-- Espacio entre filtros y botones -->
+                <div class="row mt-3 text-center">
+                    <!-- Botones -->
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary" id="id_btn_filtra" style="width: 150px">Filtrar</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" data-toggle="modal" data-target="#id_div_modal_registra" class="btn btn-success" style="width: 150px">REGISTRA</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" id="id_btn_reporte" class="btn btn-danger">Reporte</button>
+                    </div>
                 </div>
-
-                <div class="col-md-6">
-                    <label class="control-label" for="id_fechaDesde">Fecha Desde</label>
-                    <input class="form-control" type="date" id="id_fechaDesde" name="paramFechaDesde"
-                        value="1900-01-01">
-                </div>
-                <div class="col-md-6">
-                    <label class="control-label" for="id_fechaHasta">Fecha Hasta</label>
-                    <input class="form-control" type="date" id="id_fechaHasta" name="paramFechaHasta"
-                        value="2900-01-01">
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-primary" id="id_btn_filtra"
-                        style="width: 150px">Filtrar</button>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" data-toggle='modal' data-target="#id_div_modal_registra"
-                        class='btn btn-success' style="width: 150px">REGISTRA</button>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" id="id_btn_reporte" class="btn btn-danger">Reporte</button>
-                </div>
+                
 
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="content">
-                        <table id="id_table" class="table table-striped table-bordered">
-                            <thead>
+                        <table id="id_table" class="table table-striped table-bordered table-hover">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th style="width: 8%">ID</th>
                                     <th style="width: 8%">Nombres</th>
-                                    <th style="width: 18%">Marca y modelo</th>
-                                    <th style="width: 15%">Tipo Vehículo</th>
-                                    <th style="width: 08%">Número</th>
+                                    <th style="width: 10%">Marca y modelo</th>
+                                    <th style="width: 10%">Tipo Vehículo</th>
+                                    <th style="width: 05%">Número</th>
                                     <th style="width: 15%">Fecha reserva</th>
                                     <th style="width: 7%">Actualizar</th>
                                     <th style="width: 10%">Entrada y Salida</th>
                                     <th style="width: 7%">Estado</th>
-                                    <th style="width: 7%">Estado Especial</th>
-
-
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -734,6 +760,7 @@
         $("#id_btn_filtra").click(function () {
             var varEstado = $("#id_estado").is(':checked') ? 1 : 0;
             var varEspacio = $("#id_espacio").val();
+            var varPlaca = $("#id_placa").val();
             var vartipoVehiculo = $("#id_tipoVehiculo").val(); // Tipo de veh&iacute;culo
             var varFechaDesde = $("#id_fechaDesde").val() || '1900-01-01';
             var varFechaHasta = $("#id_fechaHasta").val() || '2900-01-01';
@@ -747,6 +774,7 @@
 
             $.getJSON("consultaSolicitud", {
                 "idEspacio": varEspacio,
+                "placa":varPlaca,
                 "tipoVehiculo": vartipoVehiculo, // Par&aacute;metro correcto
                 "fecDesde": varFechaDesde,
                 "fecHasta": varFechaHasta
@@ -834,16 +862,10 @@
                         className: 'text-center'
                     }, {
                         data: function (row) {
-                            return (row.estado == 1) ? 'Activo' : 'Inactivo';
-                        },
-                        className: 'text-center'
-                    }, {
-                        data: function (row) {
-                            return (row.estadoEspecial == 1) ? 'Activo' : 'Inactivo';
+                            return (row.estado == 1) ? 'Activo' : 'Finalizado';
                         },
                         className: 'text-center'
                     }
-
                 ]
             });
         }

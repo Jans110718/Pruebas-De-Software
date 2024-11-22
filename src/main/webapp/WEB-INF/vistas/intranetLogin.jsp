@@ -4,144 +4,188 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Expires" content="-1" />
-    <meta http-equiv="Cache-Control" content="private" />
-    <meta http-equiv="Cache-Control" content="no-store" />
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/bootstrapValidator.css">
-
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrapValidator.js"></script>
-
-    <title>Intranet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CIBERTEC</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
         body {
-            background: linear-gradient(to right, #003366, #00ff66); /* Degradado de azul oscuro a verde fosforescente */
-            font-family: 'Roboto', sans-serif;
-            color: #333;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            background-color: #003953;
+            position: relative;
+            overflow: hidden;
         }
 
-        .form-box {
+        /* Dots decoration */
+        .dots-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .dot:nth-child(3n) {
+            background: #3498db;
+        }
+
+        .dot:nth-child(3n+1) {
+            background: #2ecc71;
+        }
+
+        .dot:nth-child(3n+2) {
+            background: #00b8d4;
+        }
+
+        .login-container {
             background: white;
-            border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            max-width: 300px; /* Ancho reducido */
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             width: 100%;
+            max-width: 400px;
+            margin: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-header {
             text-align: center;
+            margin-bottom: 2rem;
         }
 
-        .form-top {
-            margin-bottom: 10px; /* Espacio reducido entre el t&iacutetulo y el formulario */
+        h1 {
+            color: #003953;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .form-top h3 {
-            margin-bottom: 5px; /* Menos espacio debajo del t&iacutetulo */
-            font-size: 28px;
-            color: #003366; /* Color del t&iacutetulo */
-            font-weight: 500;
-            text-align: center; /* Centra el texto */
+        .subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
         }
 
-        .form-bottom {
+        .form-group {
+            margin-bottom: 1.5rem;
             position: relative;
         }
 
         .form-control {
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            padding: 15px; /* Aumenta el padding para m&aacute;s espacio */
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-size: 16px; /* Aumenta el tama&ntilde;o de la fuente */
-            margin-bottom: 10px; /* Espacio entre campos de texto */
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #003953;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
-            border-color: #00ff66; /* Color del borde al enfocar */
-            box-shadow: 0 0 5px rgba(0, 255, 102, 0.5);
+            outline: none;
+            border-color: #003953;
+            box-shadow: 0 0 0 4px rgba(0, 57, 83, 0.1);
         }
 
         .btn-primary {
-            background-color: #007bff; /* Color de fondo del bot&oacute;n */
+            background-color: #007bff;
             border: none;
+            padding: 0.8rem 1rem;
+            color: white;
+            font-weight: bold;
+            width: 100%;
             border-radius: 5px;
-            padding: 10px 20px;
-            color: white; /* Color del texto del bot&oacute;n */
-            font-weight: bold; /* Negrita para el texto del bot&oacute;n */
-            text-transform: uppercase; /* Texto en may&uacute;sculas */
-            transition: background-color 0.3s, transform 0.2s;
-            width: 100%; /* Bot&oacute;n a ancho completo */
-            font-size: 16px; /* Aumenta el tama&ntilde;o de la fuente del bot&oacute;n */
+            transition: background-color 0.3s;
+            font-size: 1rem;
+            text-transform: uppercase;
         }
 
         .btn-primary:hover {
-            background-color: #0056b3; /* Color de fondo al pasar el rat&oacute;n */
-            transform: translateY(-2px);
+            background-color: #0056b3;
         }
 
         .alert {
-            margin-bottom: 20px;
             text-align: center;
-            border-radius: 5px;
+            margin-bottom: 20px;
         }
 
         .logo {
-            width: 80px; /* Ajusta el tama&ntilde;o seg&uacute;n tus necesidades */
-            margin-bottom: 20px; /* Espacio entre el logo y el t&iacutetulo */
-        }
-
-        /* Estilos para los mensajes de error */
-        .error-message {
-            color: red; /* Color del mensaje de error */
-            font-size: 14px; /* Tama&ntilde;o de la fuente */
-            margin-top: 5px; /* Espacio entre el campo y el mensaje */
-            text-align: left; /* Alinear texto a la izquierda */
+            width: 80px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
+    <div class="dots-bg">
+        <div class="dot" style="top: 20%; left: 15%; background-color: #3498db;"></div>
+        <div class="dot" style="top: 30%; right: 10%; background-color: #ffffff;"></div>
+        <div class="dot" style="bottom: 25%; left: 35%; background-color: #2ecc71;"></div>
+        <div class="dot" style="bottom: 20%; right: 40%; background-color: #3498db;"></div>
+        <div class="dot" style="top: 10%; left: 50%; background-color: #ffffff;"></div>
+        <div class="dot" style="bottom: 15%; right: 15%; background-color: #2ecc71;"></div>
+        <div class="dot" style="top: 40%; left: 70%; background-color: #3498db;"></div>
+        <div class="dot" style="bottom: 10%; right: 30%; background-color: #ffffff;"></div>
+        <div class="dot" style="top: 60%; left: 10%; background-color: #2ecc71;"></div>
+        <div class="dot" style="bottom: 5%; right: 5%; background-color: #3498db;"></div>
+        <!-- Añadiendo más puntos -->
+        <div class="dot" style="top: 25%; left: 20%; background-color: #ffffff;"></div>
+        <div class="dot" style="top: 50%; left: 80%; background-color: #2ecc71;"></div>
+        <div class="dot" style="bottom: 30%; left: 60%; background-color: #3498db;"></div>
+        <div class="dot" style="top: 70%; right: 20%; background-color: #ffffff;"></div>
+        <div class="dot" style="bottom: 20%; left: 10%; background-color: #2ecc71;"></div>
+        <div class="dot" style="top: 35%; right: 30%; background-color: #3498db;"></div>
+    </div>
+    
+    
 
-    <div class="container">
+    <div class="login-container">
+        <div class="login-header">
+            <img src="https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black-thumbnail.png" alt="Logo" class="logo">
+            <h1>LOGIN</h1>
+            <p class="subtitle">Bienvenido a la intranet de Cibertec</p>
+        </div>
+
         <c:if test="${requestScope.mensaje != null}">
-            <div class="alert alert-danger fade in" id="success-alert">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <div class="alert alert-danger" id="success-alert">
                 <strong>${requestScope.mensaje}</strong>
             </div>
         </c:if>
-        <div class="form-box">
-            <img src="https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black-thumbnail.png" alt="Logo" class="logo"> <!-- Logo de la persona -->
-            <div class="form-top">
-                <h3>LOGIN</h3>
+
+        <form id="id_form" action="login" method="post" class="login-form">
+            <div class="form-group">
+                <input type="text" name="login" placeholder="Ingresa el usuario" class="form-control" id="form-username" maxlength="20">
             </div>
-            <div class="form-bottom">
-                <form id="id_form" action="login" method="post" class="login-form">
-                    <div class="form-group">
-                        <input type="text" name="login" placeholder="Ingresa el usuario" class="form-username form-control" id="form-username" maxlength="20" >
-                        <div class="error-message" id="errorLogin"></div> <!-- Mensaje de error para el usuario -->
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" placeholder="Ingresa la contrase&ntilde;a" class="form-password form-control" id="form-password" maxlength="20" >
-                        <div class="error-message" id="errorPassword"></div> <!-- Mensaje de error para la contrase&ntilde;a -->
-                    </div>
-                    <button type="submit" class="btn btn-primary">Ingresar</button>
-                </form>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Ingresa la contraseña" class="form-control" id="form-password" maxlength="20">
             </div>
-        </div>
+            <button type="submit" class="btn btn-primary">Ingresar</button>
+        </form>
     </div>
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            $("#success-alert").fadeTo(1000, 500).slideUp(500, function(){
+        $(document).ready(function () {
+            $("#success-alert").fadeTo(1000, 500).slideUp(500, function () {
                 $("#success-alert").slideUp(500);
             });
 
@@ -157,7 +201,7 @@
                         validators: {
                             notEmpty: {
                                 message: 'El usuario es obligatorio',
-                                callback: function(value, validator, $field) {
+                                callback: function (value, validator, $field) {
                                     $('#errorLogin').text('El usuario es obligatorio');
                                 }
                             },
@@ -165,21 +209,29 @@
                                 message: 'El usuario debe tener entre 3 y 20 caracteres',
                                 min: 3,
                                 max: 20
+                            },
+                            regexp: {
+                                message: 'El usuario no puede contener espacios ni caracteres especiales. Solo se permiten letras y números.',
+                                regexp: /^[a-zA-Z0-9]+$/
                             }
                         }
                     },
                     password: {
                         validators: {
                             notEmpty: {
-                                message: 'La contrase&ntilde;a es obligatoria',
-                                callback: function(value, validator, $field) {
-                                    $('#errorPassword').text('La contrase&ntilde;a es obligatoria');
+                                message: 'La contraseña es obligatoria',
+                                callback: function (value, validator, $field) {
+                                    $('#errorPassword').text('La contraseña es obligatoria');
                                 }
                             },
                             stringLength: {
-                                message: 'La contrase&ntilde;a debe tener entre 3 y 20 caracteres',
+                                message: 'La contraseña debe tener entre 3 y 20 caracteres',
                                 min: 3,
                                 max: 20
+                            },
+                            regexp: {
+                                message: 'La contraseña no puede contener espacios ni caracteres especiales. Solo se permiten letras y números.',
+                                regexp: /^[a-zA-Z0-9]+$/
                             }
                         }
                     }
@@ -191,11 +243,11 @@
                     invalid: 'glyphicon glyphicon-remove',
                     validating: 'glyphicon glyphicon-refresh'
                 }
-            }).on('success.form.bv', function(e) {
+            }).on('success.form.bv', function (e) {
                 // Limpiar mensajes de error
                 $('#errorLogin').text('');
                 $('#errorPassword').text('');
-            }).on('error.field.bv', function(e, data) {
+            }).on('error.field.bv', function (e, data) {
                 // Mostrar el mensaje de error en el campo correspondiente
                 if (data.field === 'login') {
                     $('#errorLogin').text(data.message);
@@ -205,11 +257,10 @@
                 }
             });
 
-            $('#validateBtn').click(function() {
+            $('#validateBtn').click(function () {
                 $('#id_form').bootstrapValidator('validate');
             });
         });
     </script>
-
 </body>
 </html>

@@ -23,8 +23,8 @@ public class SolicitudServiceImp implements SolicitudService {
     }
 
 	@Override
-	public List<Solicitud> listaConsultaEspacio(int idEspacio,int tipoVehiculo, Date fecDesde, Date fecHasta) {
-		return repository.listaConsultaSolicitudAvanzado(idEspacio, tipoVehiculo, fecDesde, fecHasta);
+	public List<Solicitud> listaConsultaEspacio(int idEspacio,int tipoVehiculo,String placa, Date fecDesde, Date fecHasta) {
+		return repository.listaConsultaSolicitudAvanzado(idEspacio, tipoVehiculo, placa, fecDesde, fecHasta);
 	}
 	@Override
 	public Optional<Solicitud> buscaSolicitud(int idSolicitud) {
