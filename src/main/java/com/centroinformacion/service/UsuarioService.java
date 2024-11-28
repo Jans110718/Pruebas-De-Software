@@ -20,4 +20,6 @@ public interface UsuarioService {
 	public abstract UsuarioHasRol insertaRol(UsuarioHasRol obj);
 	public abstract void eliminaRol(UsuarioHasRol obj);
 	public abstract Optional<UsuarioHasRol> buscaRol(UsuarioHasRolPK obj);
+    void encriptarContraseñas(); // Método para migrar contraseñas
+
 }
