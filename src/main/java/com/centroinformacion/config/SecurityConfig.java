@@ -35,7 +35,7 @@ public class SecurityConfig {
             .and()
             .logout()
                 .logoutUrl("/logout")  // URL de logout
-                .logoutSuccessUrl("/intranetLogin?logout=true")  // Redirige después del logout
+                .logoutSuccessUrl("/")  // Redirige después del logout
                 .permitAll();
 
         return http.build();

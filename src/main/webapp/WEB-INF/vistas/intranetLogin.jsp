@@ -134,6 +134,20 @@
             width: 80px;
             margin-bottom: 20px;
         }
+		/* Forgot password link styling */
+		       .forgot-password {
+		           text-align: center;
+		           margin-top: 10px;
+		       }
+
+		       .forgot-password a {
+		           color: #007bff;
+		           text-decoration: none;
+		       }
+
+		       .forgot-password a:hover {
+		           text-decoration: underline;
+		       }
     </style>
 </head>
 <body>
@@ -148,7 +162,7 @@
         <div class="dot" style="bottom: 10%; right: 30%; background-color: #ffffff;"></div>
         <div class="dot" style="top: 60%; left: 10%; background-color: #2ecc71;"></div>
         <div class="dot" style="bottom: 5%; right: 5%; background-color: #3498db;"></div>
-        <!-- Añadiendo más puntos -->
+        <!-- A&ntilde;adiendo más puntos -->
         <div class="dot" style="top: 25%; left: 20%; background-color: #ffffff;"></div>
         <div class="dot" style="top: 50%; left: 80%; background-color: #2ecc71;"></div>
         <div class="dot" style="bottom: 30%; left: 60%; background-color: #3498db;"></div>
@@ -177,10 +191,13 @@
                 <input type="text" name="login" placeholder="Ingresa el usuario" class="form-control" id="form-username" maxlength="20">
             </div>
             <div class="form-group">
-                <input type="password" name="password" placeholder="Ingresa la contraseña" class="form-control" id="form-password" maxlength="20">
+                <input type="password" name="password" placeholder="Ingresa la contrase&ntilde;a" class="form-control" id="form-password" maxlength="20">
             </div>
             <button type="submit" class="btn btn-primary">Ingresar</button>
         </form>
+		<div class="forgot-password">
+		            <a href="recuperarContrasena">¿Olvidaste tu contrase&ntilde;a?</a>
+		        </div>
     </div>
 
     <script type="text/javascript">
@@ -219,18 +236,18 @@
                     password: {
                         validators: {
                             notEmpty: {
-                                message: 'La contraseña es obligatoria',
+                                message: 'La contrase&ntilde;a es obligatoria',
                                 callback: function (value, validator, $field) {
-                                    $('#errorPassword').text('La contraseña es obligatoria');
+                                    $('#errorPassword').text('La contrase&ntilde;a es obligatoria');
                                 }
                             },
                             stringLength: {
-                                message: 'La contraseña debe tener entre 3 y 20 caracteres',
+                                message: 'La contrase&ntilde;a debe tener entre 3 y 20 caracteres',
                                 min: 3,
                                 max: 20
                             },
                             regexp: {
-                                message: 'La contraseña no puede contener espacios ni caracteres especiales. Solo se permiten letras y números.',
+                                message: 'La contrase&ntilde;a no puede contener espacios ni caracteres especiales. Solo se permiten letras y números.',
                                 regexp: /^[a-zA-Z0-9]+$/
                             }
                         }

@@ -32,7 +32,8 @@ public class Usuario {
 	private String login;
 	private String password;
 	private String correo;
-	
+    private int discapacitado; // Estado de la incidencia
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date fechaRegistro;

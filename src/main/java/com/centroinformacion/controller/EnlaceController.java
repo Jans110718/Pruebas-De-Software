@@ -77,5 +77,9 @@ public class EnlaceController {
 	public String VerAsignacionOpcion() {	return "intranetTransaccionAsignacionOpcion";	}
 
 
-
+	 // Nueva ruta para la página de recuperación de contraseña
+    @GetMapping("/recuperarContrasena")
+    public String verRecuperarContrasena() {
+        return "intranetRecuperarContrasena";  // Página de recuperación de contraseña
+    }
 }

@@ -89,6 +89,24 @@
             justify-content: space-evenly;
             /* Espacio entre los grupos de espacios */
         }
+
+        /* Estilo para los checkboxes deshabilitados */
+        input[type="checkbox"].disabled-red {
+            background-color: #f8d7da;
+            /* Fondo rojo claro */
+            border-color: #f5c6cb;
+            /* Borde rojo claro */
+            color: #721c24;
+            /* Color del texto rojo oscuro */
+            cursor: not-allowed;
+            /* Cambia el cursor a no permitido */
+        }
+
+        /* Cambiar el color de la etiqueta del checkbox si est &aacute; deshabilitado */
+        input[type="checkbox"].disabled-red+label {
+            color: #721c24;
+            /* Color del texto para la etiqueta (rojo oscuro) */
+        }
     </style>
 
     <title>Reserva de Espacios</title>
@@ -114,10 +132,11 @@
                     <div class="form-group">
                         <label class="control-label" for="id_fecha_reserva">Fecha Reserva</label>
                         <input class="form-control" type="date" id="id_fecha_reserva" name="fechaReserva" required
-                            min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
-                            max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date(System.currentTimeMillis() + 86400000)) %>">
+                            min="<%= new java.text.SimpleDateFormat(" yyyy-MM-dd").format(new java.util.Date()) %>"
+                        max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new
+                            java.util.Date(System.currentTimeMillis() + 86400000)) %>">
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="control-label" for="id_hora">Hora</label>
                         <input class="form-control" type="time" id="id_hora" name="hora" required>
@@ -131,17 +150,24 @@
             <!-- Secci&oacute;n de Pabellones -->
             <div class="espacios-container" style="margin-top: 20px;">
                 <div>
+                    <h5>Pabell&oacute;n A - Piso 1</h5>
+                    <div class="checkbox-group" id="espacios1Checkboxes">
+                        <!-- Los checkboxes del Pabell &oacute;n E - 1 se agregar &aacute;n din &aacute;micamente aquí -->
+                    </div>
+                </div>
+                <div>
                     <h5>Pabell&oacute;n E - Piso SS</h5>
                     <div class="checkbox-group" id="espaciosSSCheckboxes">
-                        <!-- Los checkboxes del Pabell&oacute;n E - SS se agregar&aacute;n din&aacute;micamente aqu&iacute; -->
+                        <!-- Los checkboxes del Pabell &oacute;n E - SS se agregar &aacute;n din &aacute;micamente aquí -->
                     </div>
                 </div>
                 <div>
                     <h5>Pabell&oacute;n E - Piso S1</h5>
                     <div class="checkbox-group" id="espaciosS1Checkboxes">
-                        <!-- Los checkboxes del Pabell&oacute;n E - S1 se agregar&aacute;n din&aacute;micamente aqu&iacute; -->
+                        <!-- Los checkboxes del Pabell &oacute;n E - S1 se agregar &aacute;n din &aacute;micamente aquí -->
                     </div>
                 </div>
+
             </div>
             <!-- Fin de Secci&oacute;n de Pabellones -->
 
@@ -156,10 +182,9 @@
     <script type="text/javascript">
         var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
         console.log("ID de Usuario:", idUsuario); // Imprimir el idUsuario en la consola
-
-
         $(document).ready(function () {
             actualizarComboBox(); // Cargar datos solo una vez al inicio
+
             // Evento para habilitar el campo de hora cuando se selecciona una fecha
             // Inicialmente deshabilitar el campo de hora
             $('#id_hora').prop('disabled', true);
@@ -188,13 +213,13 @@
                         type: "POST",
                         url: "registraSolicitud", // Cambiar a la URL correspondiente
                         data: $('#id_form').serialize() + "&espacios=" + espaciosSeleccionados.join(','),
-                        success: function(data) {
+                        success: function (data) {
                             mostrarMensaje(data.MENSAJE);
                             limpiarFormulario(); // Limpiar y actualizar ComboBox
                             validator.resetForm();
                         },
-                        error: function() {
-                            mostrarMensaje("Error en la reserva. Inténtalo de nuevo.");
+                        error: function () {
+                            mostrarMensaje("Error en la reserva. Int &eacute;ntalo de nuevo.");
                         }
                     });
                 }
@@ -209,16 +234,39 @@
         }
 
         function actualizarComboBox() {
-            // Limpiar las listas de checkboxes y el select de vehículos
-            $("#espaciosS1Checkboxes").empty(); // Limpiar los checkboxes S1
-            $("#espaciosSSCheckboxes").empty(); // Limpiar los checkboxes SS
-            $("#id_vehiculo").empty(); // Limpiar el select de vehículos
-            $("#id_vehiculo").append("<option value=''>[Seleccione]</option>"); // Opción predeterminada
+    // Limpiar las listas de checkboxes y el select de vehículos
+    $("#espaciosS1Checkboxes").empty(); // Limpiar los checkboxes S1
+    $("#espaciosSSCheckboxes").empty(); // Limpiar los checkboxes SS
+    $("#espacios1Checkboxes").empty(); // Limpiar los checkboxes de Piso 1
+    $("#id_vehiculo").empty(); // Limpiar el select de vehículos
+    $("#id_vehiculo").append("<option value=''>[Seleccione]</option>"); // Opción predeterminada
 
-            // Obtener la lista de espacios
+    // Obtener la lista de vehículos del usuario y agregar al select
+    $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
+        $.each(data, function (index, item) {
+            var marcavehiculo = item.marca + " " + item.modelo;
+            var tipoVehiculo = item.tipoVehiculo; // Asumiendo que el tipo de vehículo está en 'tipoVehiculo'
+            var discapacitado = item.usuarioRegistro.discapacitado; // Obtener el campo 'discapacitado' desde la respuesta
+
+            // Agregar vehículos al select
+            $("#id_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
+        });
+
+        // Añadir un evento para detectar el cambio de vehículo seleccionado
+        $("#id_vehiculo").on("change", function () {
+            var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
+            var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco"); // Obtener el valor de 'discapacitado'
+
+            // Limpiar las listas de checkboxes y volver a cargar
+            $("#espaciosS1Checkboxes").empty();
+            $("#espaciosSSCheckboxes").empty();
+            $("#espacios1Checkboxes").empty(); // Limpiar los checkboxes de Piso 1
+
+            // Cargar los espacios según el tipo de vehículo
             $.getJSON("listaEspacio", {}, function (data) {
                 var espaciosSS = [];
                 var espaciosS1 = [];
+                var espacios1 = []; // Array para el Piso 1
 
                 // Separar espacios según el pabellón y piso
                 $.each(data, function (index, item) {
@@ -226,22 +274,36 @@
                         espaciosSS.push(item);
                     } else if (item.piso === "S1") {
                         espaciosS1.push(item);
+                    } else if (item.piso === "1") {
+                        espacios1.push(item);
                     }
                 });
 
-                // Agregar checkboxes para Pabellón E, Piso SS
-                if (espaciosSS.length > 0) {
+                // Mostrar espacios solo según el tipo de vehículo seleccionado
+                if (tipoVehiculoSeleccionado === "CARRO") {
+                    // Solo cargar Pabellón SS y S1 para CARRO
                     $.each(espaciosSS, function (index, item) {
+                        // Deshabilitar los espacios con id 1 y 4 si el usuario es discapacitado y el piso es SS o S1
+                        var disabledAttribute = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "SS" || item.pabellon === "Pabellón E")) ? 'disabled' : '';
+                        var disabledClass = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "S1" || item.pabellon === "Pabellón E")) ? 'disabled-red' : '';
                         $("#espaciosSSCheckboxes").append(
-                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
+                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>"
                         );
                     });
-                }
 
-                // Agregar checkboxes para Pabellón E, Piso S1
-                if (espaciosS1.length > 0) {
                     $.each(espaciosS1, function (index, item) {
+                        // Deshabilitar los espacios con id 1 y 4 si el usuario es discapacitado y el piso es SS o S1
+                        var disabledAttribute = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "SS" || item.pabellon === "Pabellón E")) ? 'disabled' : '';
+                        var disabledClass = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "S1" || item.pabellon === "Pabellón E")) ? 'disabled-red' : '';
                         $("#espaciosS1Checkboxes").append(
+                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>"
+                        );
+                    });
+                } else if (tipoVehiculoSeleccionado === "MOTO") {
+                    // Para MOTO, todos los espacios deben estar libres sin restricción
+                    $.each(espacios1, function (index, item) {
+                        // Para MOTO no hay restricción
+                        $("#espacios1Checkboxes").append(
                             "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
                         );
                     });
@@ -252,15 +314,13 @@
                     $("input[name='espacio']").not(this).prop("checked", false);
                 });
             });
+        });
+    });
+}
 
-            // Cargar vehículos del usuario y agregar al select
-            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
-                $.each(data, function (index, item) {
-                    var marcavehiculo = item.marca + " " + item.modelo;
-                    $("#id_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
-                });
-            });
-        }
+
+
+
 
 
         $('#id_form').bootstrapValidator({
@@ -307,10 +367,10 @@
                                     return {
                                         valid: false,
                                         message: 'La hora seleccionada (' + value + ') es anterior a la hora actual.'
-                                    }; // Retorna un mensaje dinámico si es menor a la hora actual
+                                    }; // Retorna un mensaje din &aacute;mico si es menor a la hora actual
                                 }
 
-                                // Validar que la hora esté entre el rango permitido
+                                // Validar que la hora est &eacute; entre el rango permitido
                                 if (fechaCompleta < minHora || fechaCompleta > maxHora) {
                                     return {
                                         valid: false,
@@ -318,7 +378,7 @@
                                     }; // Retorna el mensaje de rango
                                 }
 
-                                return true; // La validación pasa
+                                return true; // La validaci &oacute;n pasa
                             }
                         }
                     }
@@ -345,10 +405,10 @@
                 var fechaReservaActual = new Date(fechaReserva + 'T' + horaReserva + ':00');
 
                 if (fechaReservaActual < fechaActual) {
-                    return false; // La hora es inválida
+                    return false; // La hora es inv &aacute;lida
                 }
             }
-            return true; // La validación es correcta
+            return true; // La validaci &oacute;n es correcta
         }
     </script>
 </body>

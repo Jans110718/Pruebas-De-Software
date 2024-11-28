@@ -225,7 +225,7 @@
                                 mostrarMensaje("Ocurri&oacute; un error inesperado.");
                             }
                             validator.resetForm();
-                            limpiarFormulario();
+                            limpiarFormularios();
                         },
                         error: function () {
                             mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
@@ -242,6 +242,16 @@
                 $('#id_modelo').val('');
                 $('#id_placa').val('');
                 $('#id_tipo').val('');
+                $('#id_imagen').val('');
+                $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer el estado de validaci&oacute;n
+
+
+            }
+            function limpiarFormularios() {
+                $('#id_marca').val('');
+                $('#id_modelo').val('');
+                $('#id_placa').val('');
+                $('#id_tipoVehiculo').val('');
                 $('#id_imagen').val('');
                 $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer el estado de validaci&oacute;n
 
