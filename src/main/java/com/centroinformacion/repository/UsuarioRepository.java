@@ -1,6 +1,7 @@
 package com.centroinformacion.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 
 	
 	public abstract Usuario findByLogin(String login);
+	
+    Optional<Usuario> findByCorreo(String correo);
 }

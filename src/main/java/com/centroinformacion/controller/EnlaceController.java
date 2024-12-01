@@ -82,4 +82,14 @@ public class EnlaceController {
     public String verRecuperarContrasena() {
         return "intranetRecuperarContrasena";  // Página de recuperación de contraseña
     }
+	 // Nueva ruta para la página de actualizar de contraseña
+    @GetMapping("/actualizarContrasena")
+    public String verActualizarContrasena() {
+        return "intranetActualizarContrasena";  // Página de actualizacion de contraseña
+    }
+	 // Nueva ruta para la página de actualizar de contraseña
+    @GetMapping("/verificarCodigo")
+    public String verVerificarCodigo() {
+        return "intranetVerificarCodigo";  // Página de actualizacion de contraseña
+    }
 }

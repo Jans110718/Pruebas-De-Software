@@ -131,10 +131,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="id_fecha_reserva">Fecha Reserva</label>
-                        <input class="form-control" type="date" id="id_fecha_reserva" name="fechaReserva" required
-                            min="<%= new java.text.SimpleDateFormat(" yyyy-MM-dd").format(new java.util.Date()) %>"
-                        max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new
-                            java.util.Date(System.currentTimeMillis() + 86400000)) %>">
+                        <input class="form-control" type="date" id="id_fecha_reserva" name="fechaReserva" required >
                     </div>
 
                     <div class="form-group">
@@ -180,6 +177,20 @@
     </div>
 
     <script type="text/javascript">
+        // Obtener el campo de fecha
+        const fechaInput = document.getElementById('id_fecha_reserva');
+
+        // Obtener la fecha actual en formato YYYY-MM-DD
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        // Obtener la fecha de mañana
+        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000); // 24 horas más
+        const tomorrowString = tomorrow.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        // Establecer los atributos min y max en el campo de fecha
+        fechaInput.min = todayString;
+        fechaInput.max = tomorrowString;
         var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
         console.log("ID de Usuario:", idUsuario); // Imprimir el idUsuario en la consola
         $(document).ready(function () {
@@ -234,89 +245,89 @@
         }
 
         function actualizarComboBox() {
-    // Limpiar las listas de checkboxes y el select de vehículos
-    $("#espaciosS1Checkboxes").empty(); // Limpiar los checkboxes S1
-    $("#espaciosSSCheckboxes").empty(); // Limpiar los checkboxes SS
-    $("#espacios1Checkboxes").empty(); // Limpiar los checkboxes de Piso 1
-    $("#id_vehiculo").empty(); // Limpiar el select de vehículos
-    $("#id_vehiculo").append("<option value=''>[Seleccione]</option>"); // Opción predeterminada
-
-    // Obtener la lista de vehículos del usuario y agregar al select
-    $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
-        $.each(data, function (index, item) {
-            var marcavehiculo = item.marca + " " + item.modelo;
-            var tipoVehiculo = item.tipoVehiculo; // Asumiendo que el tipo de vehículo está en 'tipoVehiculo'
-            var discapacitado = item.usuarioRegistro.discapacitado; // Obtener el campo 'discapacitado' desde la respuesta
-
-            // Agregar vehículos al select
-            $("#id_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
-        });
-
-        // Añadir un evento para detectar el cambio de vehículo seleccionado
-        $("#id_vehiculo").on("change", function () {
-            var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
-            var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco"); // Obtener el valor de 'discapacitado'
-
-            // Limpiar las listas de checkboxes y volver a cargar
-            $("#espaciosS1Checkboxes").empty();
-            $("#espaciosSSCheckboxes").empty();
+            // Limpiar las listas de checkboxes y el select de vehículos
+            $("#espaciosS1Checkboxes").empty(); // Limpiar los checkboxes S1
+            $("#espaciosSSCheckboxes").empty(); // Limpiar los checkboxes SS
             $("#espacios1Checkboxes").empty(); // Limpiar los checkboxes de Piso 1
+            $("#id_vehiculo").empty(); // Limpiar el select de vehículos
+            $("#id_vehiculo").append("<option value=''>[Seleccione]</option>"); // Opción predeterminada
 
-            // Cargar los espacios según el tipo de vehículo
-            $.getJSON("listaEspacio", {}, function (data) {
-                var espaciosSS = [];
-                var espaciosS1 = [];
-                var espacios1 = []; // Array para el Piso 1
-
-                // Separar espacios según el pabellón y piso
+            // Obtener la lista de vehículos del usuario y agregar al select
+            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
                 $.each(data, function (index, item) {
-                    if (item.piso === "SS") {
-                        espaciosSS.push(item);
-                    } else if (item.piso === "S1") {
-                        espaciosS1.push(item);
-                    } else if (item.piso === "1") {
-                        espacios1.push(item);
-                    }
+                    var marcavehiculo = item.marca + " " + item.modelo;
+                    var tipoVehiculo = item.tipoVehiculo; // Asumiendo que el tipo de vehículo está en 'tipoVehiculo'
+                    var discapacitado = item.usuarioRegistro.discapacitado; // Obtener el campo 'discapacitado' desde la respuesta
+
+                    // Agregar vehículos al select
+                    $("#id_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
                 });
 
-                // Mostrar espacios solo según el tipo de vehículo seleccionado
-                if (tipoVehiculoSeleccionado === "CARRO") {
-                    // Solo cargar Pabellón SS y S1 para CARRO
-                    $.each(espaciosSS, function (index, item) {
-                        // Deshabilitar los espacios con id 1 y 4 si el usuario es discapacitado y el piso es SS o S1
-                        var disabledAttribute = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "SS" || item.pabellon === "Pabellón E")) ? 'disabled' : '';
-                        var disabledClass = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "S1" || item.pabellon === "Pabellón E")) ? 'disabled-red' : '';
-                        $("#espaciosSSCheckboxes").append(
-                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>"
-                        );
-                    });
+                // Añadir un evento para detectar el cambio de vehículo seleccionado
+                $("#id_vehiculo").on("change", function () {
+                    var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
+                    var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco"); // Obtener el valor de 'discapacitado'
 
-                    $.each(espaciosS1, function (index, item) {
-                        // Deshabilitar los espacios con id 1 y 4 si el usuario es discapacitado y el piso es SS o S1
-                        var disabledAttribute = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "SS" || item.pabellon === "Pabellón E")) ? 'disabled' : '';
-                        var disabledClass = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "S1" || item.pabellon === "Pabellón E")) ? 'disabled-red' : '';
-                        $("#espaciosS1Checkboxes").append(
-                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>"
-                        );
-                    });
-                } else if (tipoVehiculoSeleccionado === "MOTO") {
-                    // Para MOTO, todos los espacios deben estar libres sin restricción
-                    $.each(espacios1, function (index, item) {
-                        // Para MOTO no hay restricción
-                        $("#espacios1Checkboxes").append(
-                            "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-                        );
-                    });
-                }
+                    // Limpiar las listas de checkboxes y volver a cargar
+                    $("#espaciosS1Checkboxes").empty();
+                    $("#espaciosSSCheckboxes").empty();
+                    $("#espacios1Checkboxes").empty(); // Limpiar los checkboxes de Piso 1
 
-                // Evento para permitir solo una selección entre todos los checkboxes
-                $("input[name='espacio']").on("change", function () {
-                    $("input[name='espacio']").not(this).prop("checked", false);
+                    // Cargar los espacios según el tipo de vehículo
+                    $.getJSON("listaEspacio", {}, function (data) {
+                        var espaciosSS = [];
+                        var espaciosS1 = [];
+                        var espacios1 = []; // Array para el Piso 1
+
+                        // Separar espacios según el pabellón y piso
+                        $.each(data, function (index, item) {
+                            if (item.piso === "SS") {
+                                espaciosSS.push(item);
+                            } else if (item.piso === "S1") {
+                                espaciosS1.push(item);
+                            } else if (item.piso === "1") {
+                                espacios1.push(item);
+                            }
+                        });
+
+                        // Mostrar espacios solo según el tipo de vehículo seleccionado
+                        if (tipoVehiculoSeleccionado === "CARRO") {
+                            // Solo cargar Pabellón SS y S1 para CARRO
+                            $.each(espaciosSS, function (index, item) {
+                                // Deshabilitar los espacios con id 1 y 4 si el usuario es discapacitado y el piso es SS o S1
+                                var disabledAttribute = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "SS" || item.pabellon === "Pabellón E")) ? 'disabled' : '';
+                                var disabledClass = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "S1" || item.pabellon === "Pabellón E")) ? 'disabled-red' : '';
+                                $("#espaciosSSCheckboxes").append(
+                                    "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>"
+                                );
+                            });
+
+                            $.each(espaciosS1, function (index, item) {
+                                // Deshabilitar los espacios con id 1 y 4 si el usuario es discapacitado y el piso es SS o S1
+                                var disabledAttribute = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "SS" || item.pabellon === "Pabellón E")) ? 'disabled' : '';
+                                var disabledClass = (discapacitadoSeleccionado === "0" && (item.numero === "1" || item.numero === "4") && (item.piso === "S1" || item.pabellon === "Pabellón E")) ? 'disabled-red' : '';
+                                $("#espaciosS1Checkboxes").append(
+                                    "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>"
+                                );
+                            });
+                        } else if (tipoVehiculoSeleccionado === "MOTO") {
+                            // Para MOTO, todos los espacios deben estar libres sin restricción
+                            $.each(espacios1, function (index, item) {
+                                // Para MOTO no hay restricción
+                                $("#espacios1Checkboxes").append(
+                                    "<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
+                                );
+                            });
+                        }
+
+                        // Evento para permitir solo una selección entre todos los checkboxes
+                        $("input[name='espacio']").on("change", function () {
+                            $("input[name='espacio']").not(this).prop("checked", false);
+                        });
+                    });
                 });
             });
-        });
-    });
-}
+        }
 
 
 

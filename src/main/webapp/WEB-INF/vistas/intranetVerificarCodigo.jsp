@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="css/bootstrap.css" />
         <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
         <link rel="stylesheet" href="css/bootstrapValidator.css" />
-        <title>Recuperación de Contraseña</title>
+        <title>Verificar Código de Recuperación</title>
 
         <!-- Estilos personalizados -->
         <style>
@@ -143,6 +143,16 @@
                 width: 80px;
                 margin-bottom: 20px;
             }
+
+            .check-icon {
+                color: green;
+                font-size: 1.5rem;
+                display: none;
+            }
+
+            .form-group .btn-verificar {
+                margin-left: 10px;
+            }
         </style>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert para mensajes -->
@@ -159,69 +169,102 @@
             </div>
 
             <div class="login-header">
-                <h1>Recuperar Contraseña</h1>
-                <p class="subtitle">Ingresa tu correo electrónico para recibir el código de recuperación</p>
+                <h1>Verificar Código de Recuperación</h1>
+                <p class="subtitle">Ingresa el código de recuperación enviado a tu correo.</p>
             </div>
 
-            <!-- Formulario de recuperación de contraseña -->
-            <form id="recuperar-form" method="post">
+            <!-- Formulario de verificación de código -->
+            <form id="id_form" method="post">
+                <input type="hidden" id="correo" name="correo" value="${correo}">
                 <div class="form-group">
-                    <label for="correo">Correo Electrónico:</label>
-                    <input type="email" class="form-control" id="correo" name="correo"
-                        placeholder="Ingrese tu correo electrónico" required>
+                    <label for="id_codigo">Código de Verificación:</label>
+                    <input type="text" class="form-control" id="id_codigo" name="codigoIngresado"
+                        placeholder="Ingrese el código de verificación" required>
                 </div>
 
                 <div class="form-group text-center">
-                    <button id="enviar-codigo" type="button" class="btn btn-primary">Enviar Código</button>
+                    <button id="id_verificar" type="button" class="btn btn-primary">Verificar</button>
                 </div>
-
-                <p id="mensaje" class="alert"></p>
             </form>
+
+
         </div>
 
         <script type="text/javascript">
-    $(document).ready(function () {
-    $("#enviar-codigo").click(function () {
-        var correo = $("#correo").val();  // Obtener el correo desde el formulario
-        if (correo !== "") {
-            $.ajax({
-                type: "POST",
-                url: "recuperar",  // URL del controlador para procesar la recuperación
-                data: { correo: correo },
-                success: function (data) {
-                    console.log("Respuesta del servidor:", data);  // Verifica el contenido de la respuesta
+            $(document).ready(function () {
+                $("#id_verificar").click(function () {
+                    var correo = $("#correo").val();  // Obtener el correo desde el formulario
 
-                    // Mostrar el mensaje
-                    if (data && data.MENSAJE) {
-                        mostrarMensaje(data.MENSAJE);
+                    var validator = $('#id_form').data('bootstrapValidator');
+                    validator.validate();
 
-                        // Verifica si la clave REDIRECCIONAR está presente
-                        if (data.REDIRECCIONAR) {
-                            console.log("Redirigiendo a:", data.REDIRECCIONAR);  // Verifica la URL de redirección
-                            // Aquí, agregamos el correo a la URL de redirección
-                            window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
-                        }
-                    } else {
-                        mostrarMensaje("Ocurrió un error inesperado.");
+                    if (validator.isValid()) {
+                        $("#id_verificar").prop('disabled', true);
+                        $.ajax({
+                            type: "POST",
+                            url: "validarCodigo",  // URL del controlador para procesar la verificación
+                            data: {
+                                correo: $("#correo").val(),  // Ahora con el id correcto
+                                codigoIngresado: $("#id_codigo").val() // El código ingresado // Incluye el código ingresado
+                            },   // Enviar los datos del formulario
+                            success: function (data) {
+                                // Imprimir los datos enviados en la consola
+                                console.log("Datos enviados: ", $('#id_form').serialize());
+                                console.log("Respuesta del servidor: ", data);
+
+                                // Mostrar el mensaje
+                                if (data && data.MENSAJE) {
+                                    mostrarMensaje(data.MENSAJE);
+
+                                    // Verifica si la clave REDIRECCIONAR está presente
+                                    if (data.REDIRECCIONAR) {
+                                        console.log("Redirigiendo a:", data.REDIRECCIONAR);  // Verifica la URL de redirección
+                                        // Aquí, agregamos el correo a la URL de redirección
+                                        window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
+                                    }  // Mostrar el mensaje del servidor
+                                } else {
+                                    mostrarMensaje("Ocurrió un error inesperado.");
+                                }
+                                validator.resetForm();  // Resetear formulario si es necesario
+                            },
+                            error: function () {
+                                mostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                            },
+                            complete: function () {
+                                $("#id_verificar").prop('disabled', false);
+                            }
+                        });
                     }
-                },
-                error: function () {
-                    mostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                });
+
+                function mostrarMensaje(mensaje) {
+                    $('#mensaje').text(mensaje);  // Mostrar mensaje en el contenedor con id 'mensaje'
                 }
+
+                // Bootstrap Validator configuración
+                $('#id_form').bootstrapValidator({
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        codigo: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'El código de verificación es obligatorio'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: 'El código debe tener al menos 6 caracteres'
+                                }
+                            }
+                        }
+                    }
+                });
             });
-        } else {
-            mostrarMensaje("El correo electrónico es obligatorio.");
-        }
-    });
-
-    // Función para mostrar el mensaje de respuesta en el frontend
-    function mostrarMensaje(mensaje) {
-        $('#mensaje').text(mensaje);  // Mostrar mensaje en el contenedor con id 'mensaje'
-    }
-});
-
-
         </script>
+
     </body>
 
     </html>

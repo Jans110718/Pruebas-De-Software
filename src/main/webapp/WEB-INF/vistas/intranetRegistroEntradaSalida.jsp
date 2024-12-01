@@ -22,28 +22,27 @@
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrapValidator.css" />
     <style>
-    
+        /* Estilos para la columna de Estado */
+        .estado-activo {
+            color: green;
+            font-weight: bold;
+        }
 
-    /* Estilos para la columna de Estado */
-    .estado-activo {
-        color: green;
-        font-weight: bold;
-    }
+        .estado-inactivo {
+            color: red;
+            font-weight: bold;
+        }
 
-    .estado-inactivo {
-        color: red;
-        font-weight: bold;
-    }
+        /* Estilo para los botones dentro de la tabla */
+        .btn-table {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
 
-    /* Estilo para los botones dentro de la tabla */
-    .btn-table {
-        padding: 5px 10px;
-        font-size: 14px;
-    }
+        .btn-table:hover {
+            cursor: pointer;
+        }
 
-    .btn-table:hover {
-        cursor: pointer;
-    }
         /* Estilos para centrar el formulario */
         .form-container {
             max-width: 600px;
@@ -138,32 +137,37 @@
                     </div>
                     <div class="col-md-6">
                         <label class="control-label" for="id_fechaDesde">Fecha Desde</label>
-                        <input class="form-control" type="date" id="id_fechaDesde" name="paramFechaDesde" value="1900-01-01">
+                        <input class="form-control" type="date" id="id_fechaDesde" name="paramFechaDesde"
+                            value="1900-01-01">
                     </div>
                     <div class="col-md-6">
                         <label class="control-label" for="id_fechaHasta">Fecha Hasta</label>
-                        <input class="form-control" type="date" id="id_fechaHasta" name="paramFechaHasta" value="2900-01-01">
+                        <input class="form-control" type="date" id="id_fechaHasta" name="paramFechaHasta"
+                            value="2900-01-01">
                     </div>
                     <div class="col-md-6">
                         <label class="control-label" for="id_placa">Placa</label>
-                        <input class="form-control" type="text" id="id_placa" name="paramPlaca" placeholder="Ingrese la placa">
+                        <input class="form-control" type="text" id="id_placa" name="paramPlaca"
+                            placeholder="Ingrese la placa">
                     </div>
                 </div>
-                
+
                 <!-- Espacio entre filtros y botones -->
                 <div class="row mt-3 text-center">
                     <!-- Botones -->
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-primary" id="id_btn_filtra" style="width: 150px">Filtrar</button>
+                        <button type="button" class="btn btn-primary" id="id_btn_filtra"
+                            style="width: 150px">Filtrar</button>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" data-toggle="modal" data-target="#id_div_modal_registra" class="btn btn-success" style="width: 150px">REGISTRA</button>
+                        <button type="button" data-toggle="modal" data-target="#id_div_modal_registra"
+                            class="btn btn-success" style="width: 150px">REGISTRA</button>
                     </div>
                     <div class="col-md-2">
                         <button type="button" id="id_btn_reporte" class="btn btn-danger">Reporte</button>
                     </div>
                 </div>
-                
+
 
             </div>
             <div class="row">
@@ -221,32 +225,40 @@
                                                 <option value="">[Seleccione]</option>
                                             </select>
                                         </div>
+
                                         <div class="form-group">
-                                            <label class="control-label" for="id_reg_fecha_reserva">Fecha Reserva</label>
-                                            <input class="form-control" type="date" id="id_reg_fecha_reserva" name="fechaReserva" required
-                                                min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
-                                                max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date(System.currentTimeMillis() + 86400000)) %>">
+                                            <label class="control-label" for="id_reg_fecha_reserva">Fecha
+                                                Reserva</label>
+                                            <input class="form-control" type="date" id="id_reg_fecha_reserva"
+                                                name="fechaReserva" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label class="control-label" for="id_reg_hora">Hora</label>
-                                            <input class="form-control" type="time" id="id_reg_hora" name="hora" required>
+                                            <input class="form-control" type="time" id="id_reg_hora" name="hora"
+                                                required>
                                         </div>
 
-                                        <label class="control-label" for="id__reg_Espacios">Espacios</label>
+                                        <label class="control-label" for="id_reg_Espacios">Espacios</label>
                                     </div>
                                 </div>
                                 <div class="espacios-container" style="margin-top: -30px;">
                                     <div>
-                                        <h5>Pabellón E - Piso SS</h5>
-                                        <div class="checkbox-group" id="espaciosSSCheckboxes">
-                                            <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
+                                        <h5>Pabell&oacute;n A - Piso 1</h5>
+                                        <div class="checkbox-group" id="espacios1Checkboxes">
+                                            <!-- Los checkboxes del Pabell &oacute;n E - 1 se agregar &aacute;n din &aacute;micamente aquí -->
                                         </div>
                                     </div>
                                     <div>
-                                        <h5>Pabellón E - Piso S1</h5>
+                                        <h5>Pabell&oacute;n E - Piso SS</h5>
+                                        <div class="checkbox-group" id="espaciosSSCheckboxes">
+                                            <!-- Los checkboxes del Pabell &oacute;n E - SS se agregar &aacute;n din &aacute;micamente aquí -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5>Pabell&oacute;n E - Piso S1</h5>
                                         <div class="checkbox-group" id="espaciosS1Checkboxes">
-                                            <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
+                                            <!-- Los checkboxes del Pabell &oacute;n E - S1 se agregar &aacute;n din &aacute;micamente aquí -->
                                         </div>
                                     </div>
                                 </div>
@@ -298,12 +310,14 @@
                                                 <option value="">[Seleccione]</option>
                                             </select>
                                         </div>
+
                                         <div class="form-group">
-                                            <label class="control-label" for="id__act_fecha_reserva">Fecha Reserva</label>
-                                            <input class="form-control" type="date" id="id_act_fecha_reserva" name="fechaReserva" required
-                                                min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
-                                                max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date(System.currentTimeMillis() + 86400000)) %>">
+                                            <label class="control-label" for="id_act_fecha_reserva">Fecha
+                                                Reserva</label>
+                                            <input class="form-control" type="date" id="id_act_fecha_reserva"
+                                                name="fechaReserva" required>
                                         </div>
+
 
                                         <div class="form-group">
                                             <label class="control-label" for="id_act_hora">Hora</label>
@@ -314,7 +328,13 @@
                                         <label class="control-label" for="id_Espacios">Espacios</label>
                                     </div>
                                 </div>
-                                <div class="espacio-container" style="margin-top: 20px;">
+                                <div class="espacios-container" style="margin-top: 30px;">
+                                    <div>
+                                        <h5>Pabell&oacute;n A - Piso 1</h5>
+                                        <div class="checkbox-group" id="espacios1CheckboxesActualiza">
+                                            <!-- Los checkboxes del Pabell &oacute;n E - 1 se agregar &aacute;n din &aacute;micamente aquí -->
+                                        </div>
+                                    </div>
                                     <div>
                                         <h5>Pabellón E - Piso SS</h5>
                                         <div class="checkbox-group" id="espaciosSSCheckboxesActualiza">
@@ -327,6 +347,8 @@
                                             <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
                                         </div>
                                     </div>
+
+
                                 </div>
                             </div>
                             <div class="form-group">
@@ -353,22 +375,36 @@
 
     </div>
     <script type="text/javascript">
+        // Obtener el campo de fecha
+        const fechaInput = document.getElementById('id_reg_fecha_reserva');
+
+        // Obtener la fecha actual en formato YYYY-MM-DD
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        // Obtener la fecha de mañana
+        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000); // 24 horas más
+        const tomorrowString = tomorrow.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        // Establecer los atributos min y max en el campo de fecha
+        fechaInput.min = todayString;
+        fechaInput.max = tomorrowString;
         var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
 
         $(document).ready(function () {
             // Cargar datos solo una vez al inicio
-             // Inicialmente deshabilitar ambos campos de hora
-    $('#id_reg_hora').prop('disabled', true);
-        
+            // Inicialmente deshabilitar ambos campos de hora
+            $('#id_reg_hora').prop('disabled', true);
 
-    // Evento para habilitar/deshabilitar el campo de hora cuando se selecciona una fecha en id_reg_fechaReserva
-    $('#id_reg_fecha_reserva').change(function () {
-        if ($(this).val()) {
-            $('#id_reg_hora').prop('disabled', false); // Habilitar el campo de hora correspondiente
-        } else {
-            $('#id_reg_hora').prop('disabled', true); // Deshabilitar si no hay fecha seleccionada
-        }
-    });
+
+            // Evento para habilitar/deshabilitar el campo de hora cuando se selecciona una fecha en id_reg_fechaReserva
+            $('#id_reg_fecha_reserva').change(function () {
+                if ($(this).val()) {
+                    $('#id_reg_hora').prop('disabled', false); // Habilitar el campo de hora correspondiente
+                } else {
+                    $('#id_reg_hora').prop('disabled', true); // Deshabilitar si no hay fecha seleccionada
+                }
+            });
             actualizarComboBox();
 
 
@@ -468,135 +504,102 @@
             actualizarComboBox(); // Refresca las listas, pero solo después de limpiar el formulario
         }
 
+
         function actualizarComboBox(vehiculo) {
-            // Limpiar los elementos en el DOM
+            // Limpieza inicial
             $("#espaciosS1CheckboxesActualiza").empty();
             $("#espaciosSSCheckboxesActualiza").empty();
+            $("#espacios1CheckboxesActualiza").empty();
             $("#espaciosS1Checkboxes").empty();
             $("#espaciosSSCheckboxes").empty();
-            $("#id_vehiculo").empty();
-            $("#id_vehiculo").append("<option value=''>[Seleccione]</option>");
+            $("#espacios1Checkboxes").empty();
+            $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
             $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
 
-            // Obtener la lista de espacios para registro
-            $.getJSON("listaEspacio", {}, function (data) {
-                var espaciosSS = [];
-                var espaciosS1 = [];
+            // Obtener la lista de vehículos del usuario y agregar al select
+            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
+                // Limpiar y llenar los select de vehículos
+                $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+                $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
 
-                $.each(data, function (index, item) {
-                    if (item.piso === "SS") {
-                        espaciosSS.push(item);
-                    } else if (item.piso === "S1") {
-                        espaciosS1.push(item);
-                    }
-                });
-
-                // Crear checkboxes para Pabellón E, Piso SS (registro)
-                if (espaciosSS.length > 0) {
-                    $.each(espaciosSS, function (index, item) {
-                        $("#espaciosSSCheckboxes").append(
-                            "<label><input type='checkbox' class='checkbox-espacio-reg' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-                        );
-                    });
-                }
-
-                // Crear checkboxes para Pabellón E, Piso S1 (registro)
-                if (espaciosS1.length > 0) {
-                    $.each(espaciosS1, function (index, item) {
-                        $("#espaciosS1Checkboxes").append(
-                            "<label><input type='checkbox' class='checkbox-espacio-reg' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-                        );
-                    });
-                }
-
-                // Solo permitir una selección de checkbox en el registro
-                $(".checkbox-espacio-reg").on("change", function () {
-                    $(".checkbox-espacio-reg").not(this).prop("checked", false);
-                });
-            });
-
-            // Obtener lista de espacios para actualización
-            $.getJSON("listaEspacios", {}, function (data) {
-                var espaciosSSActualiza = [];
-                var espaciosS1Actualiza = [];
-
-                $.each(data, function (index, item) {
-                    if (item.piso === "SS") {
-                        espaciosSSActualiza.push(item);
-                    } else if (item.piso === "S1") {
-                        espaciosS1Actualiza.push(item);
-                    }
-                });
-
-                // Crear checkboxes para Pabellón SS (actualización)
-                if (espaciosSSActualiza.length > 0) {
-                    $.each(espaciosSSActualiza, function (index, item) {
-                        var checkbox = "<label";
-
-                        if (item.estado_reserva === 1) {
-                            checkbox += " class='checkbox-reservado'";
-                        }
-
-                        checkbox += "><input type='checkbox' class='checkbox-espacio-act' name='espacio' value='" + item.idEspacio + "'";
-
-                        if (item.estado_reserva === 1) {
-                            checkbox += " disabled";
-                        }
-
-                        checkbox += "> " + item.numero + "</label>";
-
-                        $("#espaciosSSCheckboxesActualiza").append(checkbox);
-                    });
-                }
-
-                // Crear checkboxes para Pabellón S1 (actualización)
-                if (espaciosS1Actualiza.length > 0) {
-                    $.each(espaciosS1Actualiza, function (index, item) {
-                        var checkbox = "<label";
-
-                        if (item.estado_reserva === 1) {
-                            checkbox += " class='checkbox-reservado'";
-                        }
-
-                        checkbox += "><input type='checkbox' class='checkbox-espacio-act' name='espacio' value='" + item.idEspacio + "'";
-
-                        if (item.estado_reserva === 1) {
-                            checkbox += " disabled";
-                        }
-
-                        checkbox += "> " + item.numero + "</label>";
-
-                        $("#espaciosS1CheckboxesActualiza").append(checkbox);
-                    });
-                }
-                // Solo permitir una selección de checkbox en la actualización
-                $(".checkbox-espacio-act").on("change", function () {
-                    $(".checkbox-espacio-act").not(this).prop("checked", false);
-                });
-            });
-
-            // Cargar vehículos del usuario en el select de actualización y seleccionar el vehículo correspondiente
-            $.getJSON(`listaVehiculosUsuario/${idUsuario}`, function (data) {
                 $.each(data, function (index, item) {
                     var marcavehiculo = item.marca + " " + item.modelo;
-                    $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
+                    var tipoVehiculo = item.tipoVehiculo;
+                    var discapacitado = item.usuarioRegistro.discapacitado;
+
+                    $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
+                    $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
                 });
 
                 if (vehiculo) {
                     $('#id_act_vehiculo').val(vehiculo);
                 }
-            });
 
-            // Cargar vehículos del usuario en el select de registro
-            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
-                $("#id_reg_vehiculo").empty();
-                $("#id_reg_vehiculo").append("<option value=''>[Seleccione]</option>");
-                $.each(data, function (index, item) {
-                    var marcavehiculo = item.marca + " " + item.modelo;
-                    $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
+                // Detectar cambio en el select de vehículo
+                $("#id_reg_vehiculo, #id_act_vehiculo").on("change", function () {
+                    var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
+                    var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco");
+
+                    // Limpiar checkboxes antes de llenarlos
+                    $("#espaciosS1Checkboxes").empty();
+                    $("#espaciosSSCheckboxes").empty();
+                    $("#espacios1Checkboxes").empty();
+                    $("#espaciosS1CheckboxesActualiza").empty();
+                    $("#espaciosSSCheckboxesActualiza").empty();
+                    $("#espacios1CheckboxesActualiza").empty();
+
+                    // Obtener lista de espacios
+                    $.getJSON("listaEspacio", {}, function (data) {
+                        var espaciosSS = [];
+                        var espaciosS1 = [];
+                        var espacios1 = [];
+
+                        // Clasificar espacios
+                        $.each(data, function (index, item) {
+                            if (item.piso === "SS") {
+                                espaciosSS.push(item);
+                            } else if (item.piso === "S1") {
+                                espaciosS1.push(item);
+                            } else if (item.piso === "1") {
+                                espacios1.push(item);
+                            }
+                        });
+
+                        // Llenar espacios según tipo de vehículo
+                        if (tipoVehiculoSeleccionado === "CARRO") {
+                            llenarEspacios("#espaciosSSCheckboxes", espaciosSS, discapacitadoSeleccionado);
+                            llenarEspacios("#espaciosS1Checkboxes", espaciosS1, discapacitadoSeleccionado);
+                        } else if (tipoVehiculoSeleccionado === "MOTO") {
+                            llenarEspacios("#espacios1Checkboxes", espacios1);
+                        }
+
+                        // Evitar duplicados en los checkboxes de actualización
+                        if (tipoVehiculoSeleccionado === "CARRO") {
+                            llenarEspacios("#espaciosSSCheckboxesActualiza", espaciosSS, discapacitadoSeleccionado);
+                            llenarEspacios("#espaciosS1CheckboxesActualiza", espaciosS1, discapacitadoSeleccionado);
+                        } else if (tipoVehiculoSeleccionado === "MOTO") {
+                            llenarEspacios("#espacios1CheckboxesActualiza", espacios1);
+                        }
+                    });
                 });
             });
         }
+
+        // Función auxiliar para llenar los espacios en los checkboxes
+        function llenarEspacios(selector, espacios, discapacitado = null) {
+            $.each(espacios, function (index, item) {
+                var disabledAttribute = discapacitado === "0" && (item.numero === "1" || item.numero === "4") ? 'disabled' : '';
+                var disabledClass = discapacitado === "0" && (item.numero === "1" || item.numero === "4") ? 'disabled-red' : '';
+                $(selector).append("<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>");
+            });
+
+            // Solo permitir un checkbox seleccionado
+            $("input[name='espacio']").on("change", function () {
+                $("input[name='espacio']").not(this).prop("checked", false);
+            });
+        }
+
+
 
         $('#id_form_actualiza').bootstrapValidator({
             message: 'Este valor no es v&aacute;lido',
@@ -774,7 +777,7 @@
 
             $.getJSON("consultaSolicitud", {
                 "idEspacio": varEspacio,
-                "placa":varPlaca,
+                "placa": varPlaca,
                 "tipoVehiculo": vartipoVehiculo, // Par&aacute;metro correcto
                 "fecDesde": varFechaDesde,
                 "fecHasta": varFechaHasta
@@ -814,7 +817,7 @@
                     },
                     {
                         data: function (row) {
-                            return (row.vehiculo.tipoVehiculo == 0) ? 'Moto' : 'Carro';
+                            return row.vehiculo.tipoVehiculo; // Retorna directamente el valor MOTO o CARRO
                         },
                         className: 'text-center'
                     },

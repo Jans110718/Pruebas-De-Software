@@ -33,10 +33,14 @@ public class Usuario {
 	private String password;
 	private String correo;
     private int discapacitado; // Estado de la incidencia
+    private String codigoVerificacion;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date fechaRegistro;
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date expiracionCodigo;
 
 
 	

@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label" for="id_imagen">Imagen</label>
+                    <label class="control-label" for="id_imagen">Imagen del Vehiculo</label>
                     <input class="form-control-file" type="file" id="id_imagen" name="file" accept="image/*" required>
                 </div>
 
