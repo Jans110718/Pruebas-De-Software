@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="css/bootstrap.css" />
         <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
         <link rel="stylesheet" href="css/bootstrapValidator.css" />
-        <title>Verificar Código de Recuperación</title>
+        <title>Verificar C&oacute;digo de Recuperaci&oacute;n</title>
 
         <!-- Estilos personalizados -->
         <style>
@@ -169,17 +169,17 @@
             </div>
 
             <div class="login-header">
-                <h1>Verificar Código de Recuperación</h1>
-                <p class="subtitle">Ingresa el código de recuperación enviado a tu correo.</p>
+                <h1>Verificar C&oacute;digo de Recuperaci&oacute;n</h1>
+                <p class="subtitle">Ingresa el c&oacute;digo de recuperaci&oacute;n enviado a tu correo.</p>
             </div>
 
             <!-- Formulario de verificación de código -->
             <form id="id_form" method="post">
                 <input type="hidden" id="correo" name="correo" value="${correo}">
                 <div class="form-group">
-                    <label for="id_codigo">Código de Verificación:</label>
+                    <label for="id_codigo">C&oacute;digo de Verificaci&oacute;n:</label>
                     <input type="text" class="form-control" id="id_codigo" name="codigoIngresado"
-                        placeholder="Ingrese el código de verificación" required>
+                        placeholder="Ingrese el c&oacute;digo de verificaci&oacute;n" required>
                 </div>
 
                 <div class="form-group text-center">
@@ -223,12 +223,12 @@
                                         window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
                                     }  // Mostrar el mensaje del servidor
                                 } else {
-                                    mostrarMensaje("Ocurrió un error inesperado.");
+                                    mostrarMensaje("Ocurri&oacute; un error inesperado.");
                                 }
                                 validator.resetForm();  // Resetear formulario si es necesario
                             },
                             error: function () {
-                                mostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                                mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
                             },
                             complete: function () {
                                 $("#id_verificar").prop('disabled', false);
@@ -241,7 +241,7 @@
                     $('#mensaje').text(mensaje);  // Mostrar mensaje en el contenedor con id 'mensaje'
                 }
 
-                // Bootstrap Validator configuración
+                // Bootstrap Validator configuraci&oacute;n
                 $('#id_form').bootstrapValidator({
                     feedbackIcons: {
                         valid: 'glyphicon glyphicon-ok',
@@ -252,11 +252,11 @@
                         codigo: {
                             validators: {
                                 notEmpty: {
-                                    message: 'El código de verificación es obligatorio'
+                                    message: 'El c&oacute;digo de verificaci&oacute;n es obligatorio'
                                 },
                                 stringLength: {
                                     min: 6,
-                                    message: 'El código debe tener al menos 6 caracteres'
+                                    message: 'El c&oacute;digo debe tener al menos 6 caracteres'
                                 }
                             }
                         }

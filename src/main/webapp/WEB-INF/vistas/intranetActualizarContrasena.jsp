@@ -33,6 +33,7 @@
             background-color: #003953;
             position: relative;
             overflow: hidden;
+            
         }
 
         .dots-bg {
@@ -156,14 +157,14 @@
 
     <div class="login-container">
         <div class="login-header">
-            <h1>Actualizar Contraseña</h1>
+            <h1>Actualizar Contrase&ntilde;a</h1>
             <p class="subtitle">Por favor ingresa tu nueva contrase&ntilde;a</p>
         </div>
         <form id="id_form" method="post">
             <!-- Hidden input for correo -->
             <input type="hidden" id="correo" name="correo" value="${correo}">
             <div class="form-group">
-                <label for="nuevaContrasena">Nueva Contraseña:</label>
+                <label for="nuevaContrasena">Nueva Contrase&ntilde;a:</label>
                 <input type="password" id="nuevaContrasena" name="nuevaContrasena" class="form-control" required>
             </div>
             <div class="form-group text-center">
@@ -176,7 +177,7 @@
         $(document).ready(function () {
             $("#actualizarButton").click(function () {
                 var correo = $("#correo").val();  // Obtener el correo desde el formulario
-                var nuevaContrasena = $("#nuevaContrasena").val();  // Obtener la nueva contraseña desde el formulario
+                var nuevaContrasena = $("#nuevaContrasena").val();  // Obtener la nueva contrase&ntilde;a desde el formulario
 
                 if (correo !== "" && nuevaContrasena !== "") {
                     $.ajax({
@@ -200,18 +201,18 @@
                             window.location.href = data.REDIRECCIONAR;  // Redirige a la página especificada con el correo
                         }
                             } else {
-                                mostrarMensaje("Ocurrió un error inesperado.");
+                                mostrarMensaje("Ocurri&oacute; un error inesperado.");
                             }
                         },
                         error: function () {
-                            mostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                            mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
                         },
                         complete: function () {
                             $("#id_form").prop('disabled', false);
                         }
                     });
                 } else {
-                    mostrarMensaje("El correo electrónico y la nueva contraseña son obligatorios.");
+                    mostrarMensaje("El correo electr&oacute;nico y la nueva contrase&ntilde;a son obligatorios.");
                 }
             });
         });

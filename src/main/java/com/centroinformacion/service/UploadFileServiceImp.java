@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UploadFileServiceImp implements IUploadFileService {
-	private final static String UPLOADS_FOLDER = "uploads";
+	private final static String UPLOADS_FOLDER = "uploads/vehiculos";
 
 	@Override
 	public Resource load(String filename) throws MalformedURLException {

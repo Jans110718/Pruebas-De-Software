@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="css/bootstrap.css" />
         <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
         <link rel="stylesheet" href="css/bootstrapValidator.css" />
-        <title>Recuperación de Contraseña</title>
+        <title>Recuperaci&oacute;n de Contrase&ntilde;a</title>
 
         <!-- Estilos personalizados -->
         <style>
@@ -159,20 +159,20 @@
             </div>
 
             <div class="login-header">
-                <h1>Recuperar Contraseña</h1>
-                <p class="subtitle">Ingresa tu correo electrónico para recibir el código de recuperación</p>
+                <h1>Recuperar Contrase&ntilde;a</h1>
+                <p class="subtitle">Ingresa tu correo electr&oacute;nico para recibir el c&oacute;digo de recuperaci&oacute;n</p>
             </div>
 
             <!-- Formulario de recuperación de contraseña -->
             <form id="recuperar-form" method="post">
                 <div class="form-group">
-                    <label for="correo">Correo Electrónico:</label>
+                    <label for="correo">Correo Electr&oacute;nico:</label>
                     <input type="email" class="form-control" id="correo" name="correo"
-                        placeholder="Ingrese tu correo electrónico" required>
+                        placeholder="Ingrese tu correo electr&oacute;nico" required>
                 </div>
 
                 <div class="form-group text-center">
-                    <button id="enviar-codigo" type="button" class="btn btn-primary">Enviar Código</button>
+                    <button id="enviar-codigo" type="button" class="btn btn-primary">Enviar C&oacute;digo</button>
                 </div>
 
                 <p id="mensaje" class="alert"></p>
@@ -202,15 +202,15 @@
                             window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
                         }
                     } else {
-                        mostrarMensaje("Ocurrió un error inesperado.");
+                        mostrarMensaje("Ocurri&oacute; un error inesperado.");
                     }
                 },
                 error: function () {
-                    mostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                    mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
                 }
             });
         } else {
-            mostrarMensaje("El correo electrónico es obligatorio.");
+            mostrarMensaje("El correo electr&oacute;nico es obligatorio.");
         }
     });
 
