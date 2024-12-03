@@ -201,18 +201,18 @@
                             window.location.href = data.REDIRECCIONAR;  // Redirige a la página especificada con el correo
                         }
                             } else {
-                                mostrarMensaje("Ocurri&oacute; un error inesperado.");
+                                mostrarMensaje("Ocurri" + String.fromCharCode(243) + " un error inesperado.");
                             }
                         },
                         error: function () {
-                            mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
+                            mostrarMensaje("Ocurri" + String.fromCharCode(243) + " un error al procesar la solicitud.");
                         },
                         complete: function () {
                             $("#id_form").prop('disabled', false);
                         }
                     });
                 } else {
-                    mostrarMensaje("El correo electr&oacute;nico y la nueva contrase&ntilde;a son obligatorios.");
+                    mostrarMensaje("El correo electr" + String.fromCharCode(243) + "nico y la nueva contrase&ntilde;a son obligatorios.");
                 }
             });
         });

@@ -179,7 +179,7 @@
                 <div class="form-group">
                     <label for="id_codigo">C&oacute;digo de Verificaci&oacute;n:</label>
                     <input type="text" class="form-control" id="id_codigo" name="codigoIngresado"
-                        placeholder="Ingrese el c&oacute;digo de verificaci&oacute;n" required>
+                        placeholder="Ingrese el c&oacute;digo de verificaci&oacute;n" required maxlength="6">
                 </div>
 
                 <div class="form-group text-center">
@@ -191,79 +191,114 @@
         </div>
 
         <script type="text/javascript">
-            $(document).ready(function () {
-                $("#id_verificar").click(function () {
-                    var correo = $("#correo").val();  // Obtener el correo desde el formulario
+        $(document).ready(function () {
+    var intentos = 0;  // Variable para contar los intentos
 
-                    var validator = $('#id_form').data('bootstrapValidator');
-                    validator.validate();
+    $("#id_verificar").click(function () {
+        var correo = $("#correo").val();  // Obtener el correo desde el formulario
 
-                    if (validator.isValid()) {
-                        $("#id_verificar").prop('disabled', true);
-                        $.ajax({
-                            type: "POST",
-                            url: "validarCodigo",  // URL del controlador para procesar la verificación
-                            data: {
-                                correo: $("#correo").val(),  // Ahora con el id correcto
-                                codigoIngresado: $("#id_codigo").val() // El código ingresado // Incluye el código ingresado
-                            },   // Enviar los datos del formulario
-                            success: function (data) {
-                                // Imprimir los datos enviados en la consola
-                                console.log("Datos enviados: ", $('#id_form').serialize());
-                                console.log("Respuesta del servidor: ", data);
+        var validator = $('#id_form').data('bootstrapValidator');
+        validator.validate();
 
-                                // Mostrar el mensaje
-                                if (data && data.MENSAJE) {
-                                    mostrarMensaje(data.MENSAJE);
+        if (validator.isValid()) {
+            // Incrementamos el contador de intentos
+            intentos++;
 
-                                    // Verifica si la clave REDIRECCIONAR está presente
-                                    if (data.REDIRECCIONAR) {
-                                        console.log("Redirigiendo a:", data.REDIRECCIONAR);  // Verifica la URL de redirección
-                                        // Aquí, agregamos el correo a la URL de redirección
-                                        window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
-                                    }  // Mostrar el mensaje del servidor
-                                } else {
-                                    mostrarMensaje("Ocurri&oacute; un error inesperado.");
-                                }
-                                validator.resetForm();  // Resetear formulario si es necesario
-                            },
-                            error: function () {
-                                mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
-                            },
-                            complete: function () {
-                                $("#id_verificar").prop('disabled', false);
-                            }
-                        });
-                    }
+            // Comprobamos si los intentos han excedido el límite (por ejemplo, 3)
+            if (intentos >= 3) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Límite de Intentos Excedido',
+                    text: 'Has excedido el número de intentos permitidos. Intenta nuevamente más tarde.',
+                    confirmButtonText: 'Aceptar'
                 });
+                $("#id_verificar").prop('disabled', true);  // Deshabilitar el botón
+                return;  // No proceder con la solicitud AJAX
+            }
 
-                function mostrarMensaje(mensaje) {
-                    $('#mensaje').text(mensaje);  // Mostrar mensaje en el contenedor con id 'mensaje'
-                }
+            $("#id_verificar").prop('disabled', true);
+            $.ajax({
+                type: "POST",
+                url: "validarCodigo",  // URL del controlador para procesar la verificación
+                data: {
+                    correo: $("#correo").val(),  // Ahora con el id correcto
+                    codigoIngresado: $("#id_codigo").val() // El código ingresado
+                },
+                success: function (data) {
+                    console.log("Datos enviados: ", $('#id_form').serialize());
+                    console.log("Respuesta del servidor: ", data);
 
-                // Bootstrap Validator configuraci&oacute;n
-                $('#id_form').bootstrapValidator({
-                    feedbackIcons: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        codigo: {
-                            validators: {
-                                notEmpty: {
-                                    message: 'El c&oacute;digo de verificaci&oacute;n es obligatorio'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: 'El c&oacute;digo debe tener al menos 6 caracteres'
-                                }
-                            }
+                    // Verificar si hay mensaje de error
+                    if (data.ERROR) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.ERROR,
+                            confirmButtonText: 'Aceptar'
+                        });
+                    } else if (data.TIEMPO) {
+                        // Si el código ha expirado
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Código Expirado',
+                            text: data.TIEMPO,
+                            confirmButtonText: 'Aceptar'
+                        });
+                    } else if (data.MENSAJE) {
+                        // Si el código es válido
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Verificación Exitosa',
+                            text: data.MENSAJE,
+                            confirmButtonText: 'Aceptar'
+                        });
+
+                        // Redirección si se proporciona la URL
+                        if (data.REDIRECCIONAR) {
+                            window.location.href = data.REDIRECCIONAR + "?correo=" + correo;
                         }
                     }
-                });
+                    validator.resetForm();
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de Conexión',
+                        text: 'Ocurrió un error al procesar la solicitud. Por favor, inténtelo de nuevo.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                },
+                complete: function () {
+                    $("#id_verificar").prop('disabled', false);
+                }
             });
+        }
+    });
+
+    $('#id_form').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            codigo: {
+                validators: {
+                    notEmpty: {
+                        message: 'El código de verificación es obligatorio'
+                    },
+                    stringLength: {
+                        min: 6,
+                        message: 'El código debe tener al menos 6 caracteres'
+                    }
+                }
+            }
+        }
+    });
+});
+
         </script>
+
 
     </body>
 

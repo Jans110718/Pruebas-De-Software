@@ -196,8 +196,8 @@
             <button type="submit" class="btn btn-primary">Ingresar</button>
         </form>
 		<div class="forgot-password">
-		            <a href="recuperarContrasena">¿Olvidaste tu contrase&ntilde;a?</a>
-		        </div>
+            <a href="recuperarContrasena">&iquest;Olvidaste tu contrase&ntilde;a&quest;</a>
+        </div>
     </div>
 
     <script type="text/javascript">

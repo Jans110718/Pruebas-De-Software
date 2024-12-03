@@ -93,7 +93,7 @@ public class RecuperarContrasenaController {
         Map<String, String> map = new HashMap<>();
 
         if (usuario.isEmpty()) {
-            map.put("MENSAJE", "El correo no está registrado.");
+            map.put("ERROR", "El correo no está registrado.");
             return map;  // Devolver el map directamente en vez de redirigir
         }
 
@@ -103,13 +103,13 @@ public class RecuperarContrasenaController {
 
         // Verificar si el código ha expirado
         if (fechaExpiracion.before(fechaActual)) {
-            map.put("MENSAJE", "El código ha expirado.");
+            map.put("TIEMPO", "El código ha expirado.");
             return map;  // Retornar el map con el mensaje de expiración
         }
 
         // Verificar que el código ingresado coincida con el guardado
         if (!usuarioEncontrado.getCodigoVerificacion().equals(codigoIngresado)) {
-            map.put("MENSAJE", "El código ingresado es incorrecto.");
+            map.put("ERROR", "El código ingresado es incorrecto.");
             return map;  // Retornar el map con el mensaje de error
         }
         // Si el código se envió exitosamente, agregar el mensaje y la URL de redirección al map

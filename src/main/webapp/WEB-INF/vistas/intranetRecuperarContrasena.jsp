@@ -160,7 +160,8 @@
 
             <div class="login-header">
                 <h1>Recuperar Contrase&ntilde;a</h1>
-                <p class="subtitle">Ingresa tu correo electr&oacute;nico para recibir el c&oacute;digo de recuperaci&oacute;n</p>
+                <p class="subtitle">Ingresa tu correo electr&oacute;nico para recibir el c&oacute;digo de
+                    recuperaci&oacute;n</p>
             </div>
 
             <!-- Formulario de recuperación de contraseña -->
@@ -180,45 +181,67 @@
         </div>
 
         <script type="text/javascript">
-    $(document).ready(function () {
-    $("#enviar-codigo").click(function () {
-        var correo = $("#correo").val();  // Obtener el correo desde el formulario
-        if (correo !== "") {
-            $.ajax({
-                type: "POST",
-                url: "recuperar",  // URL del controlador para procesar la recuperación
-                data: { correo: correo },
-                success: function (data) {
-                    console.log("Respuesta del servidor:", data);  // Verifica el contenido de la respuesta
+            $(document).ready(function () {
+                $("#enviar-codigo").click(function () {
+                    var correo = $("#correo").val();  // Obtener el correo desde el formulario
+                    if (correo !== "") {
+                        // Mostrar SweetAlert con loader
+                        Swal.fire({
+                            title: 'Procesando...',
+                            text: 'Enviando el c' + String.fromCharCode(243) + 'digo de recuperaci' + String.fromCharCode(243) + 'n.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading(); // Mostrar el spinner
+                            }
+                        });
 
-                    // Mostrar el mensaje
-                    if (data && data.MENSAJE) {
-                        mostrarMensaje(data.MENSAJE);
+                        // Enviar solicitud al servidor
+                        $.ajax({
+                            type: "POST",
+                            url: "recuperar",  // URL del controlador para procesar la recuperación
+                            data: { correo: correo },
+                            success: function (data) {
+                                // Ocultar el loader de SweetAlert
+                                Swal.close();
 
-                        // Verifica si la clave REDIRECCIONAR está presente
-                        if (data.REDIRECCIONAR) {
-                            console.log("Redirigiendo a:", data.REDIRECCIONAR);  // Verifica la URL de redirección
-                            // Aquí, agregamos el correo a la URL de redirección
-                            window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
-                        }
+                                // Mostrar el mensaje
+                                if (data && data.MENSAJE) {
+                                    Swal.fire({
+                                        title: String.fromCharCode(233) + 'xito',
+                                        text: data.MENSAJE,
+                                        icon: 'success'
+                                    });
+
+                                    // Verifica si la clave REDIRECCIONAR está presente
+                                    if (data.REDIRECCIONAR) {
+                                        window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
+                                    }
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'Ocurri' + String.fromCharCode(243) + ' un error inesperado.',
+                                        icon: 'error'
+                                    });
+                                }
+                            },
+                            error: function () {
+                                // Ocultar el loader y mostrar un mensaje de error
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Ocurri' + String.fromCharCode(243) + ' un error al procesar la solicitud.',
+                                    icon: 'error'
+                                });
+                            }
+                        });
                     } else {
-                        mostrarMensaje("Ocurri&oacute; un error inesperado.");
+                        Swal.fire({
+                            title: 'Advertencia',
+                            text: 'El correo electr' + String.fromCharCode(243) + 'nico es obligatorio.',
+                            icon: 'warning'
+                        });
                     }
-                },
-                error: function () {
-                    mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
-                }
+                });
             });
-        } else {
-            mostrarMensaje("El correo electr&oacute;nico es obligatorio.");
-        }
-    });
-
-    // Función para mostrar el mensaje de respuesta en el frontend
-    function mostrarMensaje(mensaje) {
-        $('#mensaje').text(mensaje);  // Mostrar mensaje en el contenedor con id 'mensaje'
-    }
-});
 
 
         </script>
