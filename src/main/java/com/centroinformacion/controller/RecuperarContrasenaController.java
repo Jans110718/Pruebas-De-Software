@@ -117,7 +117,6 @@ public class RecuperarContrasenaController {
         if ("Código válido. Puedes proceder a cambiar tu contraseña.".equals(map.get("MENSAJE"))) {
             map.put("REDIRECCIONAR", "actualizarContrasenaVista");  // URL de redirección al éxito
         }  
-
         return map;  // Retornar el map con el mensaje de éxito
     }
 
