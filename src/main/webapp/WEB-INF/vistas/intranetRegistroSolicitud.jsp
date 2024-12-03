@@ -131,7 +131,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="id_fecha_reserva">Fecha Reserva</label>
-                        <input class="form-control" type="date" id="id_fecha_reserva" name="fechaReserva" required >
+                        <input class="form-control" type="date" id="id_fecha_reserva" name="fechaReserva" required>
                     </div>
 
                     <div class="form-group">
@@ -399,6 +399,28 @@
                     validators: {
                         notEmpty: {
                             message: 'La fecha de reserva es obligatoria.'
+                        }
+                    }
+                },
+                espaciosSeleccionados: {
+                    validators: {
+                        callback: {
+                            message: 'Debe seleccionar al menos un espacio.',
+                            callback: function (value, validator, $field) {
+                                // Verifica si al menos uno de los checkboxes en los tres grupos está seleccionado
+                                var isCheckedPabellonA = $('#espacios1Checkboxes input[type="checkbox"]:checked').length > 0;
+                                var isCheckedPabellonSS = $('#espaciosSSCheckboxes input[type="checkbox"]:checked').length > 0;
+                                var isCheckedPabellonS1 = $('#espaciosS1Checkboxes input[type="checkbox"]:checked').length > 0;
+
+                                // Si no hay checkboxes seleccionados en ninguno de los tres grupos, muestra el mensaje de error
+                                if (!isCheckedPabellonA && !isCheckedPabellonSS && !isCheckedPabellonS1) {
+                                    return {
+                                        valid: false,
+                                        message: 'Debe seleccionar al menos un espacio.'
+                                    };
+                                }
+                                return true; // Si al menos uno está seleccionado, la validación pasa
+                            }
                         }
                     }
                 }

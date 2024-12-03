@@ -179,8 +179,8 @@
                                     <th style="width: 8%">ID</th>
                                     <th style="width: 8%">Nombres</th>
                                     <th style="width: 10%">Marca y modelo</th>
-                                    <th style="width: 10%">Tipo Vehículo</th>
-                                    <th style="width: 05%">Número</th>
+                                    <th style="width: 10%">Tipo Veh&iacute;culo</th>
+                                    <th style="width: 05%">N&uacute;mero</th>
                                     <th style="width: 15%">Fecha reserva</th>
                                     <th style="width: 7%">Actualizar</th>
                                     <th style="width: 10%">Entrada y Salida</th>
@@ -220,7 +220,7 @@
                                 <div id="stepOne" class="panel-collapse collapse in">
                                     <div class="panel-body">
                                         <div class="form-group">
-                                            <label class="control-label" for="id_reg_vehiculo">Vehículo</label>
+                                            <label class="control-label" for="id_reg_vehiculo">Veh&iacute;culo</label>
                                             <select id="id_reg_vehiculo" name="vehiculo" class='form-control' required>
                                                 <option value="">[Seleccione]</option>
                                             </select>
@@ -283,7 +283,7 @@
             <div class="modal-content">
                 <div class="modal-header" style="padding: 35px 50px">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4><span class="glyphicon glyphicon-ok-sign"></span> Actualización de Solicitud</h4>
+                    <h4><span class="glyphicon glyphicon-ok-sign"></span> Actualizaci&oacute;n de Solicitud</h4>
                 </div>
                 <div class="modal-body" style="padding: 20px 10px;">
                     <form id="id_form_actualiza" accept-charset="UTF-8" action="insertaActualizaSolicitud"
@@ -305,7 +305,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="id_act_vehiculo">Vehículo</label>
+                                            <label class="control-label" for="id_act_vehiculo">Veh&iacute;culo</label>
                                             <select id="id_act_vehiculo" name="vehiculo" class='form-control' required>
                                                 <option value="">[Seleccione]</option>
                                             </select>
@@ -336,13 +336,13 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h5>Pabellón E - Piso SS</h5>
+                                        <h5>Pabell&oacute;n E - Piso SS</h5>
                                         <div class="checkbox-group" id="espaciosSSCheckboxesActualiza">
                                             <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
                                         </div>
                                     </div>
                                     <div>
-                                        <h5>Pabellón E - Piso S1</h5>
+                                        <h5>Pabell&oacute;n E - Piso S1</h5>
                                         <div class="checkbox-group" id="espaciosS1CheckboxesActualiza">
                                             <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
                                         </div>
@@ -375,8 +375,9 @@
 
     </div>
     <script type="text/javascript">
-        // Obtener el campo de fecha
-        const fechaInput = document.getElementById('id_reg_fecha_reserva');
+        // Obtener los campos de fecha
+        const fechaInput1 = document.getElementById('id_reg_fecha_reserva');
+        const fechaInput2 = document.getElementById('id_act_fecha_reserva');
 
         // Obtener la fecha actual en formato YYYY-MM-DD
         const today = new Date();
@@ -386,16 +387,18 @@
         const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000); // 24 horas más
         const tomorrowString = tomorrow.toISOString().split('T')[0]; // Formato YYYY-MM-DD
 
-        // Establecer los atributos min y max en el campo de fecha
-        fechaInput.min = todayString;
-        fechaInput.max = tomorrowString;
+        // Establecer los atributos min y max en los campos de fecha
+        fechaInput1.min = todayString;
+        fechaInput1.max = tomorrowString;
+
+        fechaInput2.min = todayString;
+        fechaInput2.max = tomorrowString;
+
         var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
 
         $(document).ready(function () {
             // Cargar datos solo una vez al inicio
-            // Inicialmente deshabilitar ambos campos de hora
             $('#id_reg_hora').prop('disabled', true);
-
 
             // Evento para habilitar/deshabilitar el campo de hora cuando se selecciona una fecha en id_reg_fechaReserva
             $('#id_reg_fecha_reserva').change(function () {
@@ -405,6 +408,7 @@
                     $('#id_reg_hora').prop('disabled', true); // Deshabilitar si no hay fecha seleccionada
                 }
             });
+
             actualizarComboBox();
 
 
@@ -434,7 +438,7 @@
 
                         },
                         error: function () {
-                            mostrarMensaje("Error en la reserva. Inténtalo de nuevo.");
+                            mostrarMensaje("Error en la reserva. Int" + String.fromCharCode(233) + "ntalo de nuevo.");
                         }
                     });
                 }
@@ -462,7 +466,7 @@
                             $('#id_div_modal_actualiza').modal('hide');
                         },
                         error: function () {
-                            mostrarMensaje("Error en la actualización. Inténtalo de nuevo.");
+                            mostrarMensaje("Error en la actualizaci" + String.fromCharCode(243) + "n. Int" + String.fromCharCode(233) + "ntalo de nuevo.");
                         }
                     });
                 }
@@ -474,11 +478,10 @@
             $('#id_ID').val(idSolicitud);
             $('#id_act_vehiculo').val(vehiculo);
             $('#id_act_hora').val(hora);
-            $('#id_act_fechaReserva').val(fechaReserva);
-
+            $('#id_act_fecha_reserva').val(fechaReserva);
+            actualizarComboBox(vehiculo); // Pasa el vehículo a seleccionar
 
             // Cargar los vehículos y seleccionar el correspondiente
-            actualizarComboBox(vehiculo); // Pasa el vehículo a seleccionar
 
             // Muestra el modal de actualización
             $('#id_div_modal_actualiza').modal("show");
@@ -501,6 +504,8 @@
 
         function limpiarFormulario() {
             $('#id_form_registra')[0].reset();
+            $('#id_form_actualiza')[0].reset();
+
             actualizarComboBox(); // Refresca las listas, pero solo después de limpiar el formulario
         }
 
@@ -585,8 +590,10 @@
             });
         }
 
-        // Función auxiliar para llenar los espacios en los checkboxes
         function llenarEspacios(selector, espacios, discapacitado = null) {
+            // Limpia el contenedor antes de llenarlo para evitar duplicados
+            $(selector).empty();
+
             $.each(espacios, function (index, item) {
                 var disabledAttribute = discapacitado === "0" && (item.numero === "1" || item.numero === "4") ? 'disabled' : '';
                 var disabledClass = discapacitado === "0" && (item.numero === "1" || item.numero === "4") ? 'disabled-red' : '';
@@ -748,8 +755,21 @@
 
         // Cargar lista de espacios
         $.getJSON("listaEspacios", {}, function (data) {
+            console.log("Datos recibidos:", data);
+
+            // Ordenar los datos por pabellón ("Pabellón A" y "Pabellón E")
+            const ordenPabellones = ["Pabellón A", "Pabellón E"];
+            data.sort(function (a, b) {
+                // Obtén el índice de los pabellones en ordenPabellones, o un valor alto si no está presente
+                const indexA = ordenPabellones.indexOf(a.pabellon) !== -1 ? ordenPabellones.indexOf(a.pabellon) : Infinity;
+                const indexB = ordenPabellones.indexOf(b.pabellon) !== -1 ? ordenPabellones.indexOf(b.pabellon) : Infinity;
+
+                return indexA - indexB;
+            });
+
+            // Iterar los datos ordenados y agregarlos al <select>
             $.each(data, function (i, item) {
-                $("#id_espacio").append("<option value=" + item.idEspacio + ">" + item.numero + "</option>");
+                $("#id_espacio").append("<option value='" + item.idEspacio + "'>" + item.pabellon + " " + item.numero + "</option>");
             });
         });
 

@@ -106,7 +106,6 @@ public class RecuperarContrasenaController {
             map.put("TIEMPO", "El código ha expirado.");
             return map;  // Retornar el map con el mensaje de expiración
         }
-
         // Verificar que el código ingresado coincida con el guardado
         if (!usuarioEncontrado.getCodigoVerificacion().equals(codigoIngresado)) {
             map.put("ERROR", "El código ingresado es incorrecto.");
