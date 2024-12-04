@@ -104,6 +104,7 @@
         .espacios-container {
             display: flex;
             justify-content: space-evenly;
+
             /* Espacio entre los grupos de espacios */
         }
     </style>
@@ -529,119 +530,139 @@
 
 
         function actualizarComboBox(vehiculo) {
-            // Limpieza inicial
-            $("#espaciosS1CheckboxesActualiza").empty();
-            $("#espaciosSSCheckboxesActualiza").empty();
-            $("#espacios1CheckboxesActualiza").empty();
+    // Limpieza inicial
+    $("#espaciosS1CheckboxesActualiza").empty();
+    $("#espaciosSSCheckboxesActualiza").empty();
+    $("#espacios1CheckboxesActualiza").empty();
+    $("#espaciosS1Checkboxes").empty();
+    $("#espaciosSSCheckboxes").empty();
+    $("#espacios1Checkboxes").empty();
+    $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+    $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+
+    // Obtener la lista de vehículos del usuario y agregar al select
+    $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
+        // Limpiar y llenar los select de vehículos
+        $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+        $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+
+        $.each(data, function (index, item) {
+            var marcavehiculo = item.marca + " " + item.modelo;
+            var tipoVehiculo = item.tipoVehiculo;
+            var discapacitado = item.usuarioRegistro.discapacitado;
+
+            $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
+            $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
+        });
+
+        if (vehiculo) {
+            $('#id_act_vehiculo').val(vehiculo);
+        }
+
+        // Detectar cambio en el select de vehículo
+        $("#id_reg_vehiculo, #id_act_vehiculo").on("change", function () {
+            var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
+            var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco");
+            var estadoSeleccionado = $("option:selected", this).val(); // ID del espacio seleccionado
+
+            // Limpiar checkboxes antes de llenarlos
             $("#espaciosS1Checkboxes").empty();
             $("#espaciosSSCheckboxes").empty();
             $("#espacios1Checkboxes").empty();
-            $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
-            $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+            $("#espaciosS1CheckboxesActualiza").empty();
+            $("#espaciosSSCheckboxesActualiza").empty();
+            $("#espacios1CheckboxesActualiza").empty();
 
-            // Obtener la lista de vehículos del usuario y agregar al select
-            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
-                // Limpiar y llenar los select de vehículos
-                $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
-                $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+            // Obtener lista de espacios
+            $.getJSON("listaEspacios", {}, function (data) {
+                var espaciosSS = [];
+                var espaciosS1 = [];
+                var espacios1 = [];
 
+                // Clasificar espacios
                 $.each(data, function (index, item) {
-                    var marcavehiculo = item.marca + " " + item.modelo;
-                    var tipoVehiculo = item.tipoVehiculo;
-                    var discapacitado = item.usuarioRegistro.discapacitado;
-
-                    $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
-                    $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
+                    if (item.piso === "SS") {
+                        espaciosSS.push(item);
+                    } else if (item.piso === "S1") {
+                        espaciosS1.push(item);
+                    } else if (item.piso === "1") {
+                        espacios1.push(item);
+                    }
                 });
 
-                if (vehiculo) {
-                    $('#id_act_vehiculo').val(vehiculo);
+                // Llenar espacios según tipo de vehículo
+                if (tipoVehiculoSeleccionado === "CARRO") {
+                    llenarEspacios("#espaciosSSCheckboxes", espaciosSS, discapacitadoSeleccionado, estadoSeleccionado, false);
+                    llenarEspacios("#espaciosS1Checkboxes", espaciosS1, discapacitadoSeleccionado, estadoSeleccionado, false);
+                } else if (tipoVehiculoSeleccionado === "MOTO") {
+                    llenarEspacios("#espacios1Checkboxes", espacios1, discapacitadoSeleccionado, estadoSeleccionado, false);
                 }
 
-                // Detectar cambio en el select de vehículo
-                $("#id_reg_vehiculo, #id_act_vehiculo").on("change", function () {
-                    var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
-                    var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco");
-
-                    // Limpiar checkboxes antes de llenarlos
-                    $("#espaciosS1Checkboxes").empty();
-                    $("#espaciosSSCheckboxes").empty();
-                    $("#espacios1Checkboxes").empty();
-                    $("#espaciosS1CheckboxesActualiza").empty();
-                    $("#espaciosSSCheckboxesActualiza").empty();
-                    $("#espacios1CheckboxesActualiza").empty();
-
-                    // Obtener lista de espacios
-                    $.getJSON("listaEspacios", {}, function (data) {
-                        var espaciosSS = [];
-                        var espaciosS1 = [];
-                        var espacios1 = [];
-
-                        // Clasificar espacios
-                        $.each(data, function (index, item) {
-                            if (item.piso === "SS") {
-                                espaciosSS.push(item);
-                            } else if (item.piso === "S1") {
-                                espaciosS1.push(item);
-                            } else if (item.piso === "1") {
-                                espacios1.push(item);
-                            }
-                        });
-
-                        // Llenar espacios según tipo de vehículo
-                        if (tipoVehiculoSeleccionado === "CARRO") {
-                            llenarEspacios("#espaciosSSCheckboxes", espaciosSS, discapacitadoSeleccionado);
-                            llenarEspacios("#espaciosS1Checkboxes", espaciosS1, discapacitadoSeleccionado);
-                        } else if (tipoVehiculoSeleccionado === "MOTO") {
-                            llenarEspacios("#espacios1Checkboxes", espacios1);
-                        }
-
-                        // Evitar duplicados en los checkboxes de actualización
-                        if (tipoVehiculoSeleccionado === "CARRO") {
-                            llenarEspacios("#espaciosSSCheckboxesActualiza", espaciosSS, discapacitadoSeleccionado);
-                            llenarEspacios("#espaciosS1CheckboxesActualiza", espaciosS1, discapacitadoSeleccionado);
-                        } else if (tipoVehiculoSeleccionado === "MOTO") {
-                            llenarEspacios("#espacios1CheckboxesActualiza", espacios1);
-                        }
-                    });
-                });
+                // Evitar duplicados en los checkboxes de actualización
+                if (tipoVehiculoSeleccionado === "CARRO") {
+                    llenarEspacios("#espaciosSSCheckboxesActualiza", espaciosSS, discapacitadoSeleccionado, estadoSeleccionado, true);
+                    llenarEspacios("#espaciosS1CheckboxesActualiza", espaciosS1, discapacitadoSeleccionado, estadoSeleccionado, true);
+                } else if (tipoVehiculoSeleccionado === "MOTO") {
+                    llenarEspacios("#espacios1CheckboxesActualiza", espacios1, discapacitadoSeleccionado, estadoSeleccionado, true);
+                }
             });
-        }
+        });
+    });
+}
 
-        function llenarEspacios(selector, espacios, discapacitado = null, acceso = null) {
-            // Limpia el contenedor antes de llenarlo para evitar duplicados
-            $(selector).empty();
+function llenarEspacios(selector, espacios, discapacitado = null, estado_reserva = null, esActualizacion = false) {
+    // Limpia el contenedor antes de llenarlo para evitar duplicados
+    $(selector).empty();
 
-            $.each(espacios, function (index, item) {
-                var disabledAttribute = '';
-                var disabledClass = '';
+    $.each(espacios, function (index, item) {
+        var disabledAttribute = '';
+        var disabledClass = '';
+        var labelStyle = ''; // Variable para aplicar estilo al label
 
-                // Validación del acceso: Si el acceso es "1", el espacio se deshabilita,
-                // a menos que sea el espacio reservado (acceso correspondiente al idEspacio)
-                if (item.acceso === "1" && (acceso === null || item.idEspacio !== acceso)) {
-                    disabledAttribute = 'disabled';
-                    disabledClass = 'disabled-red';
-                } else if (item.acceso === "0") {
-                    // Si el acceso es "0", el espacio está libre y habilitado
+        // Validación del estado de reserva
+        if (item.estado_reserva === 1) {
+            if (estado_reserva !== null && item.idEspacio === parseInt(estado_reserva)) {
+                // El espacio es el reservado por el usuario, debe estar habilitado solo en la actualización
+                if (esActualizacion) {
                     disabledAttribute = '';
                     disabledClass = '';
-                }
-
-                // Si el discapacitado es "0" y el número del espacio es "1" o "4", se deshabilita
-                if (discapacitado === "0" && (item.numero === "1" || item.numero === "4")) {
+                    labelStyle = ''; // Sin estilo especial, se habilita normalmente
+                } else {
+                    // El espacio reservado no debe aparecer disponible para nuevas solicitudes
                     disabledAttribute = 'disabled';
-                    disabledClass = 'disabled-red';
+                    disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+                    labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
                 }
-
-                // Agregar el checkbox al contenedor
-                $(selector).append("<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>");
-            });
-
-            // Solo permitir un checkbox seleccionado
-            $("input[name='espacio']").on("change", function () {
-                $("input[name='espacio']").not(this).prop("checked", false);
-            });
+            } else {
+                // El espacio está ocupado y no corresponde al usuario
+                disabledAttribute = 'disabled';
+                disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+                labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+            }
+        } else if (item.estado_reserva === 0) {
+            // Espacio libre, habilitarlo
+            disabledAttribute = '';
+            disabledClass = '';
+            labelStyle = ''; // Sin estilo, se deja habilitado
         }
+
+        // Validación de discapacitado
+        if (discapacitado === "0" && (item.numero === "1" || item.numero === "4")) {
+            disabledAttribute = 'disabled';
+            disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+            labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+        }
+
+        // Agregar el checkbox al contenedor con los estilos in-line aplicados al label
+        $(selector).append("<label style='" + labelStyle + "'><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>");
+    });
+
+    // Solo permitir un checkbox seleccionado
+    $("input[name='espacio']").on("change", function () {
+        $("input[name='espacio']").not(this).prop("checked", false);
+    });
+}
+
 
 
 
