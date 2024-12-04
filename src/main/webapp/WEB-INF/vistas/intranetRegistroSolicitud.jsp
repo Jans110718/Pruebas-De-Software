@@ -104,7 +104,6 @@
         .espacios-container {
             display: flex;
             justify-content: space-evenly;
-
             /* Espacio entre los grupos de espacios */
         }
     </style>
@@ -158,8 +157,12 @@
                     <div class="col-md-6">
                         <label class="control-label" for="id_placa">Placa</label>
                         <input class="form-control" type="text" id="id_placa" name="paramPlaca"
-                            placeholder="Ingrese la placa">
+                            placeholder="Ingrese la placa" maxlength="7"
+                            pattern="^[A-Za-z]{3}-\d{3}$|^[A-Za-z]{2}-\d{4}$"
+                            title="Formato invlido: solo se acepta ABC-123 o AB-1234">
+                        <div id="errorPlaca" class="text-danger" style="display: none;"></div> <!-- Mensaje de error -->
                     </div>
+
                 </div>
 
                 <!-- Espacio entre filtros y botones -->
@@ -384,6 +387,33 @@
 
     </div>
     <script type="text/javascript">
+
+        // Obtener el formulario y el botón de filtrar
+        const form = document.querySelector("id_form");
+        const filtrarBtn = document.getElementById("id_btn_filtra");
+        const placaInput = document.getElementById("id_placa");
+        const errorPlaca = document.getElementById("errorPlaca");
+
+        // Añadir evento al botón de filtrar
+        filtrarBtn.addEventListener("click", function (event) {
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            // Verificar si el campo de la placa es nulo o vacío
+            if (placaInput.value.trim() === "") {
+                errorPlaca.style.display = "none"; // Si está vacío, no mostrar el mensaje de error
+                form.submit(); // Enviar el formulario si está vacío
+            } else {
+                // Verificar si el campo de la placa es válido según el patrón
+                if (placaInput.checkValidity()) {
+                    errorPlaca.style.display = "none"; // Si es válido, ocultar el mensaje de error
+                    form.submit(); // Enviar el formulario si es válido
+                } else {
+                    errorPlaca.textContent = placaInput.title; // Mostrar el mensaje de error
+                    errorPlaca.style.display = "block"; // Hacer visible el mensaje de error
+                }
+            }
+        });
         // Obtener los campos de fecha
         const fechaInput1 = document.getElementById('id_reg_fecha_reserva');
         const fechaInput2 = document.getElementById('id_act_fecha_reserva');
@@ -530,139 +560,100 @@
 
 
         function actualizarComboBox(vehiculo) {
-    // Limpieza inicial
-    $("#espaciosS1CheckboxesActualiza").empty();
-    $("#espaciosSSCheckboxesActualiza").empty();
-    $("#espacios1CheckboxesActualiza").empty();
-    $("#espaciosS1Checkboxes").empty();
-    $("#espaciosSSCheckboxes").empty();
-    $("#espacios1Checkboxes").empty();
-    $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
-    $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
-
-    // Obtener la lista de vehículos del usuario y agregar al select
-    $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
-        // Limpiar y llenar los select de vehículos
-        $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
-        $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
-
-        $.each(data, function (index, item) {
-            var marcavehiculo = item.marca + " " + item.modelo;
-            var tipoVehiculo = item.tipoVehiculo;
-            var discapacitado = item.usuarioRegistro.discapacitado;
-
-            $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
-            $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
-        });
-
-        if (vehiculo) {
-            $('#id_act_vehiculo').val(vehiculo);
-        }
-
-        // Detectar cambio en el select de vehículo
-        $("#id_reg_vehiculo, #id_act_vehiculo").on("change", function () {
-            var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
-            var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco");
-            var estadoSeleccionado = $("option:selected", this).val(); // ID del espacio seleccionado
-
-            // Limpiar checkboxes antes de llenarlos
-            $("#espaciosS1Checkboxes").empty();
-            $("#espaciosSSCheckboxes").empty();
-            $("#espacios1Checkboxes").empty();
+            // Limpieza inicial
             $("#espaciosS1CheckboxesActualiza").empty();
             $("#espaciosSSCheckboxesActualiza").empty();
             $("#espacios1CheckboxesActualiza").empty();
+            $("#espaciosS1Checkboxes").empty();
+            $("#espaciosSSCheckboxes").empty();
+            $("#espacios1Checkboxes").empty();
+            $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+            $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
 
-            // Obtener lista de espacios
-            $.getJSON("listaEspacios", {}, function (data) {
-                var espaciosSS = [];
-                var espaciosS1 = [];
-                var espacios1 = [];
+            // Obtener la lista de vehículos del usuario y agregar al select
+            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
+                // Limpiar y llenar los select de vehículos
+                $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+                $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
 
-                // Clasificar espacios
                 $.each(data, function (index, item) {
-                    if (item.piso === "SS") {
-                        espaciosSS.push(item);
-                    } else if (item.piso === "S1") {
-                        espaciosS1.push(item);
-                    } else if (item.piso === "1") {
-                        espacios1.push(item);
-                    }
+                    var marcavehiculo = item.marca + " " + item.modelo;
+                    var tipoVehiculo = item.tipoVehiculo;
+                    var discapacitado = item.usuarioRegistro.discapacitado;
+
+                    $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
+                    $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
                 });
 
-                // Llenar espacios según tipo de vehículo
-                if (tipoVehiculoSeleccionado === "CARRO") {
-                    llenarEspacios("#espaciosSSCheckboxes", espaciosSS, discapacitadoSeleccionado, estadoSeleccionado, false);
-                    llenarEspacios("#espaciosS1Checkboxes", espaciosS1, discapacitadoSeleccionado, estadoSeleccionado, false);
-                } else if (tipoVehiculoSeleccionado === "MOTO") {
-                    llenarEspacios("#espacios1Checkboxes", espacios1, discapacitadoSeleccionado, estadoSeleccionado, false);
+                if (vehiculo) {
+                    $('#id_act_vehiculo').val(vehiculo);
                 }
 
-                // Evitar duplicados en los checkboxes de actualización
-                if (tipoVehiculoSeleccionado === "CARRO") {
-                    llenarEspacios("#espaciosSSCheckboxesActualiza", espaciosSS, discapacitadoSeleccionado, estadoSeleccionado, true);
-                    llenarEspacios("#espaciosS1CheckboxesActualiza", espaciosS1, discapacitadoSeleccionado, estadoSeleccionado, true);
-                } else if (tipoVehiculoSeleccionado === "MOTO") {
-                    llenarEspacios("#espacios1CheckboxesActualiza", espacios1, discapacitadoSeleccionado, estadoSeleccionado, true);
-                }
+                // Detectar cambio en el select de vehículo
+                $("#id_reg_vehiculo, #id_act_vehiculo").on("change", function () {
+                    var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
+                    var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco");
+
+                    // Limpiar checkboxes antes de llenarlos
+                    $("#espaciosS1Checkboxes").empty();
+                    $("#espaciosSSCheckboxes").empty();
+                    $("#espacios1Checkboxes").empty();
+                    $("#espaciosS1CheckboxesActualiza").empty();
+                    $("#espaciosSSCheckboxesActualiza").empty();
+                    $("#espacios1CheckboxesActualiza").empty();
+
+                    // Obtener lista de espacios
+                    $.getJSON("listaEspacios", {}, function (data) {
+                        var espaciosSS = [];
+                        var espaciosS1 = [];
+                        var espacios1 = [];
+
+                        // Clasificar espacios
+                        $.each(data, function (index, item) {
+                            if (item.piso === "SS") {
+                                espaciosSS.push(item);
+                            } else if (item.piso === "S1") {
+                                espaciosS1.push(item);
+                            } else if (item.piso === "1") {
+                                espacios1.push(item);
+                            }
+                        });
+
+                        // Llenar espacios según tipo de vehículo
+                        if (tipoVehiculoSeleccionado === "CARRO") {
+                            llenarEspacios("#espaciosSSCheckboxes", espaciosSS, discapacitadoSeleccionado);
+                            llenarEspacios("#espaciosS1Checkboxes", espaciosS1, discapacitadoSeleccionado);
+                        } else if (tipoVehiculoSeleccionado === "MOTO") {
+                            llenarEspacios("#espacios1Checkboxes", espacios1);
+                        }
+
+                        // Evitar duplicados en los checkboxes de actualización
+                        if (tipoVehiculoSeleccionado === "CARRO") {
+                            llenarEspacios("#espaciosSSCheckboxesActualiza", espaciosSS, discapacitadoSeleccionado);
+                            llenarEspacios("#espaciosS1CheckboxesActualiza", espaciosS1, discapacitadoSeleccionado);
+                        } else if (tipoVehiculoSeleccionado === "MOTO") {
+                            llenarEspacios("#espacios1CheckboxesActualiza", espacios1);
+                        }
+                    });
+                });
             });
-        });
-    });
-}
-
-function llenarEspacios(selector, espacios, discapacitado = null, estado_reserva = null, esActualizacion = false) {
-    // Limpia el contenedor antes de llenarlo para evitar duplicados
-    $(selector).empty();
-
-    $.each(espacios, function (index, item) {
-        var disabledAttribute = '';
-        var disabledClass = '';
-        var labelStyle = ''; // Variable para aplicar estilo al label
-
-        // Validación del estado de reserva
-        if (item.estado_reserva === 1) {
-            if (estado_reserva !== null && item.idEspacio === parseInt(estado_reserva)) {
-                // El espacio es el reservado por el usuario, debe estar habilitado solo en la actualización
-                if (esActualizacion) {
-                    disabledAttribute = '';
-                    disabledClass = '';
-                    labelStyle = ''; // Sin estilo especial, se habilita normalmente
-                } else {
-                    // El espacio reservado no debe aparecer disponible para nuevas solicitudes
-                    disabledAttribute = 'disabled';
-                    disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
-                    labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
-                }
-            } else {
-                // El espacio está ocupado y no corresponde al usuario
-                disabledAttribute = 'disabled';
-                disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
-                labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
-            }
-        } else if (item.estado_reserva === 0) {
-            // Espacio libre, habilitarlo
-            disabledAttribute = '';
-            disabledClass = '';
-            labelStyle = ''; // Sin estilo, se deja habilitado
         }
 
-        // Validación de discapacitado
-        if (discapacitado === "0" && (item.numero === "1" || item.numero === "4")) {
-            disabledAttribute = 'disabled';
-            disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
-            labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+        function llenarEspacios(selector, espacios, discapacitado = null) {
+            // Limpia el contenedor antes de llenarlo para evitar duplicados
+            $(selector).empty();
+
+            $.each(espacios, function (index, item) {
+                var disabledAttribute = discapacitado === "0" && (item.numero === "1" || item.numero === "4") ? 'disabled' : '';
+                var disabledClass = discapacitado === "0" && (item.numero === "1" || item.numero === "4") ? 'disabled-red' : '';
+                $(selector).append("<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>");
+            });
+
+            // Solo permitir un checkbox seleccionado
+            $("input[name='espacio']").on("change", function () {
+                $("input[name='espacio']").not(this).prop("checked", false);
+            });
         }
-
-        // Agregar el checkbox al contenedor con los estilos in-line aplicados al label
-        $(selector).append("<label style='" + labelStyle + "'><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>");
-    });
-
-    // Solo permitir un checkbox seleccionado
-    $("input[name='espacio']").on("change", function () {
-        $("input[name='espacio']").not(this).prop("checked", false);
-    });
-}
-
 
 
 
@@ -815,21 +806,26 @@ function llenarEspacios(selector, espacios, discapacitado = null, estado_reserva
         $.getJSON("listaEspacios", {}, function (data) {
             console.log("Datos recibidos:", data);
 
-            // Ordenar los datos por pabellón ("Pabellón A" y "Pabellón E")
+            // Ordenar los datos por pabellón, priorizando "Pabellón A" y "Pabellón E"
             const ordenPabellones = ["Pabellón A", "Pabellón E"];
-            data.sort(function (a, b) {
-                // Obtén el índice de los pabellones en ordenPabellones, o un valor alto si no está presente
-                const indexA = ordenPabellones.indexOf(a.pabellon) !== -1 ? ordenPabellones.indexOf(a.pabellon) : Infinity;
-                const indexB = ordenPabellones.indexOf(b.pabellon) !== -1 ? ordenPabellones.indexOf(b.pabellon) : Infinity;
 
+            // Ordenar los elementos
+            data.sort(function (a, b) {
+                // Si el pabellón no está en el orden, ponerlo al final
+                const indexA = ordenPabellones.includes(a.pabellon) ? ordenPabellones.indexOf(a.pabellon) : Infinity;
+                const indexB = ordenPabellones.includes(b.pabellon) ? ordenPabellones.indexOf(b.pabellon) : Infinity;
+
+                // Ordenar por el índice del pabellón, aquellos que no están en la lista irán al final
                 return indexA - indexB;
             });
 
-            // Iterar los datos ordenados y agregarlos al <select>
+            // Iterar sobre los datos ordenados y agregarlos al <select>
             $.each(data, function (i, item) {
-                $("#id_espacio").append("<option value='" + item.idEspacio + "'>" + item.pabellon + " " + item.numero + "</option>");
+                $("#id_espacio").append("<option value='" + item.idEspacio + "'>" + item.pabellon + "---- " + "Estacionamiento" + item.numero + "</option>");
             });
         });
+
+
 
         // Manejo de reporte
         $("#id_btn_reporte").click(function () {
