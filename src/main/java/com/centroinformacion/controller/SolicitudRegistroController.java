@@ -283,10 +283,11 @@ public class SolicitudRegistroController {
 	        int idEspacio,
 	        int tipoVehiculo,
 	        String placa,
+	        int idUsuario,
 	        @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecDesde,
 	        @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecHasta) {
 	    
-	    List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(idEspacio,tipoVehiculo,placa,fecDesde, fecHasta);    
+	    List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(idEspacio,tipoVehiculo,placa,idUsuario,fecDesde, fecHasta);    
 	    return lstSalida;
 	}
 	@GetMapping("/reporteSolicitudPdf")
@@ -295,11 +296,12 @@ public class SolicitudRegistroController {
 	                     int paramEspacio,
 	                     int paramtipoVehiculo,
 	                     String paramPlaca,
+	                     int paramIdUsuario,
 	                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date paramFechaDesde,
 	                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date paramFechaHasta) {
 	    try {
 	        // PASO 1: OBTENER EL DATASOURCE QUE VA A GENERAR EL REPORTE 
-	        List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(paramEspacio, paramtipoVehiculo,paramPlaca,paramFechaDesde, paramFechaHasta);
+	        List<Solicitud> lstSalida = solicitudService.listaConsultaEspacio(paramEspacio, paramtipoVehiculo,paramPlaca,paramIdUsuario,paramFechaDesde, paramFechaHasta);
 	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(lstSalida);
 
 	        // PASO 2: OBTENER EL ARCHIVO QUE CONTIENE EL DISE&ntilde;O DEL REPORTE 

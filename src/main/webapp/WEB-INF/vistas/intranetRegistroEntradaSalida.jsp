@@ -120,6 +120,15 @@
         <form id="id_form">
             <div class="row" style="height: 70px">
                 <div class="row">
+        
+                    <div class="col-md-6" style="display: none;">
+                        <input type="hidden" name="idUsuario" value="-">
+                        
+                        <label class="control-label" for="id_usuario">Espacio</label>
+                        <select id="id_usuario" name="paramidUsuario" class="form-control">
+                            <option value="-1">[Todos]</option>
+                        </select>
+                    </div>
                     <!-- Filtros -->
                     <div class="col-md-6">
                         <label class="control-label" for="id_espacio">Espacio</label>
@@ -783,6 +792,7 @@
         $("#id_btn_filtra").click(function () {
             var varEstado = $("#id_estado").is(':checked') ? 1 : 0;
             var varEspacio = $("#id_espacio").val();
+            var varUsuario = $("#id_usuario").val();
             var varPlaca = $("#id_placa").val();
             var vartipoVehiculo = $("#id_tipoVehiculo").val(); // Tipo de veh&iacute;culo
             var varFechaDesde = $("#id_fechaDesde").val() || '1900-01-01';
@@ -798,6 +808,7 @@
             $.getJSON("consultaSolicitud", {
                 "idEspacio": varEspacio,
                 "placa": varPlaca,
+                "idUsuario": varUsuario,
                 "tipoVehiculo": vartipoVehiculo, // Par&aacute;metro correcto
                 "fecDesde": varFechaDesde,
                 "fecHasta": varFechaHasta
@@ -889,7 +900,10 @@
                         },
                         className: 'text-center'
                     }
-                ]
+
+                ],
+                order: [[6, 'desc']]  // Esto ordenará la columna "estado" de mayor (1) a menor (0)
+
             });
         }
         function registrarEntrada(idSolicitud) {

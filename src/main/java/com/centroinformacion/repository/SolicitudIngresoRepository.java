@@ -19,9 +19,11 @@ public interface SolicitudIngresoRepository extends JpaRepository<Solicitud, Int
 	         + "(?1 = -1 OR s.espacio.idEspacio = ?1) AND "
 	         + "(?2 = -1 OR s.vehiculo.tipoVehiculo = ?2) AND "
 	         + "(?3 = '' OR s.vehiculo.placa = ?3) AND "
-	         + "(s.fechaReserva >= ?4) AND "
-	         + "(s.fechaReserva <= ?5)"+"ORDER BY s.idSolicitud DESC")
-	List<Solicitud> listaConsultaSolicitudAvanzado(int idEspacio, int tipoVehiculo, String placa, Date fecDesde, Date fecHasta);
+	         + "(?4 = -1 OR s.usuarioRegistro.idUsuario = ?4) AND "  // Filtro por idUsuario
+	         + "(s.fechaReserva >= ?5) AND "
+	         + "(s.fechaReserva <= ?6)"
+	         + "ORDER BY s.estado DESC") // Ordenar por idSolicitud de forma descendente
+	List<Solicitud> listaConsultaSolicitudAvanzado(int idEspacio, int tipoVehiculo, String placa, int idUsuario, Date fecDesde, Date fecHasta);
 
 	
 	Optional<Solicitud> findById(Integer idSolicitud);

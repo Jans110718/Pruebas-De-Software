@@ -9,7 +9,7 @@ import com.centroinformacion.entity.Usuario;
 
 public interface SolicitudService {
     public abstract Solicitud insertaActualizaSolicitud(Solicitud obj); // Cambiado a Solicitud
-    public abstract List<Solicitud> listaConsultaEspacio(int idEspacio,int tipoVehiculo,String placa, Date fecDesde, Date fecHasta);
+    public abstract List<Solicitud> listaConsultaEspacio(int idEspacio,int tipoVehiculo,String placa,int idUsuario, Date fecDesde, Date fecHasta);
 	public abstract Optional<Solicitud> buscaSolicitud(int idSolicitud);
     boolean existeSolicitudActiva(Usuario usuarioRegistro); // Cambia a Usuario
 
