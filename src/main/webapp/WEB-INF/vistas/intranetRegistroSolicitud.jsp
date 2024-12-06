@@ -639,21 +639,54 @@
             });
         }
 
-        function llenarEspacios(selector, espacios, discapacitado = null) {
+        function llenarEspacios(selector, espacios, discapacitado = null, estado_reserva = null, esActualizacion = false) {
             // Limpia el contenedor antes de llenarlo para evitar duplicados
             $(selector).empty();
-
             $.each(espacios, function (index, item) {
-                var disabledAttribute = discapacitado === "0" && (item.numero === "1" || item.numero === "4") ? 'disabled' : '';
-                var disabledClass = discapacitado === "0" && (item.numero === "1" || item.numero === "4") ? 'disabled-red' : '';
-                $(selector).append("<label><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>");
+                var disabledAttribute = '';
+                var disabledClass = '';
+                var labelStyle = ''; // Variable para aplicar estilo al label
+                // Validación del estado de reserva
+                if (item.estado_reserva === 1) {
+                    if (estado_reserva !== null && item.idEspacio === parseInt(estado_reserva)) {
+                        // El espacio es el reservado por el usuario, debe estar habilitado solo en la actualización
+                        if (esActualizacion) {
+                            disabledAttribute = '';
+                            disabledClass = '';
+                            labelStyle = ''; // Sin estilo especial, se habilita normalmente
+                        } else {
+                            // El espacio reservado no debe aparecer disponible para nuevas solicitudes
+                            disabledAttribute = 'disabled';
+                            disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+                            labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+                        }
+                    } else {
+                        // El espacio está ocupado y no corresponde al usuario
+                        disabledAttribute = 'disabled';
+                        disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+                        labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+                    }
+                } else if (item.estado_reserva === 0) {
+                    // Espacio libre, habilitarlo
+                    disabledAttribute = '';
+                    disabledClass = '';
+                    labelStyle = ''; // Sin estilo, se deja habilitado
+                }
+                // Validación de discapacitado
+                if (discapacitado === "0" && (item.numero === "1" || item.numero === "4")) {
+                    disabledAttribute = 'disabled';
+                    disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+                    labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+                }
+                // Agregar el checkbox al contenedor con los estilos in-line aplicados al label
+                $(selector).append("<label style='" + labelStyle + "'><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>");
             });
-
             // Solo permitir un checkbox seleccionado
             $("input[name='espacio']").on("change", function () {
                 $("input[name='espacio']").not(this).prop("checked", false);
             });
         }
+
 
 
 
@@ -821,7 +854,7 @@
 
             // Iterar sobre los datos ordenados y agregarlos al <select>
             $.each(data, function (i, item) {
-                $("#id_espacio").append("<option value='" + item.idEspacio + "'>" + item.pabellon + "---- " + "Estacionamiento" + item.numero + "</option>");
+                $("#id_espacio").append("<option value='" + item.idEspacio + "'>" + item.pabellon + "---- " + "Estacionamiento " + item.numero + "</option>");
             });
         });
 
