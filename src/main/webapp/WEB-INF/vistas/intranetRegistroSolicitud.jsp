@@ -125,7 +125,7 @@
                         <input type="hidden" name="idUsuario" value="-">
 
                         <label class="control-label" for="id_usuario">Espacio</label>
-                        <select id="id_usuario" name="paramidUsuario" class="form-control">
+                        <select id="id_usuario" name="paramIdUsuario" class="form-control">
                             <option value="-1">[Todos]</option>
                         </select>
                     </div>

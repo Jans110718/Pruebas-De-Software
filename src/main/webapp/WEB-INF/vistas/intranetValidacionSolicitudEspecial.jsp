@@ -22,6 +22,27 @@
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrapValidator.css" />
     <style>
+        /* Estilos para la columna de Estado */
+        .estado-activo {
+            color: green;
+            font-weight: bold;
+        }
+
+        .estado-inactivo {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Estilo para los botones dentro de la tabla */
+        .btn-table {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .btn-table:hover {
+            cursor: pointer;
+        }
+
         /* Estilos para centrar el formulario */
         .form-container {
             max-width: 600px;
@@ -98,49 +119,75 @@
     <div class="container" style="margin-top: 1%">
         <form id="id_form">
             <div class="row" style="height: 70px">
-                <div class="col-md-6">
-                    <label class="control-label" for="id_espacio">Espacio</label>
-                    <select id="id_espacio" name="paramEspacio" class='form-control'>
-                        <option value="-1">[Todos]</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="control-label" for="id_tipoVehiculo">Tipo</label>
-                    <select id="id_tipoVehiculo" name="paramtipoVehiculo" class='form-control'>
-                        <option value="-1">[Todos]</option>
-                        <option value="0">Moto</option>
-                        <option value="1">Carro</option>
-                    </select>
+                <div class="row">
+
+                    <div class="col-md-6" style="display: none;">
+                        <input type="hidden" name="idUsuario" value="-">
+
+                        <label class="control-label" for="id_usuario">Espacio</label>
+                        <select id="id_usuario" name="paramIdUsuario" class="form-control">
+                            <option value="-1">[Todos]</option>
+                        </select>
+                    </div>
+                    <!-- Filtros -->
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_espacio">Espacio</label>
+                        <select id="id_espacio" name="paramEspacio" class="form-control">
+                            <option value="-1">[Todos]</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_tipoVehiculo">Tipo</label>
+                        <select id="id_tipoVehiculo" name="paramtipoVehiculo" class="form-control">
+                            <option value="-1">[Todos]</option>
+                            <option value="0">Moto</option>
+                            <option value="1">Carro</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_fechaDesde">Fecha Desde</label>
+                        <input class="form-control" type="date" id="id_fechaDesde" name="paramFechaDesde"
+                            value="1900-01-01">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_fechaHasta">Fecha Hasta</label>
+                        <input class="form-control" type="date" id="id_fechaHasta" name="paramFechaHasta"
+                            value="2900-01-01">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="id_placa">Placa</label>
+                        <input class="form-control" type="text" id="id_placa" name="paramPlaca"
+                            placeholder="Ingrese la placa" maxlength="7"
+                            pattern="^[A-Za-z]{3}-\d{3}$|^[A-Za-z]{2}-\d{4}$"
+                            title="Formato invlido: solo se acepta ABC-123 o AB-1234">
+                        <div id="errorPlaca" class="text-danger" style="display: none;"></div> <!-- Mensaje de error -->
+                    </div>
+
                 </div>
 
-                <div class="col-md-6">
-                    <label class="control-label" for="id_fechaDesde">Fecha Desde</label>
-                    <input class="form-control" type="date" id="id_fechaDesde" name="paramFechaDesde"
-                        value="1900-01-01">
+                <!-- Espacio entre filtros y botones -->
+                <div class="row mt-3 text-center">
+                    <!-- Botones -->
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary" id="id_btn_filtra"
+                            style="width: 150px">Filtrar</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" data-toggle="modal" data-target="#id_div_modal_registra"
+                            class="btn btn-success" style="width: 150px">REGISTRA</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" id="id_btn_reporte" class="btn btn-danger">Reporte</button>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label class="control-label" for="id_fechaHasta">Fecha Hasta</label>
-                    <input class="form-control" type="date" id="id_fechaHasta" name="paramFechaHasta"
-                        value="2900-01-01">
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-primary" id="id_btn_filtra"
-                        style="width: 150px">Filtrar</button>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" data-toggle='modal' data-target="#id_div_modal_registra"
-                        class='btn btn-success' style="width: 150px">REGISTRA</button>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" id="id_btn_reporte" class="btn btn-danger">Reporte</button>
-                </div>
+
 
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="content">
-                        <table id="id_table" class="table table-striped table-bordered">
-                            <thead>
+                        <table id="id_table" class="table table-striped table-bordered table-hover">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th style="width: 8%">ID</th>
                                     <th style="width: 8%">Nombres</th>
@@ -150,7 +197,6 @@
                                     <th style="width: 15%">Fecha reserva</th>
                                     <th style="width: 7%">Actualizar</th>
                                     <th style="width: 10%">Entrada y Salida</th>
-                                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -186,35 +232,45 @@
                                 <div id="stepOne" class="panel-collapse collapse in">
                                     <div class="panel-body">
                                         <div class="form-group">
-                                            <label class="control-label" for="id_reg_vehiculo">Vehículo</label>
+                                            <label class="control-label" for="id_reg_vehiculo">Veh&iacute;culo</label>
                                             <select id="id_reg_vehiculo" name="vehiculo" class='form-control' required>
                                                 <option value="">[Seleccione]</option>
                                             </select>
                                         </div>
+
                                         <div class="form-group">
-                                            <label class="control-label" for="id_reg_hora">Hora</label>
-                                            <input class="form-control" type="time" id="id_hora" name="hora" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label" for="id__reg_fecha_reserva">Fecha
+                                            <label class="control-label" for="id_reg_fecha_reserva">Fecha
                                                 Reserva</label>
-                                            <input class="form-control" type="date" id="id_fecha_reserva"
+                                            <input class="form-control" type="date" id="id_reg_fecha_reserva"
                                                 name="fechaReserva" required>
                                         </div>
-                                        <label class="control-label" for="id_Espacios">Espacios</label>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="id_reg_hora">Hora</label>
+                                            <input class="form-control" type="time" id="id_reg_hora" name="hora"
+                                                required>
+                                        </div>
+
+                                        <label class="control-label" for="id_reg_Espacios">Espacios</label>
                                     </div>
                                 </div>
                                 <div class="espacios-container" style="margin-top: -30px;">
                                     <div>
-                                        <h5>Pabellón E - Piso SS</h5>
-                                        <div class="checkbox-group" id="espaciosSSCheckboxes">
-                                            <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
+                                        <h5>Pabell&oacute;n A - Piso 1</h5>
+                                        <div class="checkbox-group" id="espacios1Checkboxes">
+                                            <!-- Los checkboxes del Pabell &oacute;n E - 1 se agregar &aacute;n din &aacute;micamente aquí -->
                                         </div>
                                     </div>
                                     <div>
-                                        <h5>Pabellón E - Piso S1</h5>
+                                        <h5>Pabell&oacute;n E - Piso SS</h5>
+                                        <div class="checkbox-group" id="espaciosSSCheckboxes">
+                                            <!-- Los checkboxes del Pabell &oacute;n E - SS se agregar &aacute;n din &aacute;micamente aquí -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5>Pabell&oacute;n E - Piso S1</h5>
                                         <div class="checkbox-group" id="espaciosS1Checkboxes">
-                                            <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
+                                            <!-- Los checkboxes del Pabell &oacute;n E - S1 se agregar &aacute;n din &aacute;micamente aquí -->
                                         </div>
                                     </div>
                                 </div>
@@ -239,7 +295,7 @@
             <div class="modal-content">
                 <div class="modal-header" style="padding: 35px 50px">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4><span class="glyphicon glyphicon-ok-sign"></span> Actualización de Solicitud</h4>
+                    <h4><span class="glyphicon glyphicon-ok-sign"></span> Actualizaci&oacute;n de Solicitud</h4>
                 </div>
                 <div class="modal-body" style="padding: 20px 10px;">
                     <form id="id_form_actualiza" accept-charset="UTF-8" action="insertaActualizaSolicitud"
@@ -261,38 +317,50 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="id_act_vehiculo">Vehículo</label>
+                                            <label class="control-label" for="id_act_vehiculo">Veh&iacute;culo</label>
                                             <select id="id_act_vehiculo" name="vehiculo" class='form-control' required>
                                                 <option value="">[Seleccione]</option>
                                             </select>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="id_act_fecha_reserva">Fecha
+                                                Reserva</label>
+                                            <input class="form-control" type="date" id="id_act_fecha_reserva"
+                                                name="fechaReserva" required>
+                                        </div>
+
+
                                         <div class="form-group">
                                             <label class="control-label" for="id_act_hora">Hora</label>
                                             <input class="form-control" type="time" id="id_act_hora" name="hora"
                                                 required>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="control-label" for="id_act_fechaReserva">Fecha
-                                                Reserva</label>
-                                            <input class="form-control" type="date" id="id_act_fechaReserva"
-                                                name="fechaReserva" required>
-                                        </div>
+
                                         <label class="control-label" for="id_Espacios">Espacios</label>
                                     </div>
                                 </div>
-                                <div class="espacio-container" style="margin-top: 20px;">
+                                <div class="espacios-container" style="margin-top: 30px;">
                                     <div>
-                                        <h5>Pabellón E - Piso SS</h5>
+                                        <h5>Pabell&oacute;n A - Piso 1</h5>
+                                        <div class="checkbox-group" id="espacios1CheckboxesActualiza">
+                                            <!-- Los checkboxes del Pabell &oacute;n E - 1 se agregar &aacute;n din &aacute;micamente aquí -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5>Pabell&oacute;n E - Piso SS</h5>
                                         <div class="checkbox-group" id="espaciosSSCheckboxesActualiza">
                                             <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
                                         </div>
                                     </div>
                                     <div>
-                                        <h5>Pabellón E - Piso S1</h5>
+                                        <h5>Pabell&oacute;n E - Piso S1</h5>
                                         <div class="checkbox-group" id="espaciosS1CheckboxesActualiza">
                                             <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
                                         </div>
                                     </div>
+
+
                                 </div>
                             </div>
                             <div class="form-group">
@@ -308,94 +376,82 @@
         </div>
     </div>
 
-    <div class="modal fade" id="id_div_modal_detalle">
-        <div class="modal-dialog" style="width: 60%">
-            <div class="modal-content">
-                <div class="modal-header" style="padding: 35px 50px">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4><span class="glyphicon glyphicon-ok-sign"></span> Detalle de la Solicitud</h4>
-                </div>
-                <div class="modal-body" style="padding: 20px 10px;">
-                    <form id="id_form_detalle" accept-charset="UTF-8" action="insertaActualizaSolicitud"
-                        class="form-horizontal" method="post">
-                        <input type="hidden" id="modo" value="detalle"> <!-- Establecer el modo a detalle -->
-                        <div class="panel-group" id="steps">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#steps" href="#stepDetail">Datos de la
-                                            solicitud</a>
-                                    </h4>
-                                </div>
-                                <div id="stepDetail" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            <label class="col-lg-3 control-label" for="id_ID">ID</label>
-                                            <div class="col-lg-6">
-                                                <input class="form-control" id="id_ID" readonly="readonly"
-                                                    name="idSolicitud" type="text" maxlength="8" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label" for="id_act_vehiculo">Vehículo</label>
-                                            <select id="id_act_vehiculo" name="vehiculo" class="form-control" disabled>
-                                                <option value="">[Seleccione]</option>
-                                                <!-- Agregar opciones aquí -->
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label" for="id_act_hora">Hora</label>
-                                            <input class="form-control" type="time" id="id_act_hora" name="hora"
-                                                readonly="readonly">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label" for="id_act_fechaReserva">Fecha Reserva</label>
-                                            <input class="form-control" type="date" id="id_act_fechaReserva"
-                                                name="fechaReserva" readonly="readonly">
-                                        </div>
-                                        <label class="control-label" for="id_Espacios">Espacios</label>
-                                    </div>
-                                </div>
-                                <div class="espacio-container" style="margin-top: 20px;">
-                                    <div>
-                                        <h5>Pabellón E - Piso SS</h5>
-                                        <div class="checkbox-group" id="espaciosSSCheckboxesDetalle">
-                                            <!-- Los checkboxes del Pabellón E - SS se agregarán dinámicamente aquí -->
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h5>Pabellón E - Piso S1</h5>
-                                        <div class="checkbox-group" id="espaciosS1CheckboxesDetalle">
-                                            <!-- Los checkboxes del Pabellón E - S1 se agregarán dinámicamente aquí -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-lg-9 col-lg-offset-3">
-                                    <button type="button" class="btn btn-success" id="id_btn_entrada">Registrar
-                                        Entrada</button>
-                                    <button type="button" class="btn btn-danger" id="id_btn_salida">Registrar
-                                        Salida</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+
+
+
+
+
     </div>
 
 
 
     </div>
     <script type="text/javascript">
+
+        // Obtener el formulario y el botón de filtrar
+        const form = document.querySelector("id_form");
+        const filtrarBtn = document.getElementById("id_btn_filtra");
+        const placaInput = document.getElementById("id_placa");
+        const errorPlaca = document.getElementById("errorPlaca");
+
+        // Añadir evento al botón de filtrar
+        filtrarBtn.addEventListener("click", function (event) {
+            // Prevenir el envío del formulario por defecto
+            event.preventDefault();
+
+            // Verificar si el campo de la placa es nulo o vacío
+            if (placaInput.value.trim() === "") {
+                errorPlaca.style.display = "none"; // Si está vacío, no mostrar el mensaje de error
+                form.submit(); // Enviar el formulario si está vacío
+            } else {
+                // Verificar si el campo de la placa es válido según el patrón
+                if (placaInput.checkValidity()) {
+                    errorPlaca.style.display = "none"; // Si es válido, ocultar el mensaje de error
+                    form.submit(); // Enviar el formulario si es válido
+                } else {
+                    errorPlaca.textContent = placaInput.title; // Mostrar el mensaje de error
+                    errorPlaca.style.display = "block"; // Hacer visible el mensaje de error
+                }
+            }
+        });
+        // Obtener los campos de fecha
+        const fechaInput1 = document.getElementById('id_reg_fecha_reserva');
+        const fechaInput2 = document.getElementById('id_act_fecha_reserva');
+
+        // Obtener la fecha actual en formato YYYY-MM-DD
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        // Obtener la fecha de mañana
+        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000); // 24 horas más
+        const tomorrowString = tomorrow.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        // Establecer los atributos min y max en los campos de fecha
+        fechaInput1.min = todayString;
+        fechaInput1.max = tomorrowString;
+
+        fechaInput2.min = todayString;
+        fechaInput2.max = tomorrowString;
+
         var idUsuario = <%= (session.getAttribute("idUsuario") != null) ? session.getAttribute("idUsuario") : 0 %>; // Definir idUsuario desde la sesi&oacute;n
+        console.log("El idUsuario es:", idUsuario);
 
 
         $(document).ready(function () {
             // Cargar datos solo una vez al inicio
+            $('#id_reg_hora').prop('disabled', true);
+
+            // Evento para habilitar/deshabilitar el campo de hora cuando se selecciona una fecha en id_reg_fechaReserva
+            $('#id_reg_fecha_reserva').change(function () {
+                if ($(this).val()) {
+                    $('#id_reg_hora').prop('disabled', false); // Habilitar el campo de hora correspondiente
+                } else {
+                    $('#id_reg_hora').prop('disabled', true); // Deshabilitar si no hay fecha seleccionada
+                }
+            });
+
             actualizarComboBox();
+
 
             $("#id_registrar").click(function () {
                 var modo = $('#modo').val(); // 'registrar' o 'actualizar'
@@ -423,7 +479,7 @@
 
                         },
                         error: function () {
-                            mostrarMensaje("Error en la reserva. Inténtalo de nuevo.");
+                            mostrarMensaje("Error en la reserva. Int" + String.fromCharCode(233) + "ntalo de nuevo.");
                         }
                     });
                 }
@@ -451,7 +507,7 @@
                             $('#id_div_modal_actualiza').modal('hide');
                         },
                         error: function () {
-                            mostrarMensaje("Error en la actualización. Inténtalo de nuevo.");
+                            mostrarMensaje("Error en la actualizaci" + String.fromCharCode(243) + "n. Int" + String.fromCharCode(233) + "ntalo de nuevo.");
                         }
                     });
                 }
@@ -463,11 +519,10 @@
             $('#id_ID').val(idSolicitud);
             $('#id_act_vehiculo').val(vehiculo);
             $('#id_act_hora').val(hora);
-            $('#id_act_fechaReserva').val(fechaReserva);
-
+            $('#id_act_fecha_reserva').val(fechaReserva);
+            actualizarComboBox(vehiculo); // Pasa el vehículo a seleccionar
 
             // Cargar los vehículos y seleccionar el correspondiente
-            actualizarComboBox(vehiculo); // Pasa el vehículo a seleccionar
 
             // Muestra el modal de actualización
             $('#id_div_modal_actualiza').modal("show");
@@ -490,144 +545,145 @@
 
         function limpiarFormulario() {
             $('#id_form_registra')[0].reset();
+            $('#id_form_actualiza')[0].reset();
+
             actualizarComboBox(); // Refresca las listas, pero solo después de limpiar el formulario
         }
 
+
         function actualizarComboBox(vehiculo) {
-            // Limpiar los elementos en el DOM
+            // Limpieza inicial
             $("#espaciosS1CheckboxesActualiza").empty();
             $("#espaciosSSCheckboxesActualiza").empty();
+            $("#espacios1CheckboxesActualiza").empty();
             $("#espaciosS1Checkboxes").empty();
             $("#espaciosSSCheckboxes").empty();
-            $("#id_vehiculo").empty();
-            $("#id_vehiculo").append("<option value=''>[Seleccione]</option>");
+            $("#espacios1Checkboxes").empty();
+            $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
             $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
 
-            // Obtener la lista de espacios para registro
-            $.getJSON("listaEspacio", {}, function (data) {
-                var espaciosSS = [];
-                var espaciosS1 = [];
+            // Obtener la lista de vehículos del usuario y agregar al select
+            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
+                // Limpiar y llenar los select de vehículos
+                $("#id_reg_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
+                $("#id_act_vehiculo").empty().append("<option value=''>[Seleccione]</option>");
 
-                $.each(data, function (index, item) {
-                    if (item.piso === "SS") {
-                        espaciosSS.push(item);
-                    } else if (item.piso === "S1") {
-                        espaciosS1.push(item);
-                    }
-                });
-
-                // Crear checkboxes para Pabellón E, Piso SS (registro)
-                if (espaciosSS.length > 0) {
-                    $.each(espaciosSS, function (index, item) {
-                        $("#espaciosSSCheckboxes").append(
-                            "<label><input type='checkbox' class='checkbox-espacio-reg' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-                        );
-                    });
-                }
-
-                // Crear checkboxes para Pabellón E, Piso S1 (registro)
-                if (espaciosS1.length > 0) {
-                    $.each(espaciosS1, function (index, item) {
-                        $("#espaciosS1Checkboxes").append(
-                            "<label><input type='checkbox' class='checkbox-espacio-reg' name='espacio' value='" + item.idEspacio + "'> " + item.numero + "</label>"
-                        );
-                    });
-                }
-
-                // Solo permitir una selección de checkbox en el registro
-                $(".checkbox-espacio-reg").on("change", function () {
-                    $(".checkbox-espacio-reg").not(this).prop("checked", false);
-                });
-            });
-
-            // Obtener lista de espacios para actualización
-            $.getJSON("listaEspacios", {}, function (data) {
-                var espaciosSSActualiza = [];
-                var espaciosS1Actualiza = [];
-
-                $.each(data, function (index, item) {
-                    if (item.piso === "SS") {
-                        espaciosSSActualiza.push(item);
-                    } else if (item.piso === "S1") {
-                        espaciosS1Actualiza.push(item);
-                    }
-                });
-
-                // Crear checkboxes para Pabellón SS (actualización)
-                if (espaciosSSActualiza.length > 0) {
-                    $.each(espaciosSSActualiza, function (index, item) {
-                        var checkbox = "<label";
-
-                        if (item.estado_reserva === 1) {
-                            checkbox += " class='checkbox-reservado'";
-                        }
-
-                        checkbox += "><input type='checkbox' class='checkbox-espacio-act' name='espacio' value='" + item.idEspacio + "'";
-
-                        if (item.estado_reserva === 1) {
-                            checkbox += " disabled";
-                        }
-
-                        checkbox += "> " + item.numero + "</label>";
-
-                        $("#espaciosSSCheckboxesActualiza").append(checkbox);
-                    });
-                }
-
-                // Crear checkboxes para Pabellón S1 (actualización)
-                if (espaciosS1Actualiza.length > 0) {
-                    $.each(espaciosS1Actualiza, function (index, item) {
-                        var checkbox = "<label";
-
-                        if (item.estado_reserva === 1) {
-                            checkbox += " class='checkbox-reservado'";
-                        }
-
-                        checkbox += "><input type='checkbox' class='checkbox-espacio-act' name='espacio' value='" + item.idEspacio + "'";
-
-                        if (item.estado_reserva === 1) {
-                            checkbox += " disabled";
-                        }
-
-                        checkbox += "> " + item.numero + "</label>";
-
-                        $("#espaciosS1CheckboxesActualiza").append(checkbox);
-                    });
-                }
-                // Solo permitir una selección de checkbox en la actualización
-                $(".checkbox-espacio-act").on("change", function () {
-                    $(".checkbox-espacio-act").not(this).prop("checked", false);
-                });
-            });
-
-            // Cargar vehículos del usuario en el select de actualización y seleccionar el vehículo correspondiente
-            $.getJSON(`listaVehiculosUsuario/${idUsuario}`, function (data) {
                 $.each(data, function (index, item) {
                     var marcavehiculo = item.marca + " " + item.modelo;
-                    $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
+                    var tipoVehiculo = item.tipoVehiculo;
+                    var discapacitado = item.usuarioRegistro.discapacitado;
+
+                    $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
+                    $("#id_act_vehiculo").append("<option value='" + item.idVehiculo + "' data-tipo='" + tipoVehiculo + "' data-disco='" + discapacitado + "'>" + marcavehiculo + "</option>");
                 });
 
                 if (vehiculo) {
                     $('#id_act_vehiculo').val(vehiculo);
                 }
-            });
 
-            // Cargar vehículos del usuario en el select de registro
-            $.getJSON("listaVehiculosUsuario/" + idUsuario, {}, function (data) {
-                $("#id_reg_vehiculo").empty();
-                $("#id_reg_vehiculo").append("<option value=''>[Seleccione]</option>");
-                $.each(data, function (index, item) {
-                    var marcavehiculo = item.marca + " " + item.modelo;
-                    $("#id_reg_vehiculo").append("<option value='" + item.idVehiculo + "'>" + marcavehiculo + "</option>");
+                // Detectar cambio en el select de vehículo
+                $("#id_reg_vehiculo, #id_act_vehiculo").on("change", function () {
+                    var tipoVehiculoSeleccionado = $("option:selected", this).attr("data-tipo");
+                    var discapacitadoSeleccionado = $("option:selected", this).attr("data-disco");
+
+                    // Limpiar checkboxes antes de llenarlos
+                    $("#espaciosS1Checkboxes").empty();
+                    $("#espaciosSSCheckboxes").empty();
+                    $("#espacios1Checkboxes").empty();
+                    $("#espaciosS1CheckboxesActualiza").empty();
+                    $("#espaciosSSCheckboxesActualiza").empty();
+                    $("#espacios1CheckboxesActualiza").empty();
+
+                    // Obtener lista de espacios
+                    $.getJSON("listaEspacios", {}, function (data) {
+                        var espaciosSS = [];
+                        var espaciosS1 = [];
+                        var espacios1 = [];
+
+                        // Clasificar espacios
+                        $.each(data, function (index, item) {
+                            if (item.piso === "SS") {
+                                espaciosSS.push(item);
+                            } else if (item.piso === "S1") {
+                                espaciosS1.push(item);
+                            } else if (item.piso === "1") {
+                                espacios1.push(item);
+                            }
+                        });
+
+                        // Llenar espacios según tipo de vehículo
+                        if (tipoVehiculoSeleccionado === "CARRO") {
+                            llenarEspacios("#espaciosSSCheckboxes", espaciosSS, discapacitadoSeleccionado);
+                            llenarEspacios("#espaciosS1Checkboxes", espaciosS1, discapacitadoSeleccionado);
+                        } else if (tipoVehiculoSeleccionado === "MOTO") {
+                            llenarEspacios("#espacios1Checkboxes", espacios1);
+                        }
+
+                        // Evitar duplicados en los checkboxes de actualización
+                        if (tipoVehiculoSeleccionado === "CARRO") {
+                            llenarEspacios("#espaciosSSCheckboxesActualiza", espaciosSS, discapacitadoSeleccionado);
+                            llenarEspacios("#espaciosS1CheckboxesActualiza", espaciosS1, discapacitadoSeleccionado);
+                        } else if (tipoVehiculoSeleccionado === "MOTO") {
+                            llenarEspacios("#espacios1CheckboxesActualiza", espacios1);
+                        }
+                    });
                 });
+            });
+        }
+
+        function llenarEspacios(selector, espacios, discapacitado = null, estado_reserva = null, esActualizacion = false) {
+            // Limpia el contenedor antes de llenarlo para evitar duplicados
+            $(selector).empty();
+            $.each(espacios, function (index, item) {
+                var disabledAttribute = '';
+                var disabledClass = '';
+                var labelStyle = ''; // Variable para aplicar estilo al label
+                // Validación del estado de reserva
+                if (item.estado_reserva === 1) {
+                    if (estado_reserva !== null && item.idEspacio === parseInt(estado_reserva)) {
+                        // El espacio es el reservado por el usuario, debe estar habilitado solo en la actualización
+                        if (esActualizacion) {
+                            disabledAttribute = '';
+                            disabledClass = '';
+                            labelStyle = ''; // Sin estilo especial, se habilita normalmente
+                        } else {
+                            // El espacio reservado no debe aparecer disponible para nuevas solicitudes
+                            disabledAttribute = 'disabled';
+                            disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+                            labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+                        }
+                    } else {
+                        // El espacio está ocupado y no corresponde al usuario
+                        disabledAttribute = 'disabled';
+                        disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+                        labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+                    }
+                } else if (item.estado_reserva === 0) {
+                    // Espacio libre, habilitarlo
+                    disabledAttribute = '';
+                    disabledClass = '';
+                    labelStyle = ''; // Sin estilo, se deja habilitado
+                }
+                // Validación de discapacitado
+                if (discapacitado === "0" && (item.numero === "1" || item.numero === "4")) {
+                    disabledAttribute = 'disabled';
+                    disabledClass = 'disabled-red'; // Aplicando la clase disabled-red para fondo rojo
+                    labelStyle = 'background-color: red; color: white;'; // Estilo en línea para el label
+                }
+                // Agregar el checkbox al contenedor con los estilos in-line aplicados al label
+                $(selector).append("<label style='" + labelStyle + "'><input type='checkbox' name='espacio' value='" + item.idEspacio + "' " + disabledAttribute + " class='" + disabledClass + "'> " + item.numero + "</label>");
+            });
+            // Solo permitir un checkbox seleccionado
+            $("input[name='espacio']").on("change", function () {
+                $("input[name='espacio']").not(this).prop("checked", false);
             });
         }
 
 
 
-        // Configuración del validador de formularios
+
         $('#id_form_actualiza').bootstrapValidator({
-            message: 'Este valor no es válido',
+            message: 'Este valor no es v&aacute;lido',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
                 invalid: 'glyphicon glyphicon-remove',
@@ -637,7 +693,7 @@
                 vehiculo: {
                     validators: {
                         notEmpty: {
-                            message: 'Seleccione un vehículo.'
+                            message: 'Seleccione un veh&iacute;culo.'
                         }
                     }
                 },
@@ -645,9 +701,48 @@
                     validators: {
                         notEmpty: {
                             message: 'La hora es obligatoria.'
+                        },
+                        callback: {
+                            message: 'La hora debe estar entre 07:00 am y 8:00 pm.',
+                            callback: function (value, validator) {
+                                var fechaReserva = $('#id_act_fecha_reserva').val();
+                                if (!fechaReserva) {
+                                    return {
+                                        valid: false,
+                                        message: 'No se puede validar la hora sin una fecha.'
+                                    }; // Retorna el mensaje específico si no hay fecha
+                                }
+
+                                var fechaCompleta = new Date(fechaReserva + "T" + value + ":00");
+                                var minHora = new Date(fechaReserva + "T07:00:00");
+                                var maxHora = new Date(fechaReserva + "T20:00:00"); // 8:00 pm
+
+                                // Validar que la hora no sea menor a la hora actual, ignorando segundos
+                                var fechaActual = new Date();
+                                fechaActual.setSeconds(0);
+                                fechaActual.setMilliseconds(0);
+
+                                if (fechaCompleta < fechaActual) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora seleccionada (' + value + ') es anterior a la hora actual.'
+                                    }; // Retorna un mensaje dinámico si es menor a la hora actual
+                                }
+
+                                // Validar que la hora esté entre el rango permitido
+                                if (fechaCompleta < minHora || fechaCompleta > maxHora) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora debe estar entre 07:00 am y 8:00 pm.'
+                                    }; // Retorna el mensaje de rango
+                                }
+
+                                return true; // La validación pasa
+                            }
                         }
                     }
                 },
+
                 fechaReserva: {
                     validators: {
                         notEmpty: {
@@ -657,8 +752,6 @@
                 }
             }
         });
-
-
 
         $('#id_form_registra').bootstrapValidator({
             message: 'Este valor no es v&aacute;lido',
@@ -679,9 +772,48 @@
                     validators: {
                         notEmpty: {
                             message: 'La hora es obligatoria.'
+                        },
+                        callback: {
+                            message: 'La hora debe estar entre 07:00 am y 8:00 pm.',
+                            callback: function (value, validator) {
+                                var fechaReserva = $('#id_reg_fecha_reserva').val();
+                                if (!fechaReserva) {
+                                    return {
+                                        valid: false,
+                                        message: 'No se puede validar la hora sin una fecha.'
+                                    }; // Retorna el mensaje específico si no hay fecha
+                                }
+
+                                var fechaCompleta = new Date(fechaReserva + "T" + value + ":00");
+                                var minHora = new Date(fechaReserva + "T07:00:00");
+                                var maxHora = new Date(fechaReserva + "T20:00:00"); // 8:00 pm
+
+                                // Validar que la hora no sea menor a la hora actual, ignorando segundos
+                                var fechaActual = new Date();
+                                fechaActual.setSeconds(0);
+                                fechaActual.setMilliseconds(0);
+
+                                if (fechaCompleta < fechaActual) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora seleccionada (' + value + ') es anterior a la hora actual.'
+                                    }; // Retorna un mensaje dinámico si es menor a la hora actual
+                                }
+
+                                // Validar que la hora esté entre el rango permitido
+                                if (fechaCompleta < minHora || fechaCompleta > maxHora) {
+                                    return {
+                                        valid: false,
+                                        message: 'La hora debe estar entre 07:00 am y 8:00 pm.'
+                                    }; // Retorna el mensaje de rango
+                                }
+
+                                return true; // La validación pasa
+                            }
                         }
                     }
                 },
+
                 fechaReserva: {
                     validators: {
                         notEmpty: {
@@ -697,10 +829,28 @@
 
         // Cargar lista de espacios
         $.getJSON("listaEspacios", {}, function (data) {
+            console.log("Datos recibidos:", data);
+
+            // Ordenar los datos por pabellón, priorizando "Pabellón A" y "Pabellón E"
+            const ordenPabellones = ["Pabellón A", "Pabellón E"];
+
+            // Ordenar los elementos
+            data.sort(function (a, b) {
+                // Si el pabellón no está en el orden, ponerlo al final
+                const indexA = ordenPabellones.includes(a.pabellon) ? ordenPabellones.indexOf(a.pabellon) : Infinity;
+                const indexB = ordenPabellones.includes(b.pabellon) ? ordenPabellones.indexOf(b.pabellon) : Infinity;
+
+                // Ordenar por el índice del pabellón, aquellos que no están en la lista irán al final
+                return indexA - indexB;
+            });
+
+            // Iterar sobre los datos ordenados y agregarlos al <select>
             $.each(data, function (i, item) {
-                $("#id_espacio").append("<option value=" + item.idEspacio + ">" + item.numero + "</option>");
+                $("#id_espacio").append("<option value='" + item.idEspacio + "'>" + item.pabellon + "---- " + "Estacionamiento " + item.numero + "</option>");
             });
         });
+
+
 
         // Manejo de reporte
         $("#id_btn_reporte").click(function () {
@@ -712,6 +862,8 @@
         $("#id_btn_filtra").click(function () {
             var varEstado = $("#id_estado").is(':checked') ? 1 : 0;
             var varEspacio = $("#id_espacio").val();
+            var varUsuario = $("#id_usuario").val();
+            var varPlaca = $("#id_placa").val();
             var vartipoVehiculo = $("#id_tipoVehiculo").val(); // Tipo de veh&iacute;culo
             var varFechaDesde = $("#id_fechaDesde").val() || '1900-01-01';
             var varFechaHasta = $("#id_fechaHasta").val() || '2900-01-01';
@@ -725,6 +877,8 @@
 
             $.getJSON("consultaSolicitud", {
                 "idEspacio": varEspacio,
+                "placa": varPlaca,
+                "idUsuario": varUsuario,
                 "tipoVehiculo": vartipoVehiculo, // Par&aacute;metro correcto
                 "fecDesde": varFechaDesde,
                 "fecHasta": varFechaHasta
@@ -822,7 +976,8 @@
     });
 }
 
-        function registrarAceptar(idSolicitud) {
+       
+function registrarAceptar(idSolicitud) {
             $.ajax({
                 url: 'validarSolicitudEspecial',
                 type: 'POST',
