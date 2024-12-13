@@ -188,8 +188,7 @@
                             nuevaContrasena: nuevaContrasena
                         },
                         success: function (data) {
-                            console.log("Datos enviados: ", $('#id_form').serialize());
-                            console.log("Respuesta del servidor: ", data);
+                            
 
                             // Mostrar mensaje de éxito o error
                             if (data && data.MENSAJE) {

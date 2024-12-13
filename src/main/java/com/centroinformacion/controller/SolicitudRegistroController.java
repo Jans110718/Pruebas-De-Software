@@ -277,6 +277,8 @@ public class SolicitudRegistroController {
 
         return map;
     }
+    
+    
     @GetMapping("/consultaSolicitud")
 	@ResponseBody
 	public List<Solicitud> consulta(

@@ -6,11 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.centroinformacion.entity.Incidencia;
 import com.centroinformacion.entity.Opcion;
 import com.centroinformacion.entity.Rol;
 import com.centroinformacion.entity.Usuario;
+import com.centroinformacion.entity.UsuarioHasIncidencia;
+import com.centroinformacion.entity.UsuarioHasIncidenciaPK;
 import com.centroinformacion.entity.UsuarioHasRol;
 import com.centroinformacion.entity.UsuarioHasRolPK;
+import com.centroinformacion.repository.UsuarioHasIncidenciaRepository;
 import com.centroinformacion.repository.UsuarioHasRolRepository;
 import com.centroinformacion.repository.UsuarioRepository;
 import com.centroinformacion.util.PasswordUtil;
@@ -24,7 +28,8 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 	@Autowired
 	private UsuarioRepository repository;
-	
+	@Autowired 
+	private UsuarioHasIncidenciaRepository usuarioHasIncidenciaRepository;
 	@Autowired
 	private UsuarioHasRolRepository usuarioHasRolRepository;
 	  @Autowired
@@ -96,5 +101,40 @@ public class UsuarioServiceImpl implements UsuarioService{
 	    }
 	}
 
+	@Override
+	public UsuarioHasIncidencia insertaIncidencia(UsuarioHasIncidencia obj) {
+		// TODO Auto-generated method stub
+		return usuarioHasIncidenciaRepository.save(obj);
+	}
+
+	@Override
+	public void eliminaIncidencia(UsuarioHasIncidencia obj) {
+		usuarioHasIncidenciaRepository.delete(obj);
+	}
+
+	@Override
+	public Optional<UsuarioHasIncidencia> buscaIncidencia(UsuarioHasIncidenciaPK obj) {
+		// TODO Auto-generated method stub
+		return usuarioHasIncidenciaRepository.findById(obj);
+	}
+
+	@Override
+    public UsuarioHasIncidencia asignarIncidencia(UsuarioHasIncidencia usuarioHasIncidencia) {
+        return usuarioHasIncidenciaRepository.save(usuarioHasIncidencia);
+    }
+
+    @Override
+    public void eliminarIncidencia(UsuarioHasIncidencia usuarioHasIncidencia) {
+        usuarioHasIncidenciaRepository.delete(usuarioHasIncidencia);
+    }
+
+    @Override
+    public List<UsuarioHasIncidencia> traerIncidenciasDeUsuario(int idUsuario) {
+        return usuarioHasIncidenciaRepository.findIncidenciasByUsuario(idUsuario);
+    }
+    @Override
+    public Usuario buscarUsuarioPorId(int idUsuario) {
+        return repository.findById(idUsuario).orElse(null);  // Devuelve null si no se encuentra
+    }
 
 }

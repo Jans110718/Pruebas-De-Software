@@ -65,7 +65,7 @@ public class VehiculoRegistroController {
         HashMap<String, String> map = new HashMap<>();
         Vehiculo objSalida = vehiculoService.insertaActualizaVehiculo(vehiculo);
         if (objSalida == null) {
-            map.put("MENSAJE", "Error en el registro");
+            map.put("ERROR", "Error en el registro");
         } else {
             map.put("MENSAJE", "Veh&iacuteculo registrado exitosamente");
             

@@ -41,7 +41,7 @@ public class RecuperarContrasenaController {
         Map<String, String> map = new HashMap<>();
 
         if (usuario.isEmpty()) {
-            map.put("MENSAJE", "El correo no está registrado en la base de datos.");
+            map.put("ERROR", "El correo no está registrado en la base de datos.");
             return map;  // Retorna el map directamente con el mensaje
         }
 

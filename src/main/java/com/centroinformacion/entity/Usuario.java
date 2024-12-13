@@ -56,4 +56,7 @@ public class Usuario {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "usuario")
 	private List<UsuarioHasRol> usuarioHasRol;
+	@JsonManagedReference
+	@OneToMany(mappedBy = "usuario")
+	private List<UsuarioHasIncidencia> usuarioHasIncidencia; // Relación con incidencia
 }

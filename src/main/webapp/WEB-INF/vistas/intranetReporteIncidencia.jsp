@@ -1,4 +1,5 @@
 <jsp:include page="intranetValida.jsp" />
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,17 +13,17 @@
     <meta http-equiv="Pragma" content="no-cache" />
 
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="js/global.js"></script>
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.0/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.0/dist/sweetalert2.all.min.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.css" />
-    <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
-    <link rel="stylesheet" href="css/bootstrapValidator.css" />
 
-    <title>Registro Veh&iacute;culo</title>
+    <title>Registro de Incidencia</title>
 
     <style>
         .form-container {
@@ -46,6 +47,21 @@
         .navbar-fixed-top {
             height: 100px;
         }
+
+        .usuario-involucrado-group {
+            margin-bottom: 15px;
+        }
+
+        .usuario-involucrado-group select {
+            width: calc(100% - 50px);
+            display: inline-block;
+        }
+
+        .btn-add-user {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -54,40 +70,30 @@
 
     <div class="container">
         <div class="form-container">
-            <h4>Registro de incidencia
-            </h4>
+            <h4>Registro de incidencia</h4>
             <form id="id_form" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label class="control-label" for="id_usuarioInvolucrado">Usuario Involucrado</label>
-                    <select class="form-control" id="id_usuarioInvolucrado" name="idUsuarioInvolucrado" required>
-                        <option value="">Seleccione el Usuario Involucrado</option>
-                        <!-- Las opciones se llenar&aacute;n aqu&iacute; mediante AJAX -->
-                    </select>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label" for="id_fecha_incidencia">Fecha Incidencia</label>
-                    <input class="form-control" type="date" id="id_fecha_incidencia" name="fechaIncidencia" required
-                        min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
-                </div>
-                
-                <div class="form-group">
-                    <label class="control-label" for="id_hora">Hora</label>
-                    <input class="form-control" type="time" id="id_hora" name="hora" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label" for="id_vehiculo">vehiculo</label>
-                    <select class="form-control" id="id_vehiculo" name="idVehiculo" required>
-                        <option value="">Seleccione el vehiculo Involucrado</option>
-                        <!-- Las opciones se llenar&aacute;n aqu&iacute; mediante AJAX -->
-                    </select>                </div>
-                    <div class="form-group">
-                        <label class="control-label" for="id_descripcion">Placa</label>
-                        <input class="form-control" type="text" id="id_descripcion" name="descripcion" placeholder="Ingrese la descripcion">
+                <!-- Usuarios Involucrados -->
+                <div id="usuariosInvolucradosContainer">
+                    <div class="form-group usuario-involucrado-group">
+                        <label class="control-label" for="id_usuariosInvolucrados">Usuarios Involucrados</label>
+                        <select class="form-control" name="idUsuarios[]" required>
+                            <option value="">Seleccione un Usuario</option>
+                            <!-- Las opciones se llenarán aquí mediante AJAX -->
+                        </select>
+                        <span class="btn-add-user btn btn-success">+</span>
                     </div>
-              
+                </div>
 
+                <!-- Descripción -->
+                <div class="form-group">
+                    <label class="control-label" for="id_descripcion">Descripción</label>
+                    <input class="form-control" type="text" id="id_descripcion" name="descripcion"
+                        placeholder="Ingrese la descripción">
+
+
+                </div>
+                <!-- Botón para registrar -->
                 <div class="form-group text-center">
                     <button id="id_registrar" type="button" class="btn btn-primary">Registrar</button>
                 </div>
@@ -97,234 +103,122 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            // Cargar tipos de veh&iacute;culo al iniciar
-            cargarTiposVehiculo();
-
-            function cargarTiposVehiculo() {
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8070/api/vehiculos",
-                    success: function (data) {
-                        var tiposVehiculo = new Set();
-                        $.each(data, function (index, vehiculo) {
-                            tiposVehiculo.add(vehiculo.transporte);
-                        });
-
-                        var $tipoVehiculoSelect = $("#id_tipoVehiculo");
-                        $tipoVehiculoSelect.empty();
-                        $tipoVehiculoSelect.append("<option value=''>Seleccione un tipo</option>");
-
-                        tiposVehiculo.forEach(function (tipo) {
-                            $tipoVehiculoSelect.append("<option value='" + tipo + "'>" + tipo + "</option>");
-                        });
-                    },
-                    error: function () {
-                        console.error("Error al cargar los tipos de veh&iacute;culo.");
-                    }
-                });
-            }
-
-            // Cargar marcas seg&uacute;n el tipo de veh&iacute;culo seleccionado
-            $("#id_tipoVehiculo").change(function () {
-                limpiarFormulario(); // Limpiar los datos de los campos al cambiar el tipo
-                cargarMarcas();
-            });
-
-            function cargarMarcas() {
-                var tipoVehiculoSeleccionado = $("#id_tipoVehiculo").val();
-
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8070/api/vehiculos",
-                    success: function (data) {
-                        var $marcaSelect = $("#id_marca");
-                        $marcaSelect.empty();
-                        $marcaSelect.append("<option value=''>Seleccione una marca</option>");
-                        var marcasUnicas = new Set();
-
-                        $.each(data, function (index, vehiculo) {
-                            if (vehiculo.transporte === tipoVehiculoSeleccionado) {
-                                marcasUnicas.add(vehiculo.marca);
-                            }
-                        });
-
-                        marcasUnicas.forEach(function (marca) {
-                            $marcaSelect.append("<option value='" + marca + "'>" + marca + "</option>");
-                        });
-                    },
-                    error: function () {
-                        console.error("Error al cargar las marcas.");
-                    }
-                });
-            }
-
-            // Cargar modelos seg&uacute;n la marca seleccionada
-            $("#id_marca").change(function () {
-                var marcaSeleccionada = $(this).val();
-                var tipoVehiculoSeleccionado = $("#id_tipoVehiculo").val();
-                if (tipoVehiculoSeleccionado === "") {
-                    alert("Por favor, selecciona primero un tipo de veh&iacute;culo.");
-                    $(this).val('');
-                    $("#id_modelo").empty().append("<option value=''>Seleccione un modelo</option>");
-                    return;
-                }
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8070/api/vehiculos",
-                    success: function (data) {
-                        var $modeloSelect = $("#id_modelo");
-                        $modeloSelect.empty();
-                        $modeloSelect.append("<option value=''>Seleccione un modelo</option>");
-
-                        $.each(data, function (index, vehiculo) {
-                            // Filtrar modelos por marca y tipo de veh&iacute;culo
-                            if (vehiculo.marca === marcaSeleccionada && vehiculo.transporte === tipoVehiculoSeleccionado) {
-                                $modeloSelect.append(
-                                    "<option value='" + vehiculo.modelo + "' data-tipo='" + vehiculo.tipo + "'>" + vehiculo.modelo + "</option>"
-                                );
-                            }
-                        });
-                    },
-                    error: function () {
-                        console.error("Error al cargar los modelos.");
-                    }
-                });
-            });
-
-            // Actualizar tipo de veh&iacute;culo al seleccionar un modelo
-            $("#id_modelo").change(function () {
-                var tipoSeleccionado = $(this).find(':selected').data('tipo');
-                $("#id_tipo").val(tipoSeleccionado);
-            });
-
-            // Manejo del env&iacute;o del formulario
-            $("#id_registrar").click(function () {
-                var validator = $('#id_form').data('bootstrapValidator');
-                validator.validate();
-
-                if (validator.isValid()) {
-                    $("#id_registrar").prop('disabled', true);
-                    $.ajax({
-                        type: "POST",
-                        url: "registraVehiculo",
-                        data: new FormData($('#id_form')[0]),
-                        processData: false,
-                        contentType: false,
-                        success: function (data) {
-                            if (data && data.MENSAJE) {
-                                mostrarMensaje(data.MENSAJE);
-                            } else {
-                                mostrarMensaje("Ocurri&oacute; un error inesperado.");
-                            }
-                            validator.resetForm();
-                            limpiarFormulario();
-                        },
-                        error: function () {
-                            mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
-                        },
-                        complete: function () {
-                            $("#id_registrar").prop('disabled', false);
-                        }
-                    });
-                }
-            });
-
-            function limpiarFormulario() {
-                $('#id_marca').val('');
-                $('#id_modelo').val('');
-                $('#id_placa').val('');
-                $('#id_tipo').val('');
-                $('#id_imagen').val('');
-                $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer el estado de validaci&oacute;n
-
-
-            }
-
-            // Validaci&oacute;n del formulario con Bootstrap Validator
-            $('#id_form').bootstrapValidator({
-                feedbackIcons: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    tipoVehiculo: {
-                        validators: {
-                            notEmpty: {
-                                message: 'El tipo de veh&iacute;culo es obligatorio'
-                            }
-                        }
-                    },
-                    marca: {
-                        validators: {
-                            notEmpty: {
-                                message: 'La marca es obligatoria'
-                            }
-                        }
-                    },
-                    modelo: {
-                        validators: {
-                            notEmpty: {
-                                message: 'El modelo es obligatorio'
-                            }
-                        }
-                    },
-                    placa: {
-                        validators: {
-                            notEmpty: {
-                                message: 'La placa es requerida'
-                            },
-                            callback: {
-                                message: 'El formato de la placa es incorrecto.',
-                                callback: function (value, validator, $field) {
-                                    // Si el campo est&aacute; vac&iacute;o, no hacer la validaci&oacute;n de formato
-                                    if (!value) {
-                                        return true; // Permitir valores nulos
-                                    }
-
-                                    // Obtener el tipo de veh&iacute;culo seleccionado
-                                    var tipoVehiculo = $("#id_tipoVehiculo").val();
-                                    var regexCarro = /^[A-Z]{3}-\d{3}$/; // Formato para "carro"
-                                    var regexOtro = /^[A-Z]{2}-\d{4}$/;  // Formato para otros tipos
-
-                                    // Validar el formato de la placa seg&uacute;n el tipo de veh&iacute;culo
-                                    if (tipoVehiculo === "CARRO") {
-                                        if (!regexCarro.test(value)) {
-                                            return {
-                                                valid: false,
-                                                message: "La placa debe tener el formato 3 letras - 3 n&uacute;meros (ejemplo: ABC-123)."
-                                            };
-                                        }
-                                    } else {
-                                        if (!regexOtro.test(value)) {
-                                            return {
-                                                valid: false,
-                                                message: "La placa debe tener el formato 2 letras - 4 n&uacute;meros (ejemplo: AB-1234)."
-                                            };
-                                        }
-                                    }
-                                    return true; // La placa cumple con el formato esperado
-                                }
-                            }
-                        }
-                    },
-                    imagen: {
-                        validators: {
-                            notEmpty: {
-                                message: 'La imagen es obligatoria'
-                            },
-                            file: {
-                                type: 'image/jpeg,image/png,image/gif',
-                                message: 'El archivo debe ser una imagen'
-                            }
-                        }
-                    }
-                }
-            });
-           
-        });
-
         
+
+            // Cargar los usuarios activos para asignar a la incidencia
+            cargarUsuariosActivos();
+
+            function cargarUsuariosActivos() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/solicitudes/activas",  // Endpoint para obtener usuarios activos
+                    success: function (data) {
+                        var $usuariosSelect = $("select[name='idUsuarios[]']");
+                        $usuariosSelect.each(function () {
+                            var $select = $(this);
+                            $select.empty();
+                            $select.append("<option value=''>Seleccione un Usuario</option>");
+
+                            // Agregar las opciones de usuarios al campo de selección
+                            $.each(data, function (index, usuario) {
+                                $select.append("<option value='" + usuario.idUsuario + "'>" + usuario.nombreCompleto + "</option>");
+                            });
+
+                            // Restaurar el valor seleccionado si existe
+                            var selectedValue = $select.data('selected-value');
+                            if (selectedValue) {
+                                $select.val(selectedValue);
+                            }
+                        });
+                    },
+                    error: function () {
+                        console.error("Error al cargar los usuarios activos.");
+                    }
+                });
+            }
+
+            // Agregar más campos de usuario involucrado
+            $(document).on('click', '.btn-add-user', function () {
+                var $newUserSelect = $('<div class="form-group usuario-involucrado-group"><select class="form-control" name="idUsuarios[]" required><option value="">Seleccione un Usuario</option></select><span class="btn-add-user btn btn-success">+</span><span class="btn-remove-user btn btn-danger">-</span></div>');
+                $('#usuariosInvolucradosContainer').append($newUserSelect);
+
+                // Cargar los usuarios activos en el nuevo campo sin afectar a los anteriores
+                cargarUsuariosActivos();
+            });
+
+            // Eliminar un campo de usuario involucrado
+            $(document).on('click', '.btn-remove-user', function () {
+                $(this).closest('.usuario-involucrado-group').remove();
+            });
+
+            // Manejo del cambio en el campo de usuario
+            $(document).on('change', "select[name='idUsuarios[]']", function () {
+                $(this).data('selected-value', $(this).val());
+            });
+
+            // Manejo del envío del formulario
+            $("#id_registrar").click(function () {
+                // Serializar los datos del formulario
+                var formData = $('#id_form').serialize() + "&idUsuarios=" + $("select[name='idUsuarios[]']").map(function () {
+                    return $(this).val();  // Obtener los valores de los select
+                }).get().join(',');
+
+                // Mostrar el loader mientras se espera la respuesta
+                Swal.fire({
+                    title: 'Procesando...',
+                    text: 'Por favor espere...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Realizar la petición AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "crearIncidenciaYAsignarUsuarios",  // Endpoint para crear incidencia
+                    data: formData,  // Enviar los datos serializados
+                    success: function (data) {
+                        // Ocultar el loader de SweetAlert
+                        Swal.close();
+
+                        // Mostrar el mensaje de éxito
+                        if (data && data.MENSAJE) {
+                            Swal.fire({
+                                title: String.fromCharCode(201) + 'xito',
+                                text: data.MENSAJE,
+                                icon: 'success'
+                            });
+                        } else if (data && data.ERROR) {
+                            // Mostrar el mensaje de error
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.ERROR,  // Muestra el mensaje de error enviado por el controlador
+                                icon: 'error'
+                            });
+                        } else {
+                            // Si no hay MENSAJE ni ERROR, muestra un error genérico
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Ocurri' + String.fromCharCode(243) + ' un error inesperado.',
+                                icon: 'error'
+                            });
+                        }
+                    },
+                    error: function () {
+                        // Ocultar el loader y mostrar un mensaje de error
+                        Swal.close();
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurri' + String.fromCharCode(243) + ' un error al procesar la solicitud.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+
+
+        });
     </script>
 </body>
 

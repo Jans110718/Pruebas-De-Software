@@ -3,9 +3,12 @@ package com.centroinformacion.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.centroinformacion.entity.Incidencia;
 import com.centroinformacion.entity.Opcion;
 import com.centroinformacion.entity.Rol;
 import com.centroinformacion.entity.Usuario;
+import com.centroinformacion.entity.UsuarioHasIncidencia;
+import com.centroinformacion.entity.UsuarioHasIncidenciaPK;
 import com.centroinformacion.entity.UsuarioHasRol;
 import com.centroinformacion.entity.UsuarioHasRolPK;
 
@@ -20,6 +23,25 @@ public interface UsuarioService {
 	public abstract UsuarioHasRol insertaRol(UsuarioHasRol obj);
 	public abstract void eliminaRol(UsuarioHasRol obj);
 	public abstract Optional<UsuarioHasRol> buscaRol(UsuarioHasRolPK obj);
+	
+	
+	  // Métodos para manejar incidencias
+    public abstract UsuarioHasIncidencia insertaIncidencia(UsuarioHasIncidencia obj);
+    public abstract void eliminaIncidencia(UsuarioHasIncidencia obj);
+    public abstract Optional<UsuarioHasIncidencia> buscaIncidencia(UsuarioHasIncidenciaPK obj);
+
+    
     void encriptarContraseñas(); // Método para migrar contraseñas
+    
+    
+    // Método para asignar una incidencia a un usuario
+    UsuarioHasIncidencia asignarIncidencia(UsuarioHasIncidencia usuarioHasIncidencia);
+    
+    // Método para eliminar la relación usuario-incidencia
+    void eliminarIncidencia(UsuarioHasIncidencia usuarioHasIncidencia);
+    
+    // Obtener todas las incidencias de un usuario
+    List<UsuarioHasIncidencia> traerIncidenciasDeUsuario(int idUsuario);
+    Usuario buscarUsuarioPorId(int idUsuario);
 
 }

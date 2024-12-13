@@ -17,6 +17,14 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="js/global.js"></script>
+    <!-- Incluir jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+
+    <!-- Incluir SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.0/dist/sweetalert2.all.min.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
@@ -105,9 +113,9 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            // Cargar tipos de veh&iacute;culo al iniciar
+            // Cargar tipos de vehículo al iniciar
             cargarTiposVehiculo();
-
+    
             function cargarTiposVehiculo() {
                 $.ajax({
                     type: "GET",
@@ -117,30 +125,30 @@
                         $.each(data, function (index, vehiculo) {
                             tiposVehiculo.add(vehiculo.transporte);
                         });
-
+    
                         var $tipoVehiculoSelect = $("#id_tipoVehiculo");
                         $tipoVehiculoSelect.empty();
                         $tipoVehiculoSelect.append("<option value=''>Seleccione un tipo</option>");
-
+    
                         tiposVehiculo.forEach(function (tipo) {
                             $tipoVehiculoSelect.append("<option value='" + tipo + "'>" + tipo + "</option>");
                         });
                     },
                     error: function () {
-                        console.error("Error al cargar los tipos de veh&iacute;culo.");
+                        console.error("Error al cargar los tipos de vehculo.");
                     }
                 });
             }
-
-            // Cargar marcas seg&uacute;n el tipo de veh&iacute;culo seleccionado
+    
+            // Cargar marcas según el tipo de vehículo seleccionado
             $("#id_tipoVehiculo").change(function () {
                 limpiarFormulario(); // Limpiar los datos de los campos al cambiar el tipo
                 cargarMarcas();
             });
-
+    
             function cargarMarcas() {
                 var tipoVehiculoSeleccionado = $("#id_tipoVehiculo").val();
-
+    
                 $.ajax({
                     type: "GET",
                     url: "http://localhost:8070/api/vehiculos",
@@ -149,13 +157,13 @@
                         $marcaSelect.empty();
                         $marcaSelect.append("<option value=''>Seleccione una marca</option>");
                         var marcasUnicas = new Set();
-
+    
                         $.each(data, function (index, vehiculo) {
                             if (vehiculo.transporte === tipoVehiculoSeleccionado) {
                                 marcasUnicas.add(vehiculo.marca);
                             }
                         });
-
+    
                         marcasUnicas.forEach(function (marca) {
                             $marcaSelect.append("<option value='" + marca + "'>" + marca + "</option>");
                         });
@@ -165,17 +173,16 @@
                     }
                 });
             }
-
-            // Cargar modelos seg&uacute;n la marca seleccionada
+    
+            // Cargar modelos según la marca seleccionada
             $("#id_marca").change(function () {
-                var marcaSeleccionada = $(this).val();
+                cargarModelos();
+            });
+    
+            function cargarModelos() {
                 var tipoVehiculoSeleccionado = $("#id_tipoVehiculo").val();
-                if (tipoVehiculoSeleccionado === "") {
-                    alert("Por favor, selecciona primero un tipo de veh&iacute;culo.");
-                    $(this).val('');
-                    $("#id_modelo").empty().append("<option value=''>Seleccione un modelo</option>");
-                    return;
-                }
+                var marcaSeleccionada = $("#id_marca").val();
+    
                 $.ajax({
                     type: "GET",
                     url: "http://localhost:8070/api/vehiculos",
@@ -183,13 +190,11 @@
                         var $modeloSelect = $("#id_modelo");
                         $modeloSelect.empty();
                         $modeloSelect.append("<option value=''>Seleccione un modelo</option>");
-
+    
                         $.each(data, function (index, vehiculo) {
-                            // Filtrar modelos por marca y tipo de veh&iacute;culo
-                            if (vehiculo.marca === marcaSeleccionada && vehiculo.transporte === tipoVehiculoSeleccionado) {
-                                $modeloSelect.append(
-                                    "<option value='" + vehiculo.modelo + "' data-tipo='" + vehiculo.tipo + "'>" + vehiculo.modelo + "</option>"
-                                );
+                            if (vehiculo.transporte === tipoVehiculoSeleccionado && vehiculo.marca === marcaSeleccionada) {
+                                // Añadir el tipo como atributo 'data-tipo' en cada opción del modelo
+                                $modeloSelect.append("<option value='" + vehiculo.modelo + "' data-tipo='" + vehiculo.transporte + "'>" + vehiculo.modelo + "</option>");
                             }
                         });
                     },
@@ -197,21 +202,31 @@
                         console.error("Error al cargar los modelos.");
                     }
                 });
-            });
-
-            // Actualizar tipo de veh&iacute;culo al seleccionar un modelo
+            }
+    
+            // Actualizar tipo de vehículo al seleccionar un modelo
             $("#id_modelo").change(function () {
+                // Obtener el tipo asociado al modelo seleccionado usando el atributo data-tipo
                 var tipoSeleccionado = $(this).find(':selected').data('tipo');
-                $("#id_tipo").val(tipoSeleccionado);
+                $("#id_tipo").val(tipoSeleccionado);  // Asignar el tipo al campo 'id_tipo'
             });
-
-            // Manejo del env&iacute;o del formulario
+    
+            // Manejo del envío del formulario
             $("#id_registrar").click(function () {
                 var validator = $('#id_form').data('bootstrapValidator');
                 validator.validate();
-
+    
                 if (validator.isValid()) {
                     $("#id_registrar").prop('disabled', true);
+                    Swal.fire({
+                        title: 'Procesando...',
+                        text: 'Por favor espere...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+    
                     $.ajax({
                         type: "POST",
                         url: "registraVehiculo",
@@ -219,46 +234,72 @@
                         processData: false,
                         contentType: false,
                         success: function (data) {
+                            Swal.close();
+    
                             if (data && data.MENSAJE) {
-                                mostrarMensaje(data.MENSAJE);
+                                Swal.fire({
+                                    title: String.fromCharCode(201) + 'xito',
+                                    text: data.MENSAJE,
+                                    icon: 'success'
+                                });
+                            } else if (data && data.ERROR) {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: data.ERROR,
+                                    icon: 'error'
+                                });
                             } else {
-                                mostrarMensaje("Ocurri&oacute; un error inesperado.");
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Ocurri' + String.fromCharCode(243) + ' un error inesperado.',
+                                    icon: 'error'
+                                });
                             }
+    
                             validator.resetForm();
                             limpiarFormularios();
                         },
                         error: function () {
-                            mostrarMensaje("Ocurri&oacute; un error al procesar la solicitud.");
+                            Swal.close();
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Ocurri' + String.fromCharCode(243) + ' un error al procesar la solicitud.',
+                                icon: 'error'
+                            });
                         },
                         complete: function () {
                             $("#id_registrar").prop('disabled', false);
                         }
                     });
+                } else {
+                    Swal.fire({
+                        title: 'Advertencia',
+                        text: 'Por favor complete todos los campos requeridos.',
+                        icon: 'warning'
+                    });
                 }
             });
-
+    
+            // Limpiar formulario
             function limpiarFormulario() {
                 $('#id_marca').val('');
                 $('#id_modelo').val('');
                 $('#id_placa').val('');
                 $('#id_tipo').val('');
                 $('#id_imagen').val('');
-                $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer el estado de validaci&oacute;n
-
-
+                $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer validación
             }
+    
             function limpiarFormularios() {
                 $('#id_marca').val('');
                 $('#id_modelo').val('');
                 $('#id_placa').val('');
                 $('#id_tipoVehiculo').val('');
                 $('#id_imagen').val('');
-                $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer el estado de validaci&oacute;n
-
-
+                $('#id_form').data('bootstrapValidator').resetForm(); // Restablecer validación
             }
-
-            // Validaci&oacute;n del formulario con Bootstrap Validator
+    
+            // Validación del formulario con Bootstrap Validator
             $('#id_form').bootstrapValidator({
                 feedbackIcons: {
                     valid: 'glyphicon glyphicon-ok',
@@ -269,7 +310,7 @@
                     tipoVehiculo: {
                         validators: {
                             notEmpty: {
-                                message: 'El tipo de veh&iacute;culo es obligatorio'
+                                message: 'El tipo de veh' + String.fromCharCode(237) + 'culo es obligatorio'
                             }
                         }
                     },
@@ -295,33 +336,24 @@
                             callback: {
                                 message: 'El formato de la placa es incorrecto.',
                                 callback: function (value, validator, $field) {
-                                    // Si el campo est&aacute; vac&iacute;o, no hacer la validaci&oacute;n de formato
-                                    if (!value) {
-                                        return true; // Permitir valores nulos
-                                    }
-
-                                    // Obtener el tipo de veh&iacute;culo seleccionado
+                                    if (!value) return true;
+    
                                     var tipoVehiculo = $("#id_tipoVehiculo").val();
-                                    var regexCarro = /^[A-Z]{3}-\d{3}$/; // Formato para "carro"
-                                    var regexOtro = /^[A-Z]{2}-\d{4}$/;  // Formato para otros tipos
-
-                                    // Validar el formato de la placa seg&uacute;n el tipo de veh&iacute;culo
-                                    if (tipoVehiculo === "CARRO") {
-                                        if (!regexCarro.test(value)) {
-                                            return {
-                                                valid: false,
-                                                message: "La placa debe tener el formato 3 letras - 3 n&uacute;meros (ejemplo: ABC-123)."
-                                            };
-                                        }
-                                    } else {
-                                        if (!regexOtro.test(value)) {
-                                            return {
-                                                valid: false,
-                                                message: "La placa debe tener el formato 2 letras - 4 n&uacute;meros (ejemplo: AB-1234)."
-                                            };
-                                        }
+                                    var regexCarro = /^[A-Z]{3}-\d{3}$/;
+                                    var regexOtro = /^[A-Z]{2}-\d{4}$/;
+    
+                                    if (tipoVehiculo === "CARRO" && !regexCarro.test(value)) {
+                                        return {
+                                            valid: false,
+                                            message: "La placa debe tener el formato 3 letras - 3 números (ejemplo: ABC-123)."
+                                        };
+                                    } else if (tipoVehiculo !== "CARRO" && !regexOtro.test(value)) {
+                                        return {
+                                            valid: false,
+                                            message: "La placa debe tener el formato 2 letras - 4 números (ejemplo: AB-1234)."
+                                        };
                                     }
-                                    return true; // La placa cumple con el formato esperado
+                                    return true;
                                 }
                             }
                         }
@@ -339,11 +371,10 @@
                     }
                 }
             });
-           
         });
-
-        
     </script>
+    
+
 </body>
 
 </html>

@@ -204,10 +204,10 @@
                                 // Ocultar el loader de SweetAlert
                                 Swal.close();
 
-                                // Mostrar el mensaje
+                                // Mostrar el mensaje de éxito
                                 if (data && data.MENSAJE) {
                                     Swal.fire({
-                                        title: String.fromCharCode(233) + 'xito',
+                                        title: String.fromCharCode(201) + 'xito',
                                         text: data.MENSAJE,
                                         icon: 'success'
                                     });
@@ -216,7 +216,15 @@
                                     if (data.REDIRECCIONAR) {
                                         window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
                                     }
+                                } else if (data && data.ERROR) {
+                                    // Mostrar el mensaje de error
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: data.ERROR,  // Muestra el mensaje de error enviado por el controlador
+                                        icon: 'error'
+                                    });
                                 } else {
+                                    // Si no hay MENSAJE ni ERROR, muestra un error genérico
                                     Swal.fire({
                                         title: 'Error',
                                         text: 'Ocurri' + String.fromCharCode(243) + ' un error inesperado.',
@@ -224,6 +232,7 @@
                                     });
                                 }
                             },
+
                             error: function () {
                                 // Ocultar el loader y mostrar un mensaje de error
                                 Swal.fire({
