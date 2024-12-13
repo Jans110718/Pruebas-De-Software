@@ -239,17 +239,14 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label" for="id_reg_fecha_reserva">Fecha
-                                                Reserva</label>
-                                            <input class="form-control" type="date" id="id_reg_fecha_reserva"
-                                                name="fechaReserva" required>
-                                        </div>
-
+                                            <label class="control-label" for="id_reg_fecha_reserva">Fecha Reserva</label>
+                                            <input class="form-control" type="date" id="id_reg_fecha_reserva" name="fechaReserva" required>
+                                        </div>                                        
+                                        
                                         <div class="form-group">
                                             <label class="control-label" for="id_reg_hora">Hora</label>
-                                            <input class="form-control" type="time" id="id_reg_hora" name="hora"
-                                                required>
-                                        </div>
+                                            <input class="form-control" type="time" id="id_reg_hora" name="hora" required>
+                                        </div>                                                                                
 
                                         <label class="control-label" for="id_reg_Espacios">Espacios</label>
                                     </div>
@@ -394,6 +391,27 @@
         const placaInput = document.getElementById("id_placa");
         const errorPlaca = document.getElementById("errorPlaca");
 
+        // Evitar que el usuario edite el campo de fecha directamente, solo puede seleccionar
+            $("#id_reg_fecha_reserva").on("keydown", function (e) {
+                e.preventDefault();  // Evita la entrada de texto
+            });
+
+        // Evitar que el usuario edite el campo de hora directamente
+            $("#id_reg_hora").on("keydown", function (e) {
+                e.preventDefault();  // Evita la entrada de texto
+            });
+
+            $(document).ready(function () {
+            // Deshabilitar la escritura en el campo de fecha y hora
+            $("#id_act_fecha_reserva").on("keydown", function (e) {
+                e.preventDefault();  // Evita la entrada de texto
+            });
+
+            $("#id_act_hora").on("keydown", function (e) {
+                e.preventDefault();  // Evita la entrada de texto
+            });
+        });
+
         // Añadir evento al botón de filtrar
         filtrarBtn.addEventListener("click", function (event) {
             // Prevenir el envío del formulario por defecto
@@ -446,7 +464,7 @@
             selectElement.value = idUsuario; // Establecer el valor seleccionado
         }
         $(document).ready(function () {
-            // Cargar datos solo una vez al inicio
+      // Cargar datos solo una vez al inicio
             $('#id_reg_hora').prop('disabled', true);
 
             // Evento para habilitar/deshabilitar el campo de hora cuando se selecciona una fecha en id_reg_fechaReserva
@@ -492,6 +510,7 @@
                     });
                 }
             });
+            
             $("#id_btn_actualiza").click(function () {
                 var modo = $('#modo').val(); // 'registrar' o 'actualizar'
                 var validator = $('#id_form_actualiza').data('bootstrapValidator');
@@ -504,20 +523,26 @@
                     });
 
                     $.ajax({
-                        type: "POST",
-                        url: "actualizaSolicitud", // Cambiar a la URL correspondiente para actualizar
-                        data: $('#id_form_actualiza').serialize() + "&espacio=" + espaciosSeleccionados.join(','),
-                        success: function (data) {
-                            mostrarMensaje(data.MENSAJE);
-                            validator.resetForm();
-                            actualizarComboBox()
-                            // Cerrar el modal después de la actualización
-                            $('#id_div_modal_actualiza').modal('hide');
-                        },
-                        error: function () {
-                            mostrarMensaje("Error en la actualizaci" + String.fromCharCode(243) + "n. Int" + String.fromCharCode(233) + "ntalo de nuevo.");
-                        }
-                    });
+                type: "POST",
+                url: "actualizaSolicitud", // Cambiar a la URL correspondiente para actualizar
+                data: $('#id_form_actualiza').serialize() + "&espacio=" + espaciosSeleccionados.join(','),
+                success: function (data) {
+                    mostrarMensaje(data.MENSAJE); // Mostrar mensaje de éxito
+                    validator.resetForm(); // Restablecer el formulario
+                    actualizarComboBox(); // Si es necesario, actualiza el combo box o cualquier otro elemento
+
+                    // Aquí es donde debes actualizar la vista en la página
+                    // Supongamos que tienes una fila o lista de solicitudes en la que deseas reflejar la actualización
+                    $('#row_' + data.id).html('<td>' + data.nuevaFecha + '</td><td>' + data.nuevaHora + '</td>'); // Ejemplo de cómo actualizar una fila específica
+
+                    // Cerrar el modal después de la actualización
+                    $('#id_div_modal_actualiza').modal('hide');
+                },
+                error: function () {
+                    mostrarMensaje("Error en la actualización. Inténtalo de nuevo.");
+                }
+            });
+
                 }
             });
         });
