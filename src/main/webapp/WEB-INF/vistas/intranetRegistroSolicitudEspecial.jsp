@@ -263,75 +263,87 @@
 
 
         $('#id_form').bootstrapValidator({
-            message: 'Este valor no es v&aacute;lido',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                vehiculo: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Seleccione un veh&iacute;culo.'
-                        }
-                    }
+    message: 'Este valor no es v&aacute;lido',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        vehiculo: {
+            validators: {
+                notEmpty: {
+                    message: 'Seleccione un veh&iacute;culo.'
+                }
+            }
+        },
+        hora: {
+            validators: {
+                notEmpty: {
+                    message: 'La hora es obligatoria.'
                 },
-                hora: {
-                    validators: {
-                        notEmpty: {
-                            message: 'La hora es obligatoria.'
-                        },
-                        callback: {
-                            message: 'La hora debe estar entre 07:00 am y 8:00 pm.',
-                            callback: function (value, validator) {
-                                var fechaReserva = $('#id_fecha_reserva').val();
-                                if (!fechaReserva) {
-                                    return {
-                                        valid: false,
-                                        message: 'No se puede validar la hora sin una fecha.'
-                                    }; // Retorna el mensaje específico si no hay fecha
-                                }
-
-                                var fechaCompleta = new Date(fechaReserva + "T" + value + ":00");
-                                var minHora = new Date(fechaReserva + "T07:00:00");
-                                var maxHora = new Date(fechaReserva + "T20:00:00"); // 8:00 pm
-
-                                // Validar que la hora no sea menor a la hora actual, ignorando segundos
-                                var fechaActual = new Date();
-                                fechaActual.setSeconds(0);
-                                fechaActual.setMilliseconds(0);
-
-                                if (fechaCompleta < fechaActual) {
-                                    return {
-                                        valid: false,
-                                        message: 'La hora seleccionada (' + value + ') es anterior a la hora actual.'
-                                    }; // Retorna un mensaje dinámico si es menor a la hora actual
-                                }
-
-                                // Validar que la hora esté entre el rango permitido
-                                if (fechaCompleta < minHora || fechaCompleta > maxHora) {
-                                    return {
-                                        valid: false,
-                                        message: 'La hora debe estar entre 07:00 am y 8:00 pm.'
-                                    }; // Retorna el mensaje de rango
-                                }
-
-                                return true; // La validación pasa
-                            }
+                callback: {
+                    message: 'La hora debe estar entre 07:00 am y 8:00 pm.',
+                    callback: function (value, validator) {
+                        var fechaReserva = $('#id_fecha_reserva').val();
+                        if (!fechaReserva) {
+                            return {
+                                valid: false,
+                                message: 'No se puede validar la hora sin una fecha.'
+                            }; // Retorna el mensaje específico si no hay fecha
                         }
-                    }
-                },
 
-                fechaReserva: {
-                    validators: {
-                        notEmpty: {
-                            message: 'La fecha de reserva es obligatoria.'
+                        // Formatear la fecha y hora para crear un objeto Date
+                        var fechaCompleta = new Date(fechaReserva + "T" + value + ":00");
+                        var minHora = new Date(fechaReserva + "T07:00:00");
+                        var maxHora = new Date(fechaReserva + "T20:00:00"); // 8:00 pm
+
+                        // Validar que la hora no sea menor a la hora actual, ignorando segundos
+                        var fechaActual = new Date();
+                        fechaActual.setSeconds(0);
+                        fechaActual.setMilliseconds(0);
+
+                        if (fechaCompleta < fechaActual) {
+                            return {
+                                valid: false,
+                                message: 'La hora seleccionada (' + value + ') es anterior a la hora actual.'
+                            }; // Retorna un mensaje dinámico si es menor a la hora actual
                         }
+
+                        // Validar que la hora esté entre el rango permitido
+                        if (fechaCompleta < minHora || fechaCompleta > maxHora) {
+                            return {
+                                valid: false,
+                                message: 'La hora debe estar entre 07:00 am y 8:00 pm.'
+                            }; // Retorna el mensaje de rango
+                        }
+
+                        return true; // La validación pasa
                     }
                 }
             }
-        });
+        },
+
+        fechaReserva: {
+            validators: {
+                notEmpty: {
+                    message: 'La fecha de reserva es obligatoria.'
+                }
+            }
+        }
+    }
+});
+// Evitar que el usuario edite el campo de fecha directamente, solo puede seleccionar
+$("#id_fecha_reserva").on("keydown", function (e) {
+    e.preventDefault();  // Evita la entrada de texto
+});
+
+// Evitar que el usuario edite el campo de hora directamente
+$("#id_hora").on("keydown", function (e) {
+    e.preventDefault();  // Evita la entrada de texto
+});
+
+       
         $('#id_hora').on('change', function () {
             $('#id_form').bootstrapValidator('revalidateField', 'hora');
         });
