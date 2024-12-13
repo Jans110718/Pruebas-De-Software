@@ -184,22 +184,7 @@
             $(document).ready(function () {
                 $("#enviar-codigo").click(function () {
                     var correo = $("#correo").val();  // Obtener el correo desde el formulario
-        
-                    // Validación de correo electrónico
-                    var correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[cC][oO][mM]$/;
-                    if (correo === "") {
-                        Swal.fire({
-                            title: 'Advertencia',
-                            text: 'El correo electrónico es obligatorio.',
-                            icon: 'warning'
-                        });
-                    } else if (!correoRegex.test(correo)) {
-                        Swal.fire({
-                            title: 'Advertencia',
-                            text: 'Por favor, ingresa un correo electrónico válido.',
-                            icon: 'warning'
-                        });
-                    } else {
+                    if (correo !== "") {
                         // Mostrar SweetAlert con loader
                         Swal.fire({
                             title: 'Procesando...',
@@ -209,7 +194,7 @@
                                 Swal.showLoading(); // Mostrar el spinner
                             }
                         });
-        
+
                         // Enviar solicitud al servidor
                         $.ajax({
                             type: "POST",
@@ -218,7 +203,7 @@
                             success: function (data) {
                                 // Ocultar el loader de SweetAlert
                                 Swal.close();
-        
+
                                 // Mostrar el mensaje
                                 if (data && data.MENSAJE) {
                                     Swal.fire({
@@ -226,7 +211,7 @@
                                         text: data.MENSAJE,
                                         icon: 'success'
                                     });
-        
+
                                     // Verifica si la clave REDIRECCIONAR está presente
                                     if (data.REDIRECCIONAR) {
                                         window.location.href = data.REDIRECCIONAR + "?correo=" + correo;  // Redirige a la página especificada con el correo
@@ -248,10 +233,18 @@
                                 });
                             }
                         });
+                    } else {
+                        Swal.fire({
+                            title: 'Advertencia',
+                            text: 'El correo electr' + String.fromCharCode(243) + 'nico es obligatorio.',
+                            icon: 'warning'
+                        });
                     }
                 });
             });
-        </script>        
+
+
+        </script>
     </body>
 
     </html>

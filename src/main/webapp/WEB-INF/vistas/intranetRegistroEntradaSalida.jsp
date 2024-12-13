@@ -1,4 +1,4 @@
- <jsp:include page="intranetValida.jsp" />
+<jsp:include page="intranetValida.jsp" />
 <!DOCTYPE html>
 <html lang="es">
 
@@ -394,16 +394,6 @@
         const placaInput = document.getElementById("id_placa");
         const errorPlaca = document.getElementById("errorPlaca");
 
-        // Evitar que el usuario edite el campo de fecha directamente, solo puede seleccionar
-        $("#id_reg_fecha_reserva").on("keydown", function (e) {
-                e.preventDefault();  // Evita la entrada de texto
-            });
-
-        // Evitar que el usuario edite el campo de hora directamente
-            $("#id_reg_hora").on("keydown", function (e) {
-                e.preventDefault();  // Evita la entrada de texto
-            });
-            
         // Añadir evento al botón de filtrar
         filtrarBtn.addEventListener("click", function (event) {
             // Prevenir el envío del formulario por defecto

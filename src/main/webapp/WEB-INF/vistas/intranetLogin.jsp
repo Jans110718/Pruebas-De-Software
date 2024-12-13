@@ -135,19 +135,19 @@
             margin-bottom: 20px;
         }
 		/* Forgot password link styling */
-	       .forgot-password {
-	           text-align: center;
-	           margin-top: 10px;
-	       }
+		       .forgot-password {
+		           text-align: center;
+		           margin-top: 10px;
+		       }
 
-	       .forgot-password a {
-	           color: #007bff;
-	           text-decoration: none;
-	       }
+		       .forgot-password a {
+		           color: #007bff;
+		           text-decoration: none;
+		       }
 
-	       .forgot-password a:hover {
-	           text-decoration: underline;
-	       }
+		       .forgot-password a:hover {
+		           text-decoration: underline;
+		       }
     </style>
 </head>
 <body>
@@ -189,14 +189,11 @@
         <form id="id_form" action="login" method="post" class="login-form">
             <div class="form-group">
                 <input type="text" name="login" placeholder="Ingresa el usuario" class="form-control" id="form-username" maxlength="20">
-                <span class="error-message" id="errorLogin" style="color: red; font-size: 0.9rem;"></span>
             </div>
             <div class="form-group">
                 <input type="password" name="password" placeholder="Ingresa la contrase&ntilde;a" class="form-control" id="form-password" maxlength="20">
-                <span class="error-message" id="errorPassword" style="color: red; font-size: 0.9rem;"></span>
             </div>
             <button type="submit" class="btn btn-primary">Ingresar</button>
-            <span class="error-message" id="errorCredentials" style="color: red; font-size: 0.9rem; text-align: center; display: block;"></span>
         </form>
 		<div class="forgot-password">
             <a href="recuperarContrasena">&iquest;Olvidaste tu contrase&ntilde;a&quest;</a>
@@ -204,42 +201,83 @@
     </div>
 
     <script type="text/javascript">
-       document.getElementById("id_form").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evitar el envío del formulario hasta validar
+        $(document).ready(function () {
+            $("#success-alert").fadeTo(1000, 500).slideUp(500, function () {
+                $("#success-alert").slideUp(500);
+            });
 
-    const loginInput = document.getElementById("form-username");
-    const passwordInput = document.getElementById("form-password");
+            $('#id_form').bootstrapValidator({
+                message: 'Este valor no es v&aacute;lido',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    login: {
+                        validators: {
+                            notEmpty: {
+                                message: 'El usuario es obligatorio',
+                                callback: function (value, validator, $field) {
+                                    $('#errorLogin').text('El usuario es obligatorio');
+                                }
+                            },
+                            stringLength: {
+                                message: 'El usuario debe tener entre 3 y 20 caracteres',
+                                min: 3,
+                                max: 20
+                            },
+                            regexp: {
+                                message: 'El usuario no puede contener espacios ni caracteres especiales. Solo se permiten letras y números.',
+                                regexp: /^[a-zA-Z0-9]+$/
+                            }
+                        }
+                    },
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: 'La contrase&ntilde;a es obligatoria',
+                                callback: function (value, validator, $field) {
+                                    $('#errorPassword').text('La contrase&ntilde;a es obligatoria');
+                                }
+                            },
+                            stringLength: {
+                                message: 'La contrase&ntilde;a debe tener entre 3 y 20 caracteres',
+                                min: 3,
+                                max: 20
+                            },
+                            regexp: {
+                                message: 'La contrase&ntilde;a no puede contener espacios ni caracteres especiales. Solo se permiten letras y números.',
+                                regexp: /^[a-zA-Z0-9]+$/
+                            }
+                        }
+                    }
+                },
+                excluded: [':disabled'], // Ignorar campos deshabilitados
+                submitButtons: 'button[type="submit"]',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                }
+            }).on('success.form.bv', function (e) {
+                // Limpiar mensajes de error
+                $('#errorLogin').text('');
+                $('#errorPassword').text('');
+            }).on('error.field.bv', function (e, data) {
+                // Mostrar el mensaje de error en el campo correspondiente
+                if (data.field === 'login') {
+                    $('#errorLogin').text(data.message);
+                }
+                if (data.field === 'password') {
+                    $('#errorPassword').text(data.message);
+                }
+            });
 
-    const loginValue = loginInput.value.trim();
-    const passwordValue = passwordInput.value.trim();
-
-    const errorLogin = document.getElementById("errorLogin");
-    const errorPassword = document.getElementById("errorPassword");
-    const errorCredentials = document.getElementById("errorCredentials");
-
-    let hasError = false;
-
-    // Resetear mensajes de error
-    errorLogin.textContent = "";
-    errorPassword.textContent = "";
-    errorCredentials.textContent = "Usuario o contraseña incorrectos";
-    errorCredentials.textContent = ""; // Eliminar cualquier mensaje previo de "Usuario o contraseña incorrectos"
-    
-    // Validar campos vacíos
-    if (!loginValue) {
-        errorLogin.textContent = "El usuario es obligatorio";
-        hasError = true;
-    }
-    if (!passwordValue) {
-        errorPassword.textContent = "La contraseña es obligatoria";
-        hasError = true;
-    }
-
-    // Si no hay errores de campos vacíos, enviar el formulario
-    if (!hasError) {
-        event.target.submit();
-    }
-});
+            $('#validateBtn').click(function () {
+                $('#id_form').bootstrapValidator('validate');
+            });
+        });
     </script>
 </body>
 </html>
