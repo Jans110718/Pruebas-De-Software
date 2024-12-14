@@ -43,67 +43,6 @@ public class IncidenciaTransaccionController {
         return usuarioService.traerIncidenciasDeUsuario(idUsuario);
     }
 
-    @ResponseBody
-    @PostMapping("/asignarIncidencia")
-    public HashMap<String, Object> asignarIncidencia(int idUsuario, int idIncidencia) {
-        HashMap<String, Object> maps = new HashMap<>();
-        
-        // Obtener las entidades Usuario e Incidencia usando sus servicios
-        Usuario usuario = usuarioService.buscarUsuarioPorId(idUsuario);
-        Incidencia incidencia = incidenciaService.buscarIncidenciaPorId(idIncidencia);
-
-        if (usuario != null && incidencia != null) {
-            // Crear el objeto UsuarioHasIncidenciaPK con los IDs
-            UsuarioHasIncidenciaPK usuarioHasIncidenciaPK = new UsuarioHasIncidenciaPK();
-            usuarioHasIncidenciaPK.setIdUsuario(idUsuario);
-            usuarioHasIncidenciaPK.setIdIncidencia(idIncidencia);
-
-            // Crear el objeto UsuarioHasIncidencia con la clave compuesta
-            UsuarioHasIncidencia usuarioHasIncidencia = new UsuarioHasIncidencia();
-            usuarioHasIncidencia.setUsuarioHasIncidenciaPk(usuarioHasIncidenciaPK);
-            usuarioHasIncidencia.setUsuario(usuario);
-            usuarioHasIncidencia.setIncidencia(incidencia);
-
-            // Asignar la incidencia al usuario (usando el servicio correspondiente)
-            usuarioService.asignarIncidencia(usuarioHasIncidencia);
-            maps.put("mensaje", "Incidencia asignada con éxito");
-        } else {
-            maps.put("ERROR", "Usuario o Incidencia no encontrados");
-        }
-        
-        return maps;
-    }
-
-    @ResponseBody
-    @PostMapping("/eliminarIncidencia")
-    public HashMap<String, Object> eliminarIncidencia(int idUsuario, int idIncidencia) {
-        HashMap<String, Object> maps = new HashMap<>();
-        
-        // Obtener las entidades Usuario e Incidencia usando sus servicios
-        Usuario usuario = usuarioService.buscarUsuarioPorId(idUsuario);
-        Incidencia incidencia = incidenciaService.buscarIncidenciaPorId(idIncidencia);
-
-        if (usuario != null && incidencia != null) {
-            // Crear el objeto UsuarioHasIncidenciaPK con los IDs
-            UsuarioHasIncidenciaPK usuarioHasIncidenciaPK = new UsuarioHasIncidenciaPK();
-            usuarioHasIncidenciaPK.setIdUsuario(idUsuario);
-            usuarioHasIncidenciaPK.setIdIncidencia(idIncidencia);
-
-            // Crear el objeto UsuarioHasIncidencia con la clave compuesta
-            UsuarioHasIncidencia usuarioHasIncidencia = new UsuarioHasIncidencia();
-            usuarioHasIncidencia.setUsuarioHasIncidenciaPk(usuarioHasIncidenciaPK);
-            usuarioHasIncidencia.setUsuario(usuario);
-            usuarioHasIncidencia.setIncidencia(incidencia);
-
-            // Eliminar la incidencia del usuario (usando el servicio correspondiente)
-            usuarioService.eliminarIncidencia(usuarioHasIncidencia);
-            maps.put("mensaje", "Incidencia eliminada");
-        } else {
-            maps.put("ERROR", "Usuario o Incidencia no encontrados");
-        }
-        
-        return maps;
-    }
     @PostMapping("/crearIncidenciaYAsignarUsuarios")
     @ResponseBody
     public HashMap<String, Object> crearIncidenciaYAsignarUsuarios(

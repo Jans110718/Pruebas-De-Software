@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
@@ -61,7 +62,7 @@ public class Incidencia {
     private String descripcion;
     private int estado;  // Estado de la incidencia (por ejemplo, 1=Abierta, 2=Cerrada)
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "incidencia")
     private List<UsuarioHasIncidencia> usuariosHasIncidencia;  // Relación con la tabla intermedia
 

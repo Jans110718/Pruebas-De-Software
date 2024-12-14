@@ -19,6 +19,8 @@ public interface UsuarioHasIncidenciaRepository extends JpaRepository<UsuarioHas
     // Consulta para encontrar todas las incidencias asociadas a una incidencia
     @Query("SELECT uhi FROM UsuarioHasIncidencia uhi WHERE uhi.incidencia.idIncidencia = :idIncidencia")
     List<UsuarioHasIncidencia> findUsuariosByIncidencia(@Param("idIncidencia") int idIncidencia);
-    
+    @Query("SELECT COUNT(uhi) FROM UsuarioHasIncidencia uhi WHERE uhi.usuario.idUsuario = :idUsuario")
+    int contarIncidenciasPorUsuario(@Param("idUsuario") int idUsuario);
+
 
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
@@ -56,7 +57,8 @@ public class Usuario {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "usuario")
 	private List<UsuarioHasRol> usuarioHasRol;
-	@JsonManagedReference
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "usuario")
 	private List<UsuarioHasIncidencia> usuarioHasIncidencia; // Relación con incidencia
 }
