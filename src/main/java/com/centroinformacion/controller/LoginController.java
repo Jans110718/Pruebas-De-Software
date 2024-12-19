@@ -40,6 +40,8 @@ public class LoginController {
             List<Opcion> menusTipo2 = menus.stream().filter(p -> p.getTipo() == 2).toList(); // Alumno
             List<Opcion> menusTipo3 = menus.stream().filter(p -> p.getTipo() == 3).toList(); // Seguridad
             List<Opcion> menusTipo4 = menus.stream().filter(p -> p.getTipo() == 4).toList(); // Proveedores
+            List<Opcion> menusTipo5 = menus.stream().filter(p -> p.getTipo() == 5).toList(); // Supervisores
+
 
             // Guardamos la información del usuario y los menús en la sesión
             session.setAttribute("idUsuario", usuario.getIdUsuario());
@@ -48,12 +50,14 @@ public class LoginController {
             session.setAttribute("objMenusTipo2", menusTipo2);
             session.setAttribute("objMenusTipo3", menusTipo3);
             session.setAttribute("objMenusTipo4", menusTipo4);
+            session.setAttribute("objMenusTipo5", menusTipo5);
             session.setAttribute("objRoles", roles);
 
             return "intranetHome"; // Redirigimos a la página principal
         }
     }
 
+    
     @GetMapping("/logout")
     public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         // Cerramos la sesión y enviamos un mensaje

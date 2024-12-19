@@ -106,6 +106,23 @@
                             </li>
                         </c:if>
 
+                          <!-- Opciones para Supervisor -->
+                          <c:if test="${!empty sessionScope.objMenusTipo5}">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Supervisor <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <c:forEach var="x" items="${sessionScope.objMenusTipo5}">
+                                        <li>
+                                            <a href="${x.ruta}">${x.nombre}</a>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </li>
+                        </c:if>
+
+
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">

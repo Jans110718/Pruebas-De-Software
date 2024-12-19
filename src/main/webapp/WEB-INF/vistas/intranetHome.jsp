@@ -17,6 +17,7 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="js/global.js"></script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
@@ -108,13 +109,7 @@
             </div>
         </div>
     </div>
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-  chat-title="CiberAsesor"
-  agent-id="8158a2a1-4a25-457d-a287-b80ef4dedf4d"
-  language-code="en"
-></df-messenger>
-    
+
     
 </body>
 </html>

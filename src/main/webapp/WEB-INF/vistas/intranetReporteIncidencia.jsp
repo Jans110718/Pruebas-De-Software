@@ -87,9 +87,9 @@
 
                 <!-- Descripción -->
                 <div class="form-group">
-                    <label class="control-label" for="id_descripcion">Descripción</label>
+                    <label class="control-label" for="id_descripcion">Descripci&oacute;n</label>
                     <input class="form-control" type="text" id="id_descripcion" name="descripcion"
-                        placeholder="Ingrese la descripción">
+                        placeholder="Ingrese la descripci&oacute;n">
 
 
                 </div>

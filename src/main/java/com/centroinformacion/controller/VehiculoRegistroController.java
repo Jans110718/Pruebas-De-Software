@@ -84,5 +84,38 @@ public class VehiculoRegistroController {
             return "{\"valid\" : false }";
         }
     }
+    @GetMapping("/VerificarPlaca")
+    @ResponseBody
+    public Map<String, Object> VerificarPlaca(String placa) {
+        // Llamar al servicio que devuelve el vehículo correspondiente a la placa
+        List<Vehiculo> lstVehiculo = vehiculoService.listaPorPlacaExacta(placa);
+        
+        // Crear un mapa para los datos de respuesta
+        Map<String, Object> map = new HashMap<>();
+        
+        if (CollectionUtils.isEmpty(lstVehiculo)) {
+            // Si no se encuentra ningún vehículo con esa placa
+            map.put("MENSAJE", "Placa no encontrada");
+            map.put("valid", "true");
+        } else {
+            // Si se encuentra un vehículo con esa placa
+            Vehiculo vehiculo = lstVehiculo.get(0);  // Asumiendo que la lista contiene solo un resultado
+            map.put("MENSAJE", "Vehículo registrado con esa placa");
+            map.put("valid", "false");
+            map.put("tipoVehiculo", vehiculo.getTipoVehiculo());
+            map.put("marca", vehiculo.getMarca());
+            map.put("modelo", vehiculo.getModelo());
+            map.put("tipo", vehiculo.getTipo());
+
+            // Asegúrate de proporcionar la ruta completa de la imagen, si existe
+            String imagenPath = "/vehiculos/" + vehiculo.getImagen();  // Suponiendo que vehiculo.getImagen() retorna el nombre de la imagen
+            map.put("imagen", imagenPath);
+        }
+        
+        return map;
+    }
+
+
+
     
 }

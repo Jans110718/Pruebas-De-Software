@@ -21,6 +21,7 @@ import com.centroinformacion.entity.Solicitud;
 import com.centroinformacion.entity.Espacio;
 import com.centroinformacion.entity.Usuario;
 import com.centroinformacion.entity.UsuarioHasRol;
+import com.centroinformacion.repository.UsuarioHasIncidenciaRepository;
 import com.centroinformacion.repository.UsuarioHasRolRepository;
 import com.centroinformacion.service.EspacioService;
 import com.centroinformacion.service.SolicitudService; // Servicio para manejar solicitudes
@@ -47,6 +48,8 @@ public class SolicitudRegistroController {
     private EspacioService espacioService;
     @Autowired
     private UsuarioHasRolRepository usuarioHasRolRepository;
+    @Autowired
+    private UsuarioHasIncidenciaRepository usuarioHasIncidenciaRepository;
     @PostMapping("/registraSolicitud")
     @ResponseBody
     public Map<String, Object> registraSolicitud(Solicitud obj, HttpSession session) {
@@ -56,6 +59,12 @@ public class SolicitudRegistroController {
         Usuario objUsuario = (Usuario) session.getAttribute("objUsuario");
         if (objUsuario == null) {
             map.put("MENSAJE", "Usuario no autenticado");
+            return map;
+        }
+        // Verificar si el usuario tiene 3 o más reportes
+        int cantidadReportes = usuarioHasIncidenciaRepository.contarIncidenciasPorUsuario(objUsuario.getIdUsuario());
+        if (cantidadReportes >= 3) {
+            map.put("MENSAJE", "No se puede registrar la solicitud. El usuario tiene 3 o más reportes.");
             return map;
         }
 
