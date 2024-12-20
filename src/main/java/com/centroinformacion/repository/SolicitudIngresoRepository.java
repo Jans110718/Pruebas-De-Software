@@ -35,6 +35,6 @@ public interface SolicitudIngresoRepository extends JpaRepository<Solicitud, Int
            "JOIN ur.usuarioHasRol uhr " +  // Si tienes la relación con roles del usuario
            "WHERE uhr.rol.idRol = :idRol") // Filtramos por el idRol del rol
     List<Solicitud> findSolicitudesPorRol(@Param("idRol") int idRol);
-    @Query("SELECT s FROM Solicitud s WHERE s.estado = 1")
+    @Query("SELECT s FROM Solicitud s WHERE s.entrada = 1 AND s.salida = 0")
     List<Solicitud> findSolicitudesActivas();
 }

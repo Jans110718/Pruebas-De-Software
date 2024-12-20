@@ -100,7 +100,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label" for="id_imagen">Imagen del Vehiculo</label>
+                    <label class="control-label" for="id_imagen">Imagen del Veh&iacute;culo</label>
                     <input class="form-control-file" type="file" id="id_imagen" name="file" accept="image/*" required>
                 </div>
 
@@ -123,7 +123,7 @@
                     success: function (data) {
                         var tiposVehiculo = new Set();
                         $.each(data, function (index, vehiculo) {
-                            tiposVehiculo.add(vehiculo.transporte);
+                            tiposVehiculo.add(vehiculo.transporte);  // Ahora se usa 'transporte' en lugar de 'tipo'
                         });
     
                         var $tipoVehiculoSelect = $("#id_tipoVehiculo");
@@ -159,8 +159,8 @@
                         var marcasUnicas = new Set();
     
                         $.each(data, function (index, vehiculo) {
-                            if (vehiculo.transporte === tipoVehiculoSeleccionado) {
-                                marcasUnicas.add(vehiculo.marca);
+                            if (vehiculo.transporte === tipoVehiculoSeleccionado) {  // Se usa 'transporte' para filtrar
+                            marcasUnicas.add(vehiculo.marca);
                             }
                         });
     
@@ -180,37 +180,37 @@
             });
     
             function cargarModelos() {
-                var tipoVehiculoSeleccionado = $("#id_tipoVehiculo").val();
-                var marcaSeleccionada = $("#id_marca").val();
-    
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8070/api/vehiculos",
-                    success: function (data) {
-                        var $modeloSelect = $("#id_modelo");
-                        $modeloSelect.empty();
-                        $modeloSelect.append("<option value=''>Seleccione un modelo</option>");
-    
-                        $.each(data, function (index, vehiculo) {
-                            if (vehiculo.transporte === tipoVehiculoSeleccionado && vehiculo.marca === marcaSeleccionada) {
-                                // Añadir el tipo como atributo 'data-tipo' en cada opción del modelo
-                                $modeloSelect.append("<option value='" + vehiculo.modelo + "' data-tipo='" + vehiculo.transporte + "'>" + vehiculo.modelo + "</option>");
-                            }
-                        });
-                    },
-                    error: function () {
-                        console.error("Error al cargar los modelos.");
-                    }
-                });
-            }
-    
-            // Actualizar tipo de vehículo al seleccionar un modelo
-            $("#id_modelo").change(function () {
-                // Obtener el tipo asociado al modelo seleccionado usando el atributo data-tipo
-                var tipoSeleccionado = $(this).find(':selected').data('tipo');
-                $("#id_tipo").val(tipoSeleccionado);  // Asignar el tipo al campo 'id_tipo'
+    var tipoVehiculoSeleccionado = $("#id_tipoVehiculo").val();
+    var marcaSeleccionada = $("#id_marca").val();
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8070/api/vehiculos",
+        success: function (data) {
+            var $modeloSelect = $("#id_modelo");
+            $modeloSelect.empty();
+            $modeloSelect.append("<option value=''>Seleccione un modelo</option>");
+
+            $.each(data, function (index, vehiculo) {
+                if (vehiculo.transporte === tipoVehiculoSeleccionado && vehiculo.marca === marcaSeleccionada) {
+                    // Asegurarse de que 'tipo' se agrega como atributo 'data-tipo'
+                    $modeloSelect.append("<option value='" + vehiculo.modelo + "' data-tipo='" + vehiculo.tipo + "'>" + vehiculo.modelo + "</option>");
+                }
             });
-    
+        },
+        error: function () {
+            console.error("Error al cargar los modelos.");
+        }
+    });
+}
+
+// Actualizar tipo de vehículo al seleccionar un modelo
+$("#id_modelo").change(function () {
+    // Obtener el tipo asociado al modelo seleccionado usando el atributo data-tipo
+    var tipoSeleccionado = $(this).find(':selected').data('tipo');
+    $("#id_tipo").val(tipoSeleccionado);  // Asignar el tipo al campo 'id_tipo'
+});
+
             // Manejo del envío del formulario
             $("#id_registrar").click(function () {
                 var validator = $('#id_form').data('bootstrapValidator');

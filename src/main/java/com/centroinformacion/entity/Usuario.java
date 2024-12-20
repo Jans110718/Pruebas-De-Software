@@ -34,6 +34,8 @@ public class Usuario {
 	private String password;
 	private String correo;
 	private String fotoPerfil;
+	private String direccion;
+    private int estado; // Estado de la solicitud
 
     private int discapacitado; // Estado de la incidencia
     private String codigoVerificacion;

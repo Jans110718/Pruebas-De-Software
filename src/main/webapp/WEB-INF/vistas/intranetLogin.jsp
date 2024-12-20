@@ -185,7 +185,7 @@
                 <strong>${requestScope.mensaje}</strong>
             </div>
         </c:if>
-
+        
         <form id="id_form" action="login" method="post" class="login-form">
             <div class="form-group">
                 <input type="text" name="login" placeholder="Ingresa el usuario" class="form-control" id="form-username" maxlength="20">
@@ -278,6 +278,8 @@
                 $('#id_form').bootstrapValidator('validate');
             });
         });
-    </script>
+    
+   
+   </script>
 </body>
 </html>

@@ -513,6 +513,8 @@
                             actualizarComboBox()
                             // Cerrar el modal después de la actualización
                             $('#id_div_modal_actualiza').modal('hide');
+                                // Simula un clic en el botón con ID "id_filtrar"
+                $("#id_btn_filtra").click();
                         },
                         error: function () {
                             mostrarMensaje("Error en la actualizaci" + String.fromCharCode(243) + "n. Int" + String.fromCharCode(233) + "ntalo de nuevo.");

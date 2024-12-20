@@ -62,6 +62,7 @@ public class EnlaceController {
 	    return "intranetRegistroVehiculo";  // Para proveedores
 	}
 
+	
 	@GetMapping("/verRegistroSolicitudEspecial")
 	public String verRegistroSolicitudEspecial() {
 	    return "intranetRegistroSolicitudEspecial";  // Para proveedores

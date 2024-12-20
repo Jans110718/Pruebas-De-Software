@@ -27,7 +27,12 @@ public class LoginController {
     public String login(Usuario user, HttpSession session, HttpServletRequest request) {
         // Recuperamos el usuario desde la base de datos
         Usuario usuario = servicio.login(user);
-
+        // Verificamos si el estado del usuario es 0 (no permitido)
+        if (usuario.getEstado() == 0) {
+            // Si el estado del usuario es 0, mostramos el mensaje correspondiente
+            request.setAttribute("mensaje", "El usuario no está activo en este ciclo. No puede iniciar sesión.");
+            return "intranetLogin";
+        }
         if (usuario == null || !PasswordUtil.matches(user.getPassword(), usuario.getPassword())) {
             // Si las contraseñas no coinciden, mostramos un mensaje de error
             request.setAttribute("mensaje", "Usuario o contraseña incorrectos");

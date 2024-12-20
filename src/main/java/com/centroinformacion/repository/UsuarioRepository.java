@@ -25,5 +25,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 	
 	public abstract Usuario findByLogin(String login);
 	
-    Optional<Usuario> findByCorreo(String correo);
+	   Optional<Usuario> findByCorreo(String correo);
+	
+    @Query("SELECT u FROM Usuario u WHERE u.login = :login")
+    Optional<Usuario> BuscarPorLogin(@Param("login")String login);
+
+    @Query("SELECT u FROM Usuario u WHERE u.correo = :correo")
+    Optional<Usuario> BuscarPorCorreo(@Param("correo") String correo);
+
 }

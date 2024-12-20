@@ -14,6 +14,7 @@ import com.centroinformacion.entity.UsuarioHasIncidencia;
 import com.centroinformacion.entity.UsuarioHasIncidenciaPK;
 import com.centroinformacion.entity.UsuarioHasRol;
 import com.centroinformacion.entity.UsuarioHasRolPK;
+import com.centroinformacion.repository.RolRepository;
 import com.centroinformacion.repository.UsuarioHasIncidenciaRepository;
 import com.centroinformacion.repository.UsuarioHasRolRepository;
 import com.centroinformacion.repository.UsuarioRepository;
@@ -28,6 +29,8 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 	@Autowired
 	private UsuarioRepository repository;
+	@Autowired
+	private RolRepository rolRepository;
 	@Autowired 
 	private UsuarioHasIncidenciaRepository usuarioHasIncidenciaRepository;
 	@Autowired
@@ -136,5 +139,56 @@ public class UsuarioServiceImpl implements UsuarioService{
     public Usuario buscarUsuarioPorId(int idUsuario) {
         return repository.findById(idUsuario).orElse(null);  // Devuelve null si no se encuentra
     }
+
+ // En UsuarioServiceImpl (implementación del servicio)
+    @Override
+    public UsuarioHasRol asignarRolAUsuario(Usuario usuario, int idRol) {
+        // Buscar el rol por id
+        Rol rol = rolRepository.findById(idRol).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+
+        // Crear la relación UsuarioHasRol
+        UsuarioHasRol usuarioHasRol = new UsuarioHasRol();
+        UsuarioHasRolPK usuarioHasRolPK = new UsuarioHasRolPK();
+        usuarioHasRolPK.setIdUsuario(usuario.getIdUsuario());
+        usuarioHasRolPK.setIdRol(rol.getIdRol());
+
+        usuarioHasRol.setUsuario(usuario);
+        usuarioHasRol.setRol(rol);
+        usuarioHasRol.setUsuarioHasRolPk(usuarioHasRolPK);
+
+        // Guardar la relación
+        return usuarioHasRolRepository.save(usuarioHasRol);
+    }
+
+	@Override
+	public Usuario save(Usuario usuario) {
+		// TODO Auto-generated method stub
+        return repository.save(usuario);
+	}
+
+	@Override
+	public Usuario findByLogin(String login) {
+		// TODO Auto-generated method stub
+        return repository.findByLogin(login);
+	}
+
+	@Override
+	public Optional<Usuario> findByCorreo(String correo) {
+		// TODO Auto-generated method stub
+        return repository.findByCorreo(correo);
+	}
+
+	@Override
+	public Optional<Usuario> BuscarPorLogin(String login) {
+		// TODO Auto-generated method stub
+		return repository.BuscarPorLogin(login);
+	}
+
+	@Override
+	public Optional<Usuario> BuscarPorCorreo(String correo) {
+		// TODO Auto-generated method stub
+		return repository.BuscarPorCorreo(correo);
+	}
+
 
 }

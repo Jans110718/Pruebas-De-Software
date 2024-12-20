@@ -13,6 +13,7 @@ import com.centroinformacion.entity.UsuarioHasRol;
 import com.centroinformacion.entity.UsuarioHasRolPK;
 
 public interface UsuarioService {
+	public abstract Usuario save(Usuario usuario);  // Guardar el usuario en la base de datos
 
 	public abstract Usuario login(Usuario bean);
 	public abstract List<Opcion> traerEnlacesDeUsuario(int idUsuario);
@@ -43,5 +44,17 @@ public interface UsuarioService {
     // Obtener todas las incidencias de un usuario
     List<UsuarioHasIncidencia> traerIncidenciasDeUsuario(int idUsuario);
     Usuario buscarUsuarioPorId(int idUsuario);
+
+    public abstract UsuarioHasRol asignarRolAUsuario(Usuario usuario, int idRol);
+
+    Usuario findByLogin(String login);  // Buscar usuario por login}
+    
+    Optional<Usuario> findByCorreo(String correo);  // Buscar usuario por correo
+    
+    Optional<Usuario> BuscarPorCorreo(String correo); 
+    Optional<Usuario> BuscarPorLogin(String login); 
+
+    
+
 
 }

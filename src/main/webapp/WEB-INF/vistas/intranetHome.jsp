@@ -17,7 +17,6 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="js/global.js"></script>
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
@@ -31,7 +30,6 @@
             background-color: #f4f7fa;
             font-family: Arial, sans-serif;
         }
-
 
         .navbar-fixed-top {
             height: 100px; /* Ajustar la altura de la navbar */
@@ -109,7 +107,5 @@
             </div>
         </div>
     </div>
-
-    
 </body>
 </html>
